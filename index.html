@@ -52,6 +52,12 @@
   <link rel="icon" type="image/png" href="./defi.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Preload LCP Image -->
+  <link rel="preload" as="image" href="./pietro-768.webp"
+    imagesrcset="./pietro-480.webp 480w, ./pietro-768.webp 768w, ./pietro-1280.webp 1280w"
+    imagesizes="(max-width: 600px) 100vw, 50vw" fetchpriority="high">
+
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200;1,9..40,300&display=swap&font-display=swap"
     rel="stylesheet">
@@ -905,9 +911,11 @@
   <section id="about">
     <div class="about-visual reveal">
       <div class="founder-placeholder">
-        <img src="./pietro.jpg"
+        <img src="./pietro-768.webp" srcset="./pietro-480.webp 480w, ./pietro-768.webp 768w, ./pietro-1280.webp 1280w"
+          sizes="(max-width: 600px) 100vw, 50vw"
           alt="Pietro Trevisan, fondatore di North Studio — studio creativo freelance a Ceggia, Veneto" width="600"
-          height="800" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
+          height="800" fetchpriority="high"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
         <div class="founder-caption">
           <p>Pietro Trevisan — Founder</p>
         </div>
