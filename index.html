@@ -59,12 +59,12 @@
     imagesizes="(max-width: 600px) 100vw, 50vw" fetchpriority="high">
 
   <!-- Optimized Google Fonts Loading -->
-  <link rel="preload" 
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200;1,9..40,300&display=swap" 
-        as="style" 
-        onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200;1,9..40,300&display=swap"
+    as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200;1,9..40,300&display=swap">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200;1,9..40,300&display=swap">
   </noscript>
   <style>
     *,
@@ -98,8 +98,10 @@
       font-family: var(--font-body);
       font-size: 15px;
       line-height: 1.6;
+      /* Explicit line-height for stability */
       cursor: none;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* CURSOR */
@@ -224,6 +226,7 @@
       font-size: clamp(68px, 11vw, 148px);
       font-weight: 300;
       line-height: 0.88;
+      /* Crucial for CLS */
       letter-spacing: -0.03em;
       margin-bottom: 52px;
       color: var(--text);
@@ -246,8 +249,12 @@
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       padding: 18px 0;
+      height: 52px;
+      /* Fixed height to reserve layout space */
       overflow: hidden;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
     }
 
     .ticker-track {
@@ -309,6 +316,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0;
+      position: relative;
     }
 
     .service-item {
@@ -318,6 +326,9 @@
       grid-template-columns: 48px 1fr;
       gap: 0 28px;
       align-items: start;
+      min-height: 200px;
+      /* Reserves vertical space */
+      will-change: transform, opacity;
     }
 
     .service-item:nth-child(odd) {
@@ -341,6 +352,7 @@
       font-size: clamp(22px, 2.4vw, 32px);
       font-weight: 300;
       line-height: 1.1;
+      /* Explicit line-height */
       margin-bottom: 12px;
       letter-spacing: -0.02em;
     }
@@ -349,6 +361,7 @@
       font-size: 13px;
       color: var(--mid-hi);
       line-height: 1.75;
+      /* Explicit line-height */
       max-width: 280px;
     }
 
@@ -663,11 +676,14 @@
       opacity: 0;
       transform: translateY(24px);
       transition: opacity .7s var(--easing), transform .7s var(--easing);
+      visibility: hidden;
+      /* Hide without removing from layout */
     }
 
     .reveal.visible {
       opacity: 1;
-      transform: none;
+      transform: translateY(0);
+      visibility: visible;
     }
 
     .reveal-delay-1 {
