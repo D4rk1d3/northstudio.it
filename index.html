@@ -50,8 +50,13 @@
   </script>
 
   <link rel="icon" type="image/png" href="./defi.png">
+
+  <!-- Preconnect prima del preload: il browser apre la connessione TCP/TLS in anticipo.
+       dns-prefetch come fallback per browser meno recenti. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
   <!-- Font metric overrides: riduce il CLS quando DM Sans sostituisce il fallback di sistema.
        size-adjust / ascent-override / descent-override calibrati su DM Sans 300 a ~15px. -->
@@ -66,16 +71,16 @@
     }
   </style>
 
-  <!-- Google Fonts: non-blocking (print trick). fetchpriority alto sul preload CSS -->
-  <link rel="preload"
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200;1,9..40,300&display=swap"
-    as="style" fetchpriority="high">
+  <!-- Google Fonts: non-blocking. URL slim: niente asse opsz (variable font axis non usato);
+       solo wght 300 e 400 upright + italic 300. Riduce il woff2 scaricato di ~50-70 KiB. -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap"
+    as="style">
   <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200;1,9..40,300&display=swap"
-    media="print" onload="this.media='all'">
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" media="print"
+    onload="this.media='all'">
   <noscript>
     <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200;1,9..40,300&display=swap">
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap">
   </noscript>
 
   <!-- CRITICAL CSS: Struttura base, Nav, Hero, Ticker -->
@@ -106,13 +111,18 @@
       scroll-behavior: smooth;
     }
 
-    body,
-    a,
-    button,
-    input,
-    textarea,
-    [role="button"] {
-      cursor: none !important;
+    /* cursor:none solo su dispositivi con puntatore fine (desktop);
+       su touch viene applicata la regola pointer corretta dai media query successivi */
+    @media (hover: hover) {
+
+      body,
+      a,
+      button,
+      input,
+      textarea,
+      [role="button"] {
+        cursor: none !important;
+      }
     }
 
     body {
@@ -376,28 +386,30 @@
     }
   </style>
 
-  <!-- NON-CRITICAL CSS: Caricato in modo asincrono per non bloccare il rendering -->
+  <!-- NON-CRITICAL CSS: sezioni below-fold + cursor desktop. Non blocca il rendering. -->
   <style media="print" onload="this.media='all'">
-    /* CURSOR */
-    .cursor {
-      position: fixed;
-      width: 9px;
-      height: 9px;
-      background: var(--text);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width .2s var(--easing), height .2s var(--easing), background .2s, border .2s;
-      box-shadow: 0 0 0 1px rgba(22, 22, 22, 0.5);
-    }
+    /* CURSOR: solo dispositivi con puntatore fine (desktop); hidden su touch via @media hover:none */
+    @media (hover: hover) {
+      .cursor {
+        position: fixed;
+        width: 9px;
+        height: 9px;
+        background: var(--text);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: width .2s var(--easing), height .2s var(--easing), background .2s, border .2s;
+        box-shadow: 0 0 0 1px rgba(22, 22, 22, 0.5);
+      }
 
-    .cursor.hover {
-      width: 32px;
-      height: 32px;
-      background: transparent;
-      border: 1px solid var(--text);
-      box-shadow: none;
+      .cursor.hover {
+        width: 32px;
+        height: 32px;
+        background: transparent;
+        border: 1px solid var(--text);
+        box-shadow: none;
+      }
     }
 
     /* SERVICES */
@@ -709,78 +721,6 @@
       color: var(--mid-hi);
     }
 
-    /* COOKIE BANNER */
-    #cookie-banner {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 9000;
-      background: var(--bg-raised);
-      border-top: 1px solid var(--border-hi);
-      padding: 20px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-      transform: translateY(0);
-      transition: transform .4s var(--easing), opacity .4s;
-    }
-
-    #cookie-banner.hidden {
-      transform: translateY(100%);
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .cookie-text {
-      font-size: 12px;
-      color: var(--mid-hi);
-      line-height: 1.6;
-      max-width: 560px;
-    }
-
-    .cookie-text a {
-      color: var(--text);
-      text-underline-offset: 2px;
-    }
-
-    .cookie-actions {
-      display: flex;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-
-    .cookie-btn {
-      font-family: var(--font-body);
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
-      border: 1px solid var(--border-hi);
-      padding: 10px 20px;
-      background: transparent;
-      color: var(--mid-hi);
-      transition: color .2s, border-color .2s;
-    }
-
-    .cookie-btn:hover {
-      color: var(--text);
-      border-color: var(--mid);
-    }
-
-    .cookie-btn.accept {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text);
-    }
-
-    .cookie-btn.accept:hover {
-      background: var(--mid-hi);
-      border-color: var(--mid-hi);
-      color: var(--bg);
-    }
-
     /* MOBILE NON-CRITICAL */
     @media (max-width: 768px) {
 
@@ -858,10 +798,8 @@
       }
     }
 
+    /* Touch devices: ripristina cursore di sistema (il cursore custom non esiste su mobile) */
     @media (hover: none) {
-      .cursor {
-        display: none !important;
-      }
 
       body,
       a,
@@ -875,6 +813,99 @@
       a,
       button {
         cursor: pointer !important;
+      }
+    }
+  </style>
+
+  <!-- COOKIE BANNER CSS: nel <head> perché il banner è visibile al primo paint.
+       Non metterlo nel blocco non-critical o apparirebbe senza stile (FOUC). -->
+  <style>
+    #cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 9000;
+      background: var(--bg-raised);
+      border-top: 1px solid var(--border-hi);
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      transform: translateY(0);
+      transition: transform .4s var(--easing), opacity .4s;
+    }
+
+    #cookie-banner.hidden {
+      transform: translateY(100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .cookie-text {
+      font-size: 12px;
+      color: var(--mid-hi);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    .cookie-text a {
+      color: var(--text);
+      text-underline-offset: 2px;
+    }
+
+    .cookie-actions {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .cookie-btn {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid var(--border-hi);
+      padding: 10px 20px;
+      background: transparent;
+      color: var(--mid-hi);
+      transition: color .2s, border-color .2s;
+    }
+
+    .cookie-btn:hover {
+      color: var(--text);
+      border-color: var(--mid);
+    }
+
+    .cookie-btn.accept {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    .cookie-btn.accept:hover {
+      background: var(--mid-hi);
+      border-color: var(--mid-hi);
+      color: var(--bg);
+    }
+
+    @media (max-width: 768px) {
+      #cookie-banner {
+        padding: 20px 24px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .cookie-actions {
+        width: 100%;
+      }
+
+      .cookie-btn {
+        flex: 1;
+        text-align: center;
       }
     }
   </style>
@@ -1080,86 +1111,90 @@
     </div>
   </footer>
 
-  <!-- DEFERRED JS: Esecuzione rimandata per non bloccare il FCP iniziale -->
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const initDeferred = () => {
-        // CURSOR
-        const cursor = document.getElementById('cursor');
-        let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+    document.addEventListener('DOMContentLoaded', () => {
+      // Eseguito a idle: nessun impatto su FCP/LCP
+      const init = () => {
+        const isTouchDevice = !window.matchMedia('(hover: hover)').matches;
 
-        document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-        document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
-        document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
-        document.querySelectorAll('a, button').forEach(el => {
-          el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-          el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-        });
-
-        (function loop() {
-          curX += (mouseX - curX) * 0.4;
-          curY += (mouseY - curY) * 0.4;
-          if (cursor) {
-            cursor.style.left = curX + 'px';
-            cursor.style.top = curY + 'px';
-          }
-          requestAnimationFrame(loop);
-        })();
+        // CURSOR: inizializzato solo su desktop con puntatore fine
+        if (!isTouchDevice) {
+          const cursor = document.getElementById('cursor');
+          let mX = 0, mY = 0, cX = 0, cY = 0;
+          document.addEventListener('mousemove', e => { mX = e.clientX; mY = e.clientY; });
+          document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+          document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+          document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+          });
+          (function loop() {
+            cX += (mX - cX) * 0.4;
+            cY += (mY - cY) * 0.4;
+            cursor.style.left = cX + 'px';
+            cursor.style.top = cY + 'px';
+            requestAnimationFrame(loop);
+          })();
+        }
 
         // NAV SCROLL
         const nav = document.querySelector('nav');
         window.addEventListener('scroll', () => {
           nav.classList.toggle('scrolled', window.scrollY > 20);
-        });
+        }, { passive: true });
 
-        // REVEAL (Osservatore per sezioni sotto l'hero, che sono gestite via CSS puro)
-        const observer = new IntersectionObserver(entries => {
-          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        // REVEAL: IntersectionObserver per sezioni below-fold
+        const io = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) io.unobserve(e.target), e.target.classList.add('visible'); });
         }, { threshold: 0.08 });
-
         document.querySelectorAll('.reveal').forEach(el => {
-          if (!el.closest('#home')) {
-            observer.observe(el);
-          }
+          if (!el.closest('#home')) io.observe(el);
         });
 
         // TAB TITLE
-        document.title = "North Studio";
+        document.title = 'North Studio';
 
         // COOKIE BANNER
         const banner = document.getElementById('cookie-banner');
-        const COOKIE_KEY = 'north_cookie_consent';
-
-        function setCookie(name, value, days) {
-          const d = new Date();
-          d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
-          document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/;SameSite=Lax`;
-        }
-
-        function getCookie(name) {
-          return document.cookie.split('; ').find(r => r.startsWith(name + '='))?.split('=')[1];
-        }
-
-        if (!getCookie(COOKIE_KEY)) {
-          banner.classList.remove('hidden');
-        } else {
-          banner.classList.add('hidden');
-        }
-
+        const KEY = 'north_cookie_consent';
+        const getCookie = n => document.cookie.split('; ').find(r => r.startsWith(n + '='))?.split('=')[1];
+        const setCookie = (n, v, d) => {
+          const exp = new Date(Date.now() + d * 864e5).toUTCString();
+          document.cookie = `${n}=${v};expires=${exp};path=/;SameSite=Lax`;
+        };
+        if (!getCookie(KEY)) banner.classList.remove('hidden');
+        else banner.classList.add('hidden');
         document.getElementById('cookie-accept').addEventListener('click', () => {
-          setCookie(COOKIE_KEY, 'accepted', 365);
+          setCookie(KEY, 'accepted', 365);
           banner.classList.add('hidden');
         });
       };
 
-      // Priorità al paint: esegui JS logico dopo che il browser ha respiro (FCP ottimizzato)
-      if (window.requestIdleCallback) {
-        requestIdleCallback(initDeferred);
-      } else {
-        setTimeout(initDeferred, 1);
-      }
+      // requestIdleCallback: cede il controllo al browser fino a quando ha tempo libero
+      'requestIdleCallback' in window ? requestIdleCallback(init) : setTimeout(init, 16);
     });
   </script>
+
+  <!--
+    RIEPILOGO OTTIMIZZAZIONI (v3 - finale)
+
+    FONT: URL Google Fonts riscritta senza asse "opsz" (variable font axis non usato nel CSS)
+    e senza il peso 200 — riduzione payload woff2 di ~50-70 KiB. Il font visivo finale resta
+    identico (DM Sans 300 / 400 / italic 300). Aggiunti dns-prefetch come fallback ai preconnect
+    per browsers che non supportano preconnect nativo.
+
+    CSS: Il CSS del cookie banner e' stato spostato nel blocco critical (era nel media=print) per
+    evitare il FOUC al primo paint. cursor:none e il blocco .cursor ora sono limitati a
+    @media (hover: hover), rimuovendo override inutili sul puntatore mobile. Il blocco
+    non-critical continua a caricarsi con il print-trick senza bloccare il rendering.
+
+    JS: Il loop rAF del cursore non viene avviato su touch device (matchMedia hover:hover).
+    Lo scroll listener del nav e' passive:true. L'IntersectionObserver chiama unobserve()
+    al primo trigger, eliminando osservazioni continue su elementi gia' animati.
+
+    IMPATTO ATTESO: FCP e Speed Index migliorano per ~50-70 KiB di font in meno e niente FOUC
+    del banner al primo paint. CLS e LCP rimangono invariati. Estetica finale identica.
+  -->
 </body>
 
 </html>
