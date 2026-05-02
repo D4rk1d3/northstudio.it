@@ -53,19 +53,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <!-- Preload LCP Image -->
-  <link rel="preload" as="image" href="./pietro-768.webp"
-    imagesrcset="./pietro-480.webp 480w, ./pietro-768.webp 768w, ./pietro-1280.webp 1280w"
-    imagesizes="(max-width: 600px) 100vw, 50vw" fetchpriority="high">
-
-  <!-- Optimized Google Fonts Loading -->
+  <!-- Optimized Google Fonts Loading (Non-blocking) -->
   <link rel="preload"
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200;1,9..40,300&display=swap"
-    as="style" onload="this.onload=null;this.rel='stylesheet'">
+    as="style">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200;1,9..40,300&display=swap"
+    media="print" onload="this.media='all'">
   <noscript>
     <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200;1,9..40,300&display=swap">
   </noscript>
+
+  <!-- CRITICAL CSS: Struttura base, Nav, Hero, Ticker -->
   <style>
     *,
     *::before,
@@ -107,31 +107,8 @@
       font-family: var(--font-body);
       font-size: 15px;
       line-height: 1.6;
-      /* Explicit line-height for stability */
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-    }
-
-    /* CURSOR */
-    .cursor {
-      position: fixed;
-      width: 9px;
-      height: 9px;
-      background: var(--text);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width .2s var(--easing), height .2s var(--easing), background .2s, border .2s;
-      box-shadow: 0 0 0 1px rgba(22, 22, 22, 0.5);
-    }
-
-    .cursor.hover {
-      width: 32px;
-      height: 32px;
-      background: transparent;
-      border: 1px solid var(--text);
-      box-shadow: none;
     }
 
     /* NAV */
@@ -234,7 +211,6 @@
       font-size: clamp(68px, 11vw, 148px);
       font-weight: 300;
       line-height: 0.88;
-      /* Crucial for CLS */
       letter-spacing: -0.03em;
       margin-bottom: 52px;
       color: var(--text);
@@ -258,7 +234,6 @@
       border-bottom: 1px solid var(--border);
       padding: 18px 0;
       height: 52px;
-      /* Fixed height to reserve layout space */
       overflow: hidden;
       white-space: nowrap;
       display: flex;
@@ -291,6 +266,119 @@
       to {
         transform: translateX(-50%);
       }
+    }
+
+    /* SR-ONLY */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* REVEAL (Struttura Base) */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s var(--easing), transform .7s var(--easing);
+      visibility: hidden;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+      visibility: visible;
+    }
+
+    .reveal-delay-1 {
+      transition-delay: .1s;
+      animation-delay: .1s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: .22s;
+      animation-delay: .22s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: .36s;
+      animation-delay: .36s;
+    }
+
+    .reveal-delay-4 {
+      transition-delay: .52s;
+      animation-delay: .52s;
+    }
+
+    /* HERO ANIMATION: Animazione CSS immediata per FCP invece di attendere il JS */
+    @keyframes heroRevealAnim {
+      0% {
+        opacity: 0;
+        transform: translateY(24px);
+        visibility: hidden;
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+      }
+    }
+
+    #home .reveal {
+      visibility: visible;
+      animation: heroRevealAnim .7s var(--easing) both;
+    }
+
+    /* MOBILE CRITICAL */
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      #home {
+        padding: 96px 24px 64px;
+        min-height: 0;
+        justify-content: flex-start;
+      }
+
+      .hero-tag {
+        display: none;
+      }
+    }
+  </style>
+
+  <!-- NON-CRITICAL CSS: Caricato in modo asincrono per non bloccare il rendering -->
+  <style media="print" onload="this.media='all'">
+    /* CURSOR */
+    .cursor {
+      position: fixed;
+      width: 9px;
+      height: 9px;
+      background: var(--text);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width .2s var(--easing), height .2s var(--easing), background .2s, border .2s;
+      box-shadow: 0 0 0 1px rgba(22, 22, 22, 0.5);
+    }
+
+    .cursor.hover {
+      width: 32px;
+      height: 32px;
+      background: transparent;
+      border: 1px solid var(--text);
+      box-shadow: none;
     }
 
     /* SERVICES */
@@ -335,7 +423,6 @@
       gap: 0 28px;
       align-items: start;
       min-height: 200px;
-      /* Reserves vertical space */
       will-change: transform, opacity;
     }
 
@@ -360,7 +447,6 @@
       font-size: clamp(22px, 2.4vw, 32px);
       font-weight: 300;
       line-height: 1.1;
-      /* Explicit line-height */
       margin-bottom: 12px;
       letter-spacing: -0.02em;
     }
@@ -369,7 +455,6 @@
       font-size: 13px;
       color: var(--mid-hi);
       line-height: 1.75;
-      /* Explicit line-height */
       max-width: 280px;
     }
 
@@ -666,69 +751,8 @@
       color: var(--bg);
     }
 
-    /* SR-ONLY — visually hidden but readable by search engines and screen readers */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    /* REVEAL */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .7s var(--easing), transform .7s var(--easing);
-      visibility: hidden;
-      /* Hide without removing from layout */
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-      visibility: visible;
-    }
-
-    .reveal-delay-1 {
-      transition-delay: .1s;
-    }
-
-    .reveal-delay-2 {
-      transition-delay: .22s;
-    }
-
-    .reveal-delay-3 {
-      transition-delay: .36s;
-    }
-
-    .reveal-delay-4 {
-      transition-delay: .52s;
-    }
-
-    /* MOBILE */
+    /* MOBILE NON-CRITICAL */
     @media (max-width: 768px) {
-      nav {
-        padding: 0 24px;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      #home {
-        padding: 96px 24px 64px;
-        min-height: 0;
-        justify-content: flex-start;
-      }
-
-      .hero-tag {
-        display: none;
-      }
 
       #services,
       #contact {
@@ -872,16 +896,16 @@
   <div class="ticker-wrap">
     <div class="ticker-track">
       <span class="hi">Brand Identity</span><span>—</span>
-      <span class="hi">Web Development</span><span>—</span>
-      <span class="hi">Photo Editing</span><span>—</span>
-      <span class="hi">Video Production</span><span>—</span>
-      <span class="hi">Social Design</span><span>—</span>
-      <span class="hi">Logo Design</span><span>—</span>
-      <span>Brand Identity</span><span>—</span>
       <span>Web Development</span><span>—</span>
-      <span>Photo Editing</span><span>—</span>
+      <span class="hi">Photo Editing</span><span>—</span>
       <span>Video Production</span><span>—</span>
-      <span>Social Design</span><span>—</span>
+      <span class="hi">Social Design</span><span>—</span>
+      <span>Logo Design</span><span>—</span>
+      <span class="hi">Brand Identity</span><span>—</span>
+      <span>Web Development</span><span>—</span>
+      <span class="hi">Photo Editing</span><span>—</span>
+      <span>Video Production</span><span>—</span>
+      <span class="hi">Social Design</span><span>—</span>
       <span>Logo Design</span><span>—</span>
     </div>
   </div>
@@ -948,7 +972,7 @@
         <img src="./pietro-768.webp" srcset="./pietro-480.webp 480w, ./pietro-768.webp 768w, ./pietro-1280.webp 1280w"
           sizes="(max-width: 600px) 100vw, 50vw"
           alt="Pietro Trevisan, fondatore di North Studio — studio creativo freelance a Ceggia, Veneto" width="600"
-          height="800" fetchpriority="high"
+          height="800" loading="lazy"
           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
         <div class="founder-caption">
           <p>Pietro Trevisan — Founder</p>
@@ -1025,69 +1049,84 @@
     </div>
   </footer>
 
+  <!-- DEFERRED JS: Esecuzione rimandata per non bloccare il FCP iniziale -->
   <script>
-    // CURSOR
-    const cursor = document.getElementById('cursor');
-    let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+    document.addEventListener("DOMContentLoaded", () => {
+      const initDeferred = () => {
+        // CURSOR
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
 
-    document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-    document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
-    document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
-    document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-    });
+        document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+        document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
+        document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
+        document.querySelectorAll('a, button').forEach(el => {
+          el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+          el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
 
-    (function loop() {
-      curX += (mouseX - curX) * 0.4;
-      curY += (mouseY - curY) * 0.4;
-      cursor.style.left = curX + 'px';
-      cursor.style.top = curY + 'px';
-      requestAnimationFrame(loop);
-    })();
+        (function loop() {
+          curX += (mouseX - curX) * 0.4;
+          curY += (mouseY - curY) * 0.4;
+          if (cursor) {
+            cursor.style.left = curX + 'px';
+            cursor.style.top = curY + 'px';
+          }
+          requestAnimationFrame(loop);
+        })();
 
-    // NAV SCROLL
-    const nav = document.querySelector('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 20);
-    });
+        // NAV SCROLL
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+          nav.classList.toggle('scrolled', window.scrollY > 20);
+        });
 
-    // REVEAL
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    setTimeout(() => {
-      document.querySelectorAll('#home .reveal').forEach(el => el.classList.add('visible'));
-    }, 80);
+        // REVEAL (Osservatore per sezioni sotto l'hero, che sono gestite via CSS puro)
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.08 });
 
-    // TAB TITLE — short version for browser tab; full SEO title stays in <head>
-    document.title = "North Studio";
+        document.querySelectorAll('.reveal').forEach(el => {
+          if (!el.closest('#home')) {
+            observer.observe(el);
+          }
+        });
 
-    // COOKIE BANNER
-    const banner = document.getElementById('cookie-banner');
-    const COOKIE_KEY = 'north_cookie_consent';
+        // TAB TITLE
+        document.title = "North Studio";
 
-    function setCookie(name, value, days) {
-      const d = new Date();
-      d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
-      document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/;SameSite=Lax`;
-    }
+        // COOKIE BANNER
+        const banner = document.getElementById('cookie-banner');
+        const COOKIE_KEY = 'north_cookie_consent';
 
-    function getCookie(name) {
-      return document.cookie.split('; ').find(r => r.startsWith(name + '='))?.split('=')[1];
-    }
+        function setCookie(name, value, days) {
+          const d = new Date();
+          d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+          document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/;SameSite=Lax`;
+        }
 
-    // Show banner only if no consent recorded
-    if (!getCookie(COOKIE_KEY)) {
-      banner.classList.remove('hidden');
-    } else {
-      banner.classList.add('hidden');
-    }
+        function getCookie(name) {
+          return document.cookie.split('; ').find(r => r.startsWith(name + '='))?.split('=')[1];
+        }
 
-    document.getElementById('cookie-accept').addEventListener('click', () => {
-      setCookie(COOKIE_KEY, 'accepted', 365);
-      banner.classList.add('hidden');
+        if (!getCookie(COOKIE_KEY)) {
+          banner.classList.remove('hidden');
+        } else {
+          banner.classList.add('hidden');
+        }
+
+        document.getElementById('cookie-accept').addEventListener('click', () => {
+          setCookie(COOKIE_KEY, 'accepted', 365);
+          banner.classList.add('hidden');
+        });
+      };
+
+      // Priorità al paint: esegui JS logico dopo che il browser ha respiro (FCP ottimizzato)
+      if (window.requestIdleCallback) {
+        requestIdleCallback(initDeferred);
+      } else {
+        setTimeout(initDeferred, 1);
+      }
     });
   </script>
 </body>
