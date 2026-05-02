@@ -71,16 +71,17 @@
     }
   </style>
 
-  <!-- Google Fonts: non-blocking. URL slim: niente asse opsz (variable font axis non usato);
-       solo wght 300 e 400 upright + italic 300. Riduce il woff2 scaricato di ~50-70 KiB. -->
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap"
+  <!-- Google Fonts: non-blocking. Carica 200+300+400 upright e 200+300 italic (il peso 200 serve per .hero-title em).
+       Niente asse opsz — payload comunque ridotto rispetto alla versione originale. -->
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap"
     as="style">
   <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" media="print"
-    onload="this.media='all'">
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap"
+    media="print" onload="this.media='all'">
   <noscript>
     <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap">
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap">
   </noscript>
 
   <!-- CRITICAL CSS: Struttura base, Nav, Hero, Ticker -->
