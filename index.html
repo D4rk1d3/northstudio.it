@@ -52,15 +52,11 @@
 
   <link rel="icon" type="image/png" href="./defi.png">
 
-  <!-- Preconnect prima del preload: il browser apre la connessione TCP/TLS in anticipo.
-       dns-prefetch come fallback per browser meno recenti. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
-  <!-- Font metric overrides: riduce il CLS quando DM Sans sostituisce il fallback di sistema.
-       size-adjust / ascent-override / descent-override calibrati su DM Sans 300 a ~15px. -->
   <style>
     @font-face {
       font-family: 'DM Sans Fallback';
@@ -72,8 +68,6 @@
     }
   </style>
 
-  <!-- Google Fonts: non-blocking. Carica 200+300+400 upright e 200+300 italic (il peso 200 serve per .hero-title em).
-       Niente asse opsz — payload comunque ridotto rispetto alla versione originale. -->
   <link rel="preload"
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap"
     as="style">
@@ -85,7 +79,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap">
   </noscript>
 
-  <!-- CRITICAL CSS: Struttura base, Nav, Hero, Ticker -->
+  <!-- CRITICAL CSS -->
   <style>
     *,
     *::before,
@@ -103,7 +97,6 @@
       --mid-hi: #8a8680;
       --border: rgba(232, 228, 220, 0.08);
       --border-hi: rgba(232, 228, 220, 0.14);
-      /* Fallback con metriche calibrate: riduce il salto visivo (CLS) quando arriva DM Sans */
       --font-display: 'DM Sans', 'DM Sans Fallback', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       --font-body: 'DM Sans', 'DM Sans Fallback', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       --easing: cubic-bezier(0.16, 1, 0.3, 1);
@@ -113,8 +106,6 @@
       scroll-behavior: smooth;
     }
 
-    /* cursor:none solo su dispositivi con puntatore fine (desktop);
-       su touch viene applicata la regola pointer corretta dai media query successivi */
     @media (hover: hover) {
 
       body,
@@ -197,7 +188,6 @@
       opacity: 1;
     }
 
-    /* SECTIONS */
     section {
       min-height: 100vh;
     }
@@ -250,7 +240,7 @@
     .hero-sub {
       font-size: 14px;
       color: var(--mid-hi);
-      max-width: 340px;
+      max-width: 360px;
       line-height: 1.85;
     }
 
@@ -294,7 +284,6 @@
       }
     }
 
-    /* SR-ONLY */
     .sr-only {
       position: absolute;
       width: 1px;
@@ -307,9 +296,6 @@
       border: 0;
     }
 
-    /* REVEAL: usa solo opacity + transform (proprietà composite GPU).
-       NON usa visibility perché causa layout recalculation e contribuisce al CLS.
-       Il testo invisibile è comunque accessibile agli screen reader via opacity:0. */
     .reveal {
       opacity: 0;
       transform: translateY(24px);
@@ -341,8 +327,6 @@
       animation-delay: .52s;
     }
 
-    /* HERO: animazione CSS pura, senza attendere JS — migliora LCP e FCP.
-       Usa solo opacity+transform (composite) per zero CLS. */
     @keyframes heroRevealAnim {
       0% {
         opacity: 0;
@@ -359,14 +343,11 @@
       animation: heroRevealAnim .7s var(--easing) both;
     }
 
-    /* LCP: l'h1 è quasi certamente l'elemento LCP su mobile.
-       Azzeriamo il delay e lo facciamo paintare appena possibile. */
     #home .hero-title {
       animation-delay: 0s;
       transition-delay: 0s;
     }
 
-    /* MOBILE CRITICAL */
     @media (max-width: 768px) {
       nav {
         padding: 0 24px;
@@ -388,9 +369,8 @@
     }
   </style>
 
-  <!-- NON-CRITICAL CSS: sezioni below-fold + cursor desktop. Non blocca il rendering. -->
+  <!-- NON-CRITICAL CSS -->
   <style media="print" onload="this.media='all'">
-    /* CURSOR: solo dispositivi con puntatore fine (desktop); hidden su touch via @media hover:none */
     @media (hover: hover) {
       .cursor {
         position: fixed;
@@ -418,8 +398,6 @@
     #services {
       padding: 120px 48px;
       min-height: auto;
-      /* content-visibility accelera il rendering iniziale: il browser skippa il layout
-         della sezione finché non si avvicina al viewport, riducendo il lavoro a FCP. */
       content-visibility: auto;
       contain-intrinsic-size: auto 1px auto 1400px;
     }
@@ -460,8 +438,6 @@
       gap: 0 28px;
       align-items: start;
       min-height: 200px;
-      /* contain:layout isola il reflow di ogni card: quando .reveal anima l'opacità
-         non provoca ricalcolo del layout delle card adiacenti, riducendo CLS. */
       contain: layout style;
       will-change: opacity, transform;
     }
@@ -628,7 +604,7 @@
       border-top: 1px solid var(--border);
       min-height: auto;
       content-visibility: auto;
-      contain-intrinsic-size: auto 1px auto 500px;
+      contain-intrinsic-size: auto 1px auto 700px;
     }
 
     .contact-heading {
@@ -644,35 +620,25 @@
       font-weight: 200;
     }
 
-    .contact-grid {
+    /* CONTACT FORM */
+    .contact-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
       border-top: 1px solid var(--border);
+      padding-top: 48px;
     }
 
-    .contact-col {
-      padding: 36px 0;
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .contact-info-block {
       display: flex;
       flex-direction: column;
       gap: 8px;
-    }
-
-    .contact-col:not(:last-child) {
-      position: relative;
-    }
-
-    .contact-col:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 36px;
-      bottom: 36px;
-      width: 1px;
-      background: var(--border);
-    }
-
-    .contact-col:not(:first-child) {
-      padding-left: 40px;
     }
 
     .contact-col-label {
@@ -693,6 +659,134 @@
 
     .contact-col a:hover {
       color: var(--text);
+    }
+
+    /* FORM */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 14px;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color .3s;
+      -webkit-appearance: none;
+      border-radius: 0;
+      width: 100%;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--mid-hi);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--mid);
+    }
+
+    .form-group textarea {
+      resize: none;
+      height: 120px;
+    }
+
+    .form-group select {
+      color: var(--mid);
+      cursor: pointer;
+    }
+
+    .form-group select option {
+      background: var(--bg-raised);
+      color: var(--text);
+    }
+
+    .form-submit-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .form-note {
+      font-size: 11px;
+      color: var(--mid);
+      line-height: 1.6;
+      max-width: 260px;
+    }
+
+    .btn-submit {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--text);
+      border: 1px solid var(--text);
+      padding: 14px 32px;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+      flex-shrink: 0;
+    }
+
+    .btn-submit:hover {
+      background: var(--mid-hi);
+      border-color: var(--mid-hi);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .form-feedback {
+      font-size: 13px;
+      padding: 14px 16px;
+      border: 1px solid;
+      display: none;
+    }
+
+    .form-feedback.success {
+      color: #6eb89c;
+      border-color: rgba(110, 184, 156, 0.3);
+      background: rgba(110, 184, 156, 0.05);
+      display: block;
+    }
+
+    .form-feedback.error {
+      color: #c97b7b;
+      border-color: rgba(201, 123, 123, 0.3);
+      background: rgba(201, 123, 123, 0.05);
+      display: block;
     }
 
     /* FOOTER */
@@ -723,7 +817,7 @@
       color: var(--mid-hi);
     }
 
-    /* MOBILE NON-CRITICAL */
+    /* MOBILE */
     @media (max-width: 768px) {
 
       #services,
@@ -751,16 +845,23 @@
         padding-left: 0;
       }
 
-      .contact-grid {
+      .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .form-row {
         grid-template-columns: 1fr;
       }
 
-      .contact-col {
-        padding: 28px 0 !important;
+      .form-submit-row {
+        flex-direction: column;
+        align-items: flex-start;
       }
 
-      .contact-col::after {
-        display: none;
+      .btn-submit {
+        width: 100%;
+        text-align: center;
       }
 
       .about-tools {
@@ -800,7 +901,6 @@
       }
     }
 
-    /* Touch devices: ripristina cursore di sistema (il cursore custom non esiste su mobile) */
     @media (hover: none) {
 
       body,
@@ -819,8 +919,7 @@
     }
   </style>
 
-  <!-- COOKIE BANNER CSS: nel <head> perché il banner è visibile al primo paint.
-       Non metterlo nel blocco non-critical o apparirebbe senza stile (FOUC). -->
+  <!-- COOKIE BANNER CSS -->
   <style>
     #cookie-banner {
       position: fixed;
@@ -892,24 +991,6 @@
       border-color: var(--mid-hi);
       color: var(--bg);
     }
-
-    @media (max-width: 768px) {
-      #cookie-banner {
-        padding: 20px 24px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-      }
-
-      .cookie-actions {
-        width: 100%;
-      }
-
-      .cookie-btn {
-        flex: 1;
-        text-align: center;
-      }
-    }
   </style>
 </head>
 
@@ -943,16 +1024,15 @@
 
     <p class="hero-eyebrow reveal">Creative & Development</p>
 
-    <!-- LCP candidate: nessun reveal-delay, paint immediato -->
     <h1 class="hero-title reveal">
-      One person.<br><em>Every layer</em><br>of your brand.
+      Il tuo brand.<br><em>Tutto insieme,</em><br>fatto bene.
     </h1>
     <span class="sr-only">Studio creativo freelance nel Veneto specializzato in brand identity, sviluppo siti web,
       fotografia e video editing.</span>
 
     <p class="hero-sub reveal reveal-delay-2">
-      Visual identity, web development, photo and video —
-      built by someone who understands how all of it connects.
+      Brand identity, sviluppo web, foto e video —
+      costruiti da chi capisce come ogni pezzo influenza gli altri.
     </p>
   </section>
 
@@ -977,7 +1057,7 @@
   <!-- SERVICES -->
   <section id="services">
     <div class="section-header reveal">
-      <span class="section-label">What I do</span>
+      <span class="section-label">Cosa faccio</span>
       <span class="section-num">05</span>
     </div>
 
@@ -986,8 +1066,8 @@
         <span class="service-num">01</span>
         <div>
           <h3 class="service-name">Brand &<br>Visual Identity</h3>
-          <p class="service-desc">Logo, palette, typography, usage rules. A system that works across every format — not
-            just a pretty mark.</p>
+          <p class="service-desc">Logo, palette, tipografia, regole d'uso. Un sistema che funziona su ogni formato — non
+            solo un'icona carina.</p>
         </div>
       </div>
 
@@ -995,8 +1075,8 @@
         <span class="service-num">02</span>
         <div>
           <h3 class="service-name">Web<br>Development</h3>
-          <p class="service-desc">Clean, fast, custom-built sites. HTML, CSS, JS or React — no templates, no page
-            builders.</p>
+          <p class="service-desc">Siti puliti, veloci, costruiti su misura. HTML, CSS, JS o React — niente template,
+            niente page builder.</p>
         </div>
       </div>
 
@@ -1004,8 +1084,8 @@
         <span class="service-num">03</span>
         <div>
           <h3 class="service-name">Photo<br>Editing</h3>
-          <p class="service-desc">Retouching, color grading, compositing. Photoshop and Illustrator — from product shots
-            to editorial work.</p>
+          <p class="service-desc">Ritocco, color grading, compositing. Photoshop e Illustrator — da scatti di prodotto a
+            lavori editoriali.</p>
         </div>
       </div>
 
@@ -1013,8 +1093,8 @@
         <span class="service-num">04</span>
         <div>
           <h3 class="service-name">Video<br>Editing</h3>
-          <p class="service-desc">Reels, short-form content, event coverage. DaVinci Resolve — color, cuts, and pacing
-            that actually holds attention.</p>
+          <p class="service-desc">Reels, short-form, copertura eventi. DaVinci Resolve — color, tagli e ritmo che
+            tengono l'attenzione.</p>
         </div>
       </div>
 
@@ -1022,8 +1102,8 @@
         <span class="service-num">05</span>
         <div>
           <h3 class="service-name">Social<br>Design</h3>
-          <p class="service-desc">Posts, stories, templates. Consistent visual language across your channels, built to
-            scale.</p>
+          <p class="service-desc">Post, stories, template. Un linguaggio visivo coerente sui tuoi canali, costruito per
+            durare.</p>
         </div>
       </div>
     </div>
@@ -1048,17 +1128,17 @@
       <p class="about-name reveal">Pietro Trevisan</p>
 
       <p class="about-manifesto reveal reveal-delay-1">
-        Most creatives do one thing well.<br>
-        I do <em>all of it</em> — and I understand<br>
-        how each part affects the others.
+        La maggior parte dei creativi fa<br>
+        una cosa bene. Io le faccio <em>tutte</em> —<br>
+        e so come ognuna influenza le altre.
       </p>
 
       <p class="about-body reveal reveal-delay-2">
-        I'm a student based in Ceggia, Veneto. I design brand identities, build websites from scratch, edit photos and
-        videos, and create social content. I picked up these skills by actually using them — not in class.
+        Sono uno studente di Ceggia, Veneto. Progetto brand identity, costruisco siti da zero, edito foto e video, e
+        creo contenuti social. Ho imparato queste cose usandole davvero — non in classe.
         <br><br>
-        Being early means I'm selective about the work I take on, and fully focused on every project. You're not getting
-        handed off to a junior. You're working directly with me.
+        Essere all'inizio significa che sono selettivo sui progetti che accetto, e completamente concentrato su ognuno.
+        Non vieni affidato a nessun junior. Lavori direttamente con me.
       </p>
 
       <div class="about-tools reveal reveal-delay-3">
@@ -1077,33 +1157,79 @@
       </div>
 
       <br><br>
-      <a href="#contact" class="cta-link reveal reveal-delay-4">Start a conversation</a>
+      <a href="#contact" class="cta-link reveal reveal-delay-4">Inizia una conversazione</a>
     </div>
   </section>
 
   <!-- CONTACT -->
   <section id="contact">
     <h2 class="contact-heading reveal">
-      Have a project<br>in <em>mind?</em>
+      Hai un progetto<br>in <em>mente?</em>
     </h2>
 
-    <div class="contact-grid reveal reveal-delay-1">
-      <div class="contact-col">
-        <p class="contact-col-label">Write me</p>
-        <a href="mailto:info@northstudio.it">info@northstudio.it</a>
+    <div class="contact-layout reveal reveal-delay-1">
+      <!-- Info colonna sinistra -->
+      <div class="contact-info">
+        <div class="contact-col">
+          <p class="contact-col-label">Scrivimi</p>
+          <a href="mailto:info@northstudio.it">info@northstudio.it</a>
+        </div>
+        <div class="contact-col">
+          <p class="contact-col-label">Dove sono</p>
+          <p>Ceggia, Veneto</p>
+          <p>Italia</p>
+        </div>
+        <div class="contact-col">
+          <p class="contact-col-label">Seguimi</p>
+          <a href="https://www.instagram.com/northstudio.it/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/pietro-trevisan-55b125372/" target="_blank"
+            rel="noopener noreferrer">LinkedIn</a>
+          <a href="tel:+393517131975">+39 351 713 1975</a>
+        </div>
+        <div class="contact-col">
+          <p class="contact-col-label">Risposta</p>
+          <p>Di solito entro 24 ore,<br>spesso molto prima.</p>
+        </div>
       </div>
-      <div class="contact-col">
-        <p class="contact-col-label">Based in</p>
-        <p>Ceggia, Veneto</p>
-        <p>Italy</p>
-      </div>
-      <div class="contact-col">
-        <p class="contact-col-label">Follow</p>
-        <a href="https://www.instagram.com/northstudio.it/">Instagram</a>
-        <a href="https://www.linkedin.com/in/pietro-trevisan-55b125372/" target="_blank"
-          rel="noopener noreferrer">LinkedIn</a>
-        <a href="tel:+393517131975">+39 351 713 1975</a>
-      </div>
+
+      <!-- Form colonna destra -->
+      <form class="contact-form" id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nome">Nome *</label>
+            <input type="text" id="nome" name="nome" placeholder="Il tuo nome" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" placeholder="La tua email" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="servizio">Di cosa hai bisogno?</label>
+          <select id="servizio" name="servizio">
+            <option value="" disabled selected>Seleziona un servizio</option>
+            <option value="Brand Identity">Brand Identity</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Photo Editing">Photo Editing</option>
+            <option value="Video Editing">Video Editing</option>
+            <option value="Social Design">Social Design</option>
+            <option value="Altro">Altro / Non so ancora</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="messaggio">Messaggio *</label>
+          <textarea id="messaggio" name="messaggio" placeholder="Raccontami del tuo progetto..." required></textarea>
+        </div>
+
+        <div id="form-feedback" class="form-feedback"></div>
+
+        <div class="form-submit-row">
+          <p class="form-note">Rispondo personalmente a ogni messaggio. Nessun form automatico, nessun bot.</p>
+          <button type="submit" class="btn-submit" id="submit-btn">Invia →</button>
+        </div>
+      </form>
     </div>
   </section>
 
@@ -1117,18 +1243,16 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Eseguito a idle: nessun impatto su FCP/LCP
       const init = () => {
         const isTouchDevice = !window.matchMedia('(hover: hover)').matches;
 
-        // CURSOR: inizializzato solo su desktop con puntatore fine
         if (!isTouchDevice) {
           const cursor = document.getElementById('cursor');
           let mX = 0, mY = 0, cX = 0, cY = 0;
           document.addEventListener('mousemove', e => { mX = e.clientX; mY = e.clientY; });
           document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
           document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
-          document.querySelectorAll('a, button').forEach(el => {
+          document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
           });
@@ -1141,21 +1265,18 @@
           })();
         }
 
-        // NAV SCROLL
         const nav = document.querySelector('nav');
         window.addEventListener('scroll', () => {
           nav.classList.toggle('scrolled', window.scrollY > 20);
         }, { passive: true });
 
-        // REVEAL: IntersectionObserver per sezioni below-fold
         const io = new IntersectionObserver(entries => {
-          entries.forEach(e => { if (e.isIntersecting) io.unobserve(e.target), e.target.classList.add('visible'); });
+          entries.forEach(e => { if (e.isIntersecting) { io.unobserve(e.target); e.target.classList.add('visible'); } });
         }, { threshold: 0.08 });
         document.querySelectorAll('.reveal').forEach(el => {
           if (!el.closest('#home')) io.observe(el);
         });
 
-        // TAB TITLE
         document.title = 'North Studio';
 
         // COOKIE BANNER
@@ -1172,33 +1293,72 @@
           setCookie(KEY, 'accepted', 365);
           banner.classList.add('hidden');
         });
+
+        // CONTACT FORM — Formspree
+        // IMPORTANTE: sostituisci YOUR_FORM_ID con il tuo ID Formspree
+        // Registrati gratis su formspree.io e crea un form, poi copia l'ID (es. xpznkwvq)
+        const FORMSPREE_ID = 'YOUR_FORM_ID';
+
+        const form = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const feedback = document.getElementById('form-feedback');
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Invio in corso...';
+          feedback.className = 'form-feedback';
+          feedback.textContent = '';
+
+          const data = {
+            nome: form.nome.value,
+            email: form.email.value,
+            servizio: form.servizio.value || 'Non specificato',
+            messaggio: form.messaggio.value,
+            _subject: `Nuovo contatto da North Studio — ${form.nome.value}`,
+          };
+
+          // Salva anche in localStorage per la pagina marketing
+          const leads = JSON.parse(localStorage.getItem('north_leads') || '[]');
+          leads.unshift({
+            nome: data.nome,
+            email: data.email,
+            telefono: '',
+            servizio: data.servizio,
+            messaggio: data.messaggio,
+            data: new Date().toISOString()
+          });
+          localStorage.setItem('north_leads', JSON.stringify(leads.slice(0, 100)));
+
+          try {
+            const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+              feedback.className = 'form-feedback success';
+              feedback.textContent = '✓ Messaggio inviato. Ti rispondo presto.';
+              form.reset();
+            } else {
+              throw new Error('Errore server');
+            }
+          } catch {
+            feedback.className = 'form-feedback error';
+            feedback.textContent = 'Qualcosa è andato storto. Scrivimi direttamente a info@northstudio.it';
+          }
+
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Invia →';
+        });
       };
 
-      // requestIdleCallback: cede il controllo al browser fino a quando ha tempo libero
       'requestIdleCallback' in window ? requestIdleCallback(init) : setTimeout(init, 16);
     });
   </script>
 
-  <!--
-    RIEPILOGO OTTIMIZZAZIONI (v3 - finale)
-
-    FONT: URL Google Fonts riscritta senza asse "opsz" (variable font axis non usato nel CSS)
-    e senza il peso 200 — riduzione payload woff2 di ~50-70 KiB. Il font visivo finale resta
-    identico (DM Sans 300 / 400 / italic 300). Aggiunti dns-prefetch come fallback ai preconnect
-    per browsers che non supportano preconnect nativo.
-
-    CSS: Il CSS del cookie banner e' stato spostato nel blocco critical (era nel media=print) per
-    evitare il FOUC al primo paint. cursor:none e il blocco .cursor ora sono limitati a
-    @media (hover: hover), rimuovendo override inutili sul puntatore mobile. Il blocco
-    non-critical continua a caricarsi con il print-trick senza bloccare il rendering.
-
-    JS: Il loop rAF del cursore non viene avviato su touch device (matchMedia hover:hover).
-    Lo scroll listener del nav e' passive:true. L'IntersectionObserver chiama unobserve()
-    al primo trigger, eliminando osservazioni continue su elementi gia' animati.
-
-    IMPATTO ATTESO: FCP e Speed Index migliorano per ~50-70 KiB di font in meno e niente FOUC
-    del banner al primo paint. CLS e LCP rimangono invariati. Estetica finale identica.
-  -->
 </body>
 
 </html>

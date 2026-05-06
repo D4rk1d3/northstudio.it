@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.northstudio.it/sitemap.xml
+Disallow: /admin.html
