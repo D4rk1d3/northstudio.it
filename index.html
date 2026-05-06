@@ -57,16 +57,9 @@
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
-  <style>
-    @font-face {
-      font-family: 'DM Sans Fallback';
-      src: local('-apple-system'), local('BlinkMacSystemFont'), local('Segoe UI'), local('Helvetica Neue'), local('Arial');
-      size-adjust: 100.6%;
-      ascent-override: 96%;
-      descent-override: 23%;
-      line-gap-override: 0%;
-    }
-  </style>
+  <!-- EXTERNAL STYLESHEETS -->
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/main.css">
 
   <link rel="preload"
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap"
@@ -79,930 +72,6 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap">
   </noscript>
 
-  <!-- CRITICAL CSS -->
-  <style>
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --bg: #161616;
-      --bg-raised: #1f1f1f;
-      --text: #e8e4dc;
-      --mid: #666460;
-      --mid-hi: #8a8680;
-      --border: rgba(232, 228, 220, 0.08);
-      --border-hi: rgba(232, 228, 220, 0.14);
-      --font-display: 'DM Sans', 'DM Sans Fallback', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --font-body: 'DM Sans', 'DM Sans Fallback', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --easing: cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    @media (hover: hover) {
-
-      body,
-      a,
-      button,
-      input,
-      textarea,
-      [role="button"] {
-        cursor: none !important;
-      }
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 15px;
-      line-height: 1.6;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      height: 72px;
-    }
-
-    nav::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(22, 22, 22, 0.82);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      z-index: -1;
-      border-bottom: 1px solid transparent;
-      transition: border-color .3s;
-    }
-
-    nav.scrolled::before {
-      border-bottom-color: var(--border-hi);
-    }
-
-    .nav-logo {
-      font-family: var(--font-body);
-      font-size: 13px;
-      font-weight: 400;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--text);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 36px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--text);
-      opacity: 0.4;
-      transition: opacity .3s;
-    }
-
-    .nav-links a:hover {
-      opacity: 1;
-    }
-
-    section {
-      min-height: 100vh;
-    }
-
-    /* HERO */
-    #home {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 48px 88px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-tag {
-      position: absolute;
-      top: 50%;
-      right: 48px;
-      transform: translateY(-50%);
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--mid);
-      writing-mode: vertical-rl;
-    }
-
-    .hero-eyebrow {
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 28px;
-    }
-
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(68px, 11vw, 148px);
-      font-weight: 300;
-      line-height: 0.88;
-      letter-spacing: -0.03em;
-      margin-bottom: 52px;
-      color: var(--text);
-    }
-
-    .hero-title em {
-      font-style: italic;
-      font-weight: 200;
-    }
-
-    .hero-sub {
-      font-size: 14px;
-      color: var(--mid-hi);
-      max-width: 360px;
-      line-height: 1.85;
-    }
-
-    /* TICKER */
-    .ticker-wrap {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 18px 0;
-      height: 52px;
-      overflow: hidden;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-    }
-
-    .ticker-track {
-      display: inline-flex;
-      animation: ticker 28s linear infinite;
-    }
-
-    .ticker-track span {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--mid);
-      padding: 0 36px;
-      flex-shrink: 0;
-    }
-
-    .ticker-track span.hi {
-      color: var(--text);
-    }
-
-    @keyframes ticker {
-      from {
-        transform: translateX(0);
-      }
-
-      to {
-        transform: translateX(-50%);
-      }
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .7s var(--easing), transform .7s var(--easing);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .reveal-delay-1 {
-      transition-delay: .1s;
-      animation-delay: .1s;
-    }
-
-    .reveal-delay-2 {
-      transition-delay: .22s;
-      animation-delay: .22s;
-    }
-
-    .reveal-delay-3 {
-      transition-delay: .36s;
-      animation-delay: .36s;
-    }
-
-    .reveal-delay-4 {
-      transition-delay: .52s;
-      animation-delay: .52s;
-    }
-
-    @keyframes heroRevealAnim {
-      0% {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    #home .reveal {
-      animation: heroRevealAnim .7s var(--easing) both;
-    }
-
-    #home .hero-title {
-      animation-delay: 0s;
-      transition-delay: 0s;
-    }
-
-    @media (max-width: 768px) {
-      nav {
-        padding: 0 24px;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      #home {
-        padding: 96px 24px 64px;
-        min-height: 0;
-        justify-content: flex-start;
-      }
-
-      .hero-tag {
-        display: none;
-      }
-    }
-  </style>
-
-  <!-- NON-CRITICAL CSS -->
-  <style media="print" onload="this.media='all'">
-    @media (hover: hover) {
-      .cursor {
-        position: fixed;
-        width: 9px;
-        height: 9px;
-        background: var(--text);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        transition: width .2s var(--easing), height .2s var(--easing), background .2s, border .2s;
-        box-shadow: 0 0 0 1px rgba(22, 22, 22, 0.5);
-      }
-
-      .cursor.hover {
-        width: 32px;
-        height: 32px;
-        background: transparent;
-        border: 1px solid var(--text);
-        box-shadow: none;
-      }
-    }
-
-    /* SERVICES */
-    #services {
-      padding: 120px 48px;
-      min-height: auto;
-      content-visibility: auto;
-      contain-intrinsic-size: auto 1px auto 1400px;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 72px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 20px;
-    }
-
-    .section-label {
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--mid);
-    }
-
-    .section-num {
-      font-size: 11px;
-      color: var(--mid);
-    }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      position: relative;
-    }
-
-    .service-item {
-      padding: 40px 0;
-      border-bottom: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: 48px 1fr;
-      gap: 0 28px;
-      align-items: start;
-      min-height: 200px;
-      contain: layout style;
-      will-change: opacity, transform;
-    }
-
-    .service-item:nth-child(odd) {
-      padding-right: 60px;
-      border-right: 1px solid var(--border);
-    }
-
-    .service-item:nth-child(even) {
-      padding-left: 60px;
-    }
-
-    .service-num {
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      color: var(--mid);
-      padding-top: 5px;
-    }
-
-    .service-name {
-      font-family: var(--font-display);
-      font-size: clamp(22px, 2.4vw, 32px);
-      font-weight: 300;
-      line-height: 1.1;
-      margin-bottom: 12px;
-      letter-spacing: -0.02em;
-    }
-
-    .service-desc {
-      font-size: 13px;
-      color: var(--mid-hi);
-      line-height: 1.75;
-      max-width: 280px;
-    }
-
-    /* ABOUT */
-    #about {
-      padding: 120px 48px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-      min-height: auto;
-      border-top: 1px solid var(--border);
-      content-visibility: auto;
-      contain-intrinsic-size: auto 1px auto 900px;
-    }
-
-    .about-visual {
-      position: relative;
-    }
-
-    .founder-placeholder {
-      width: 100%;
-      aspect-ratio: 3/4;
-      background: var(--bg-raised);
-      display: flex;
-      align-items: flex-end;
-      padding: 28px;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
-    .founder-placeholder::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, transparent 40%, rgba(22, 22, 22, 0.7));
-    }
-
-    .founder-caption {
-      position: relative;
-      z-index: 1;
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--mid-hi);
-    }
-
-    .about-content {
-      padding-top: 8px;
-    }
-
-    .about-name {
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 28px;
-    }
-
-    .about-manifesto {
-      font-size: clamp(22px, 2.4vw, 30px);
-      font-weight: 300;
-      line-height: 1.35;
-      letter-spacing: -0.01em;
-      margin-bottom: 32px;
-    }
-
-    .about-manifesto em {
-      font-style: italic;
-      font-weight: 200;
-    }
-
-    .about-body {
-      font-size: 14px;
-      color: var(--mid-hi);
-      line-height: 1.85;
-      max-width: 420px;
-      margin-bottom: 48px;
-    }
-
-    .about-tools {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border-top: 1px solid var(--border);
-      padding-top: 32px;
-      margin-bottom: 40px;
-    }
-
-    .tool-group {
-      font-size: 13px;
-      color: var(--mid-hi);
-      line-height: 2;
-    }
-
-    .tool-group:first-child {
-      border-right: 1px solid var(--border);
-      padding-right: 32px;
-    }
-
-    .tool-group:last-child {
-      padding-left: 32px;
-    }
-
-    .tool-group-label {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 12px;
-    }
-
-    .cta-link {
-      font-size: 12px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--text);
-      border-bottom: 1px solid var(--border-hi);
-      padding-bottom: 4px;
-      transition: border-color .3s;
-    }
-
-    .cta-link:hover {
-      border-color: var(--text);
-    }
-
-    /* CONTACT */
-    #contact {
-      padding: 120px 48px 80px;
-      border-top: 1px solid var(--border);
-      min-height: auto;
-      content-visibility: auto;
-      contain-intrinsic-size: auto 1px auto 700px;
-    }
-
-    .contact-heading {
-      font-size: clamp(40px, 6vw, 80px);
-      font-weight: 300;
-      letter-spacing: -0.02em;
-      line-height: 1.05;
-      margin-bottom: 72px;
-    }
-
-    .contact-heading em {
-      font-style: italic;
-      font-weight: 200;
-    }
-
-    /* CONTACT FORM */
-    .contact-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      border-top: 1px solid var(--border);
-      padding-top: 48px;
-    }
-
-    .contact-info {
-      display: flex;
-      flex-direction: column;
-      gap: 40px;
-    }
-
-    .contact-info-block {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .contact-col-label {
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 4px;
-    }
-
-    .contact-col a,
-    .contact-col p {
-      font-size: 14px;
-      color: var(--mid-hi);
-      text-decoration: none;
-      transition: color .3s;
-    }
-
-    .contact-col a:hover {
-      color: var(--text);
-    }
-
-    /* FORM */
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .form-group label {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--mid);
-    }
-
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      background: transparent;
-      border: 1px solid var(--border-hi);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 14px;
-      padding: 14px 16px;
-      outline: none;
-      transition: border-color .3s;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      border-radius: 0;
-      width: 100%;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
-      border-color: var(--mid-hi);
-    }
-
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: var(--mid);
-    }
-
-    .form-group textarea {
-      resize: none;
-      height: 120px;
-    }
-
-    .form-group select {
-      color: var(--mid);
-      cursor: pointer;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666460' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 16px center;
-      padding-right: 40px;
-    }
-
-    .form-group select option {
-      background: var(--bg-raised);
-      color: var(--text);
-    }
-
-    .form-submit-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .form-note {
-      font-size: 11px;
-      color: var(--mid);
-      line-height: 1.6;
-      max-width: 260px;
-    }
-
-    .btn-submit {
-      font-family: var(--font-body);
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--bg);
-      background: var(--text);
-      border: 1px solid var(--text);
-      padding: 14px 32px;
-      cursor: pointer;
-      transition: background .2s, color .2s;
-      flex-shrink: 0;
-    }
-
-    .btn-submit:hover {
-      background: var(--mid-hi);
-      border-color: var(--mid-hi);
-    }
-
-    .btn-submit:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .form-feedback {
-      font-size: 13px;
-      padding: 14px 16px;
-      border: 1px solid;
-      display: none;
-    }
-
-    .form-feedback.success {
-      color: #6eb89c;
-      border-color: rgba(110, 184, 156, 0.3);
-      background: rgba(110, 184, 156, 0.05);
-      display: block;
-    }
-
-    .form-feedback.error {
-      color: #c97b7b;
-      border-color: rgba(201, 123, 123, 0.3);
-      background: rgba(201, 123, 123, 0.05);
-      display: block;
-    }
-
-    /* FOOTER */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 28px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: var(--mid);
-    }
-
-    .footer-legal {
-      display: flex;
-      gap: 24px;
-    }
-
-    .footer-legal a {
-      color: var(--mid);
-      text-decoration: none;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      transition: color .3s;
-    }
-
-    .footer-legal a:hover {
-      color: var(--mid-hi);
-    }
-
-    /* MOBILE */
-    @media (max-width: 768px) {
-
-      #services,
-      #contact {
-        padding-left: 24px;
-        padding-right: 24px;
-      }
-
-      .about-visual {
-        max-width: 420px;
-        margin: 0 auto;
-      }
-
-      #about {
-        grid-template-columns: 1fr;
-        padding: 72px 24px;
-        gap: 40px;
-      }
-
-      .services-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .service-item:nth-child(odd) {
-        border-right: none;
-        padding-right: 0;
-      }
-
-      .service-item:nth-child(even) {
-        padding-left: 0;
-      }
-
-      .contact-layout {
-        grid-template-columns: 1fr;
-        gap: 48px;
-      }
-
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-
-      .form-submit-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .btn-submit {
-        width: 100%;
-        text-align: center;
-      }
-
-      .about-tools {
-        grid-template-columns: 1fr;
-      }
-
-      .tool-group:first-child {
-        border-right: none;
-        padding-right: 0;
-      }
-
-      .tool-group:last-child {
-        padding-left: 0;
-      }
-
-      footer {
-        padding: 24px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-      }
-
-      #cookie-banner {
-        padding: 20px 24px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-      }
-
-      .cookie-actions {
-        width: 100%;
-      }
-
-      .cookie-btn {
-        flex: 1;
-        text-align: center;
-      }
-    }
-
-    @media (hover: none) {
-
-      body,
-      a,
-      button,
-      input,
-      textarea,
-      [role="button"] {
-        cursor: auto !important;
-      }
-
-      a,
-      button {
-        cursor: pointer !important;
-      }
-    }
-  </style>
-
-  <!-- COOKIE BANNER CSS -->
-  <style>
-    #cookie-banner {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 9000;
-      background: var(--bg-raised);
-      border-top: 1px solid var(--border-hi);
-      padding: 20px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-      transform: translateY(0);
-      transition: transform .4s var(--easing), opacity .4s;
-    }
-
-    #cookie-banner.hidden {
-      transform: translateY(100%);
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .cookie-text {
-      font-size: 12px;
-      color: var(--mid-hi);
-      line-height: 1.6;
-      max-width: 560px;
-    }
-
-    .cookie-text a {
-      color: var(--text);
-      text-underline-offset: 2px;
-    }
-
-    .cookie-actions {
-      display: flex;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-
-    .cookie-btn {
-      font-family: var(--font-body);
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
-      border: 1px solid var(--border-hi);
-      padding: 10px 20px;
-      background: transparent;
-      color: var(--mid-hi);
-      transition: color .2s, border-color .2s;
-    }
-
-    .cookie-btn:hover {
-      color: var(--text);
-      border-color: var(--mid);
-    }
-
-    .cookie-btn.accept {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text);
-    }
-
-    .cookie-btn.accept:hover {
-      background: var(--mid-hi);
-      border-color: var(--mid-hi);
-      color: var(--bg);
-    }
-  </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 
@@ -1062,60 +131,47 @@
       <span class="hi">Photo Editing</span><span>—</span>
       <span>Video Production</span><span>—</span>
       <span class="hi">Social Design</span><span>—</span>
-      <span>Logo Design</span><span>—</span>
+      <span>Logo Design</span>
     </div>
   </div>
 
   <!-- SERVICES -->
   <section id="services">
-    <div class="section-header reveal">
-      <span class="section-label">Cosa faccio</span>
-      <span class="section-num">05</span>
+    <div class="section-header">
+      <span class="section-label">Servizi</span>
+      <span class="section-num">01</span>
     </div>
 
     <div class="services-grid">
       <div class="service-item reveal">
         <span class="service-num">01</span>
         <div>
-          <h3 class="service-name">Brand &<br>Visual Identity</h3>
-          <p class="service-desc">Logo, palette, tipografia, regole d'uso. Un sistema che funziona su ogni formato — non
-            solo un'icona carina.</p>
+          <h2 class="service-name">Brand Identity</h2>
+          <p class="service-desc">Logo, palette cromatica, linee guida e identità visiva coerente per il tuo business.</p>
         </div>
       </div>
 
       <div class="service-item reveal reveal-delay-1">
         <span class="service-num">02</span>
         <div>
-          <h3 class="service-name">Web<br>Development</h3>
-          <p class="service-desc">Siti puliti, veloci, costruiti su misura. HTML, CSS, JS o React — niente template,
-            niente page builder.</p>
+          <h2 class="service-name">Web Development</h2>
+          <p class="service-desc">Siti web performanti, responsive e ottimizzati SEO. Costruiti con attenzione ai dettagli.</p>
         </div>
       </div>
 
-      <div class="service-item reveal reveal-delay-1">
+      <div class="service-item reveal reveal-delay-2">
         <span class="service-num">03</span>
         <div>
-          <h3 class="service-name">Photo<br>Editing</h3>
-          <p class="service-desc">Ritocco, color grading, compositing. Photoshop e Illustrator — da scatti di prodotto a
-            lavori editoriali.</p>
+          <h2 class="service-name">Photo Editing</h2>
+          <p class="service-desc">Ritocco professionale, color grading e post-produzione per fotografie di qualità studio.</p>
         </div>
       </div>
 
-      <div class="service-item reveal reveal-delay-2">
+      <div class="service-item reveal reveal-delay-3">
         <span class="service-num">04</span>
         <div>
-          <h3 class="service-name">Video<br>Editing</h3>
-          <p class="service-desc">Reels, short-form, copertura eventi. DaVinci Resolve — color, tagli e ritmo che
-            tengono l'attenzione.</p>
-        </div>
-      </div>
-
-      <div class="service-item reveal reveal-delay-2">
-        <span class="service-num">05</span>
-        <div>
-          <h3 class="service-name">Social<br>Design</h3>
-          <p class="service-desc">Post, stories, template. Un linguaggio visivo coerente sui tuoi canali, costruito per
-            durare.</p>
+          <h2 class="service-name">Video Production</h2>
+          <p class="service-desc">Montaggio, effetti, animazioni e color correction per video che raccontano storie.</p>
         </div>
       </div>
     </div>
@@ -1123,124 +179,103 @@
 
   <!-- ABOUT -->
   <section id="about">
-    <div class="about-visual reveal">
+    <div class="about-visual">
       <div class="founder-placeholder">
-        <img src="./pietro-768.webp" srcset="./pietro-480.webp 480w, ./pietro-768.webp 768w, ./pietro-1280.webp 1280w"
-          sizes="(max-width: 600px) 100vw, 50vw"
-          alt="Pietro Trevisan, fondatore di North Studio — studio creativo freelance a Ceggia, Veneto" width="600"
-          height="800" loading="lazy"
-          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
-        <div class="founder-caption">
-          <p>Pietro Trevisan — Founder</p>
+        <img src="./pietro-original.webp" alt="Pietro Trevisan — Founder" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;">
+        <div style="position: relative; z-index: 1;">
+          <p class="founder-caption">Pietro Trevisan</p>
         </div>
       </div>
     </div>
 
     <div class="about-content">
-      <p class="about-name reveal">Pietro Trevisan</p>
+      <p class="about-name">Chi sono</p>
 
-      <p class="about-manifesto reveal reveal-delay-1">
-        La maggior parte dei creativi fa<br>
-        una cosa bene. Io le faccio <em>tutte</em> —<br>
-        e so come ognuna influenza le altre.
+      <h2 class="about-manifesto">
+        Uno studio creativo che unisce <em>strategia, design e sviluppo</em> in un'unica visione.
+      </h2>
+
+      <p class="about-body">
+        Sono Pietro, un creativo freelance basato a Ceggia, Veneto. Lavoro con brand e aziende che vogliono comunicare
+        con autenticità e coerenza. Ogni progetto è costruito partendo da una strategia solida, poi trasformato in
+        design elegante e infine sviluppato con precisione tecnica.
       </p>
 
-      <p class="about-body reveal reveal-delay-2">
-        Sono uno studente di Ceggia, Veneto. Progetto brand identity, costruisco siti da zero, edito foto e video, e
-        creo contenuti social. Ho imparato queste cose usandole davvero — non in classe.
-        <br><br>
-        Essere all'inizio significa che sono selettivo sui progetti che accetto, e completamente concentrato su ognuno.
-        Non vieni affidato a nessun junior. Lavori direttamente con me.
-      </p>
-
-      <div class="about-tools reveal reveal-delay-3">
+      <div class="about-tools">
         <div class="tool-group">
-          <p class="tool-group-label">Design & Visual</p>
-          <p>Photoshop</p>
-          <p>Illustrator</p>
-          <p>DaVinci Resolve</p>
+          <p class="tool-group-label">Design</p>
+          <p>Figma, Adobe Creative Suite</p>
+          <p>Branding, UI/UX, Motion Design</p>
         </div>
         <div class="tool-group">
-          <p class="tool-group-label">Development</p>
-          <p>HTML / CSS / JS</p>
-          <p>React + TypeScript</p>
-          <p>Python, C++, SQL</p>
+          <p class="tool-group-label">Sviluppo</p>
+          <p>HTML, CSS, JavaScript, React</p>
+          <p>Web Performance, Accessibility</p>
         </div>
       </div>
 
-      <br><br>
-      <a href="#contact" class="cta-link reveal reveal-delay-4">Inizia una conversazione</a>
+      <a href="#contact" class="cta-link">Iniziamo un progetto →</a>
     </div>
   </section>
 
   <!-- CONTACT -->
   <section id="contact">
-    <h2 class="contact-heading reveal">
-      Hai un progetto<br>in <em>mente?</em>
+    <h2 class="contact-heading">
+      Parliamo del tuo <em>prossimo progetto</em>.
     </h2>
 
-    <div class="contact-layout reveal reveal-delay-1">
-      <!-- Info colonna sinistra -->
+    <div class="contact-layout">
       <div class="contact-info">
-        <div class="contact-col">
-          <p class="contact-col-label">Scrivimi</p>
-          <a href="mailto:info@northstudio.it">info@northstudio.it</a>
+        <div class="contact-info-block">
+          <p class="contact-col-label">Email</p>
+          <a href="mailto:info@northstudio.it" class="contact-col">info@northstudio.it</a>
         </div>
-        <div class="contact-col">
-          <p class="contact-col-label">Dove sono</p>
-          <p>Ceggia, Veneto</p>
-          <p>Italia</p>
+        <div class="contact-info-block">
+          <p class="contact-col-label">Telefono</p>
+          <a href="tel:+393517131975" class="contact-col">+39 351 7131975</a>
         </div>
-        <div class="contact-col">
-          <p class="contact-col-label">Seguimi</p>
-          <a href="https://www.instagram.com/northstudio.it/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="https://www.linkedin.com/in/pietro-trevisan-55b125372/" target="_blank"
-            rel="noopener noreferrer">LinkedIn</a>
-          <a href="tel:+393517131975">+39 351 713 1975</a>
-        </div>
-        <div class="contact-col">
-          <p class="contact-col-label">Risposta</p>
-          <p>Di solito entro 24 ore,<br>spesso molto prima.</p>
+        <div class="contact-info-block">
+          <p class="contact-col-label">Social</p>
+          <a href="https://www.instagram.com/northstudio.it/" target="_blank" rel="noopener" class="contact-col">Instagram</a>
+          <a href="https://www.linkedin.com/in/pietro-trevisan-55b125372/" target="_blank" rel="noopener" class="contact-col">LinkedIn</a>
         </div>
       </div>
 
-      <!-- Form colonna destra -->
       <form class="contact-form" id="contact-form">
         <div class="form-row">
           <div class="form-group">
-            <label for="nome">Nome *</label>
-            <input type="text" id="nome" name="nome" placeholder="Il tuo nome" required>
+            <label for="name">Nome</label>
+            <input type="text" id="name" name="name" required>
           </div>
           <div class="form-group">
-            <label for="email">Email *</label>
-            <input type="email" id="email" name="email" placeholder="La tua email" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="servizio">Di cosa hai bisogno?</label>
-          <select id="servizio" name="servizio">
-            <option value="" disabled selected>Seleziona un servizio</option>
-            <option value="Brand Identity">Brand Identity</option>
-            <option value="Web Development">Web Development</option>
-            <option value="Photo Editing">Photo Editing</option>
-            <option value="Video Editing">Video Editing</option>
-            <option value="Social Design">Social Design</option>
-            <option value="Altro">Altro / Non so ancora</option>
+          <label for="subject">Progetto</label>
+          <select id="subject" name="subject" required>
+            <option value="">Seleziona un tipo di progetto</option>
+            <option value="brand">Brand Identity</option>
+            <option value="web">Web Development</option>
+            <option value="photo">Photo Editing</option>
+            <option value="video">Video Production</option>
+            <option value="other">Altro</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="messaggio">Messaggio *</label>
-          <textarea id="messaggio" name="messaggio" placeholder="Raccontami del tuo progetto..." required></textarea>
+          <label for="message">Messaggio</label>
+          <textarea id="message" name="message" required></textarea>
         </div>
-
-        <div id="form-feedback" class="form-feedback"></div>
 
         <div class="form-submit-row">
-          <p class="form-note">Rispondo personalmente a ogni messaggio. Nessun form automatico, nessun bot.</p>
-          <button type="submit" class="btn-submit" id="submit-btn">Invia →</button>
+          <p class="form-note">Risponderò entro 24 ore. Niente spam, promesso.</p>
+          <button type="submit" class="btn-submit">Invia</button>
         </div>
+
+        <div class="form-feedback" id="form-feedback"></div>
       </form>
     </div>
   </section>
@@ -1248,162 +283,17 @@
   <footer>
     <p>© 2026 Pietro Trevisan — North</p>
     <div class="footer-legal">
-      <a href="privacy-policy.html">Privacy Policy</a>
-      <a href="cookie-policy.html">Cookie Policy</a>
+      <a href="/cookie-policy.html">Cookie Policy</a>
+      <a href="/privacy-policy.html">Privacy Policy</a>
     </div>
   </footer>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const init = () => {
-        const isTouchDevice = !window.matchMedia('(hover: hover)').matches;
-
-        if (!isTouchDevice) {
-          const cursor = document.getElementById('cursor');
-          let mX = 0, mY = 0, cX = 0, cY = 0;
-          document.addEventListener('mousemove', e => { mX = e.clientX; mY = e.clientY; });
-          document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
-          document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
-          document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-          });
-          (function loop() {
-            cX += (mX - cX) * 0.4;
-            cY += (mY - cY) * 0.4;
-            cursor.style.left = cX + 'px';
-            cursor.style.top = cY + 'px';
-            requestAnimationFrame(loop);
-          })();
-        }
-
-        const nav = document.querySelector('nav');
-        window.addEventListener('scroll', () => {
-          nav.classList.toggle('scrolled', window.scrollY > 20);
-        }, { passive: true });
-
-        const io = new IntersectionObserver(entries => {
-          entries.forEach(e => { if (e.isIntersecting) { io.unobserve(e.target); e.target.classList.add('visible'); } });
-        }, { threshold: 0.08 });
-        document.querySelectorAll('.reveal').forEach(el => {
-          if (!el.closest('#home')) io.observe(el);
-        });
-
-        document.title = 'North Studio';
-
-        // COOKIE BANNER
-        const banner = document.getElementById('cookie-banner');
-        const KEY = 'north_cookie_consent';
-        const getCookie = n => document.cookie.split('; ').find(r => r.startsWith(n + '='))?.split('=')[1];
-        const setCookie = (n, v, d) => {
-          const exp = new Date(Date.now() + d * 864e5).toUTCString();
-          document.cookie = `${n}=${v};expires=${exp};path=/;SameSite=Lax`;
-        };
-        if (!getCookie(KEY)) banner.classList.remove('hidden');
-        else banner.classList.add('hidden');
-        document.getElementById('cookie-accept').addEventListener('click', () => {
-          setCookie(KEY, 'accepted', 365);
-          banner.classList.add('hidden');
-        });
-
-        // ─────────────────────────────────────────
-        // SUPABASE — Tracking & Leads
-        // ─────────────────────────────────────────
-        const SUPABASE_URL = 'https://bcowedrviohimkljgzhf.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_uFGr4FAlf0q71qAmgWOrAQ_-Y10snId';
-        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        const trackVisit = async () => {
-          const dateKey = new Date().toISOString().split('T')[0];
-          const sessKey = 'north_sess_' + dateKey;
-          
-          if (sessionStorage.getItem(sessKey)) return;
-          sessionStorage.setItem(sessKey, '1');
-
-          const ua = navigator.userAgent;
-          const device = /Mobi|Android/i.test(ua) ? 'Mobile' : /Tablet|iPad/i.test(ua) ? 'Tablet' : 'Desktop';
-          const ref = document.referrer;
-          const source = !ref ? 'Diretto' :
-              ref.includes('google') ? 'Google' :
-              ref.includes('instagram') ? 'Instagram' :
-              ref.includes('linkedin') ? 'LinkedIn' :
-              ref.includes('facebook') ? 'Facebook' : 'Altro';
-
-          try {
-            await sb.from('visite').insert([{
-              data: dateKey,
-              device: device,
-              source: source
-            }]);
-          } catch (e) { console.error('Error tracking:', e); }
-        };
-        trackVisit();
-
-
-        // CONTACT FORM — Formspree
-        // IMPORTANTE: sostituisci YOUR_FORM_ID con il tuo ID Formspree
-        // Registrati gratis su formspree.io e crea un form, poi copia l'ID (es. xpznkwvq)
-        const FORMSPREE_ID = 'YOUR_FORM_ID';
-
-        const form = document.getElementById('contact-form');
-        const submitBtn = document.getElementById('submit-btn');
-        const feedback = document.getElementById('form-feedback');
-
-        form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-
-          submitBtn.disabled = true;
-          submitBtn.textContent = 'Invio in corso...';
-          feedback.className = 'form-feedback';
-          feedback.textContent = '';
-
-          const data = {
-            nome: form.nome.value,
-            email: form.email.value,
-            servizio: form.servizio.value || 'Non specificato',
-            messaggio: form.messaggio.value,
-            _subject: `Nuovo contatto da North Studio — ${form.nome.value}`,
-          };
-
-          // Salva su Supabase (sostituisce localStorage)
-          try {
-            await sb.from('leads').insert([{
-              nome: data.nome,
-              email: data.email,
-              servizio: data.servizio,
-              messaggio: data.messaggio
-            }]);
-          } catch(e) {
-            console.error('Errore salvataggio lead:', e);
-          }
-
-          try {
-            const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-              body: JSON.stringify(data)
-            });
-
-            if (res.ok) {
-              feedback.className = 'form-feedback success';
-              feedback.textContent = '✓ Messaggio inviato. Ti rispondo presto.';
-              form.reset();
-            } else {
-              throw new Error('Errore server');
-            }
-          } catch {
-            feedback.className = 'form-feedback error';
-            feedback.textContent = 'Qualcosa è andato storto. Scrivimi direttamente a info@northstudio.it';
-          }
-
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Invia →';
-        });
-      };
-
-      'requestIdleCallback' in window ? requestIdleCallback(init) : setTimeout(init, 16);
-    });
-  </script>
+  <!-- SCRIPTS -->
+  <script src="./js/cursor.js"></script>
+  <script src="./js/nav.js"></script>
+  <script src="./js/reveal.js"></script>
+  <script src="./js/cookies.js"></script>
+  <script src="./js/form.js"></script>
 
 </body>
 
