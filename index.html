@@ -1848,10 +1848,10 @@
 
           const { brand, model, browser, os } = getDeviceInfo();
 
-          // Rileva IP pubblico (silenzioso se fallisce)
+          // Rileva IP tramite Netlify Function (funziona su tutti i device)
           let ip_address = null;
           try {
-            const ipRes = await fetch('https://api.ipify.org?format=json');
+            const ipRes = await fetch('/.netlify/functions/get-ip');
             ip_address = (await ipRes.json()).ip || null;
           } catch { /* silenzioso */ }
 
@@ -1909,8 +1909,8 @@
           : 'direct';
         const today = new Date().toISOString().slice(0, 10);
 
-        // Rileva IP pubblico poi registra visita
-        fetch('https://api.ipify.org?format=json')
+        // Rileva IP tramite Netlify Function (funziona su tutti i device)
+        fetch('/.netlify/functions/get-ip')
           .then(r => r.json())
           .catch(() => ({ ip: null }))
           .then(({ ip }) => {
