@@ -1,56 +1,54 @@
 /**
- * CURSOR.JS
- * Custom cursor for all pages
- * Creates a circle cursor that follows the mouse
+ * cursor.js
+ * Custom cursor — solo su dispositivi con puntatore fine (desktop/hover).
+ * Su touch/mobile non viene inizializzato e il cursore di sistema rimane attivo.
  */
+(function () {
+  // Esegui solo su dispositivi con puntatore preciso (no touch)
+  if (!window.matchMedia('(hover: hover)').matches) return;
 
-function initCursor() {
-  const cursor = document.createElement('div');
-  cursor.classList.add('cursor');
-  document.body.appendChild(cursor);
+  const cursor = document.getElementById('cursor');
+  if (!cursor) return;
 
-  let mouseX = 0;
-  let mouseY = 0;
-  let cursorX = 0;
-  let cursorY = 0;
+  let mX = 0, mY = 0, cX = 0, cY = 0;
 
-  // Track mouse position
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+  // Segui il mouse
+  document.addEventListener('mousemove', function (e) {
+    mX = e.clientX;
+    mY = e.clientY;
   });
 
-  // Animate cursor
-  function animate() {
-    cursorX += (mouseX - cursorX) * 0.2;
-    cursorY += (mouseY - cursorY) * 0.2;
+  // Nascondi quando il mouse esce dalla finestra
+  document.addEventListener('mouseleave', function () {
+    cursor.style.opacity = '0';
+  });
 
-    cursor.style.left = cursorX + 'px';
-    cursor.style.top = cursorY + 'px';
+  // Mostra quando il mouse rientra
+  document.addEventListener('mouseenter', function () {
+    cursor.style.opacity = '1';
+  });
 
-    requestAnimationFrame(animate);
+  // Stato hover su link e bottoni
+  function addHoverListeners() {
+    document.querySelectorAll('a, button, [role="button"]').forEach(function (el) {
+      el.addEventListener('mouseenter', function () { cursor.classList.add('hover'); });
+      el.addEventListener('mouseleave', function () { cursor.classList.remove('hover'); });
+    });
   }
-  animate();
+  addHoverListeners();
 
-  // Add hover effect on interactive elements
-  const interactiveElements = document.querySelectorAll(
-    'a, button, input, textarea, select, [role="button"]'
-  );
+  // Re-applica i listener se vengono aggiunti elementi dinamicamente (es. cookie banner)
+  if (typeof MutationObserver !== 'undefined') {
+    var mo = new MutationObserver(addHoverListeners);
+    mo.observe(document.body, { childList: true, subtree: true });
+  }
 
-  interactiveElements.forEach((el) => {
-    el.addEventListener('mouseenter', () => {
-      cursor.classList.add('hover');
-    });
-
-    el.addEventListener('mouseleave', () => {
-      cursor.classList.remove('hover');
-    });
-  });
-}
-
-// Initialize cursor when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initCursor);
-} else {
-  initCursor();
-}
+  // Loop fluido con lerp (smoothing 0.4 come nella vecchia versione)
+  (function loop() {
+    cX += (mX - cX) * 0.4;
+    cY += (mY - cY) * 0.4;
+    cursor.style.left = cX + 'px';
+    cursor.style.top = cY + 'px';
+    requestAnimationFrame(loop);
+  })();
+})();
