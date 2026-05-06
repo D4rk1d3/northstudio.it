@@ -19,7 +19,6 @@
 </head>
 
 <body>
-    <div class="cursor"></div>
     <div id="login-screen">
         <div class="login-box">
             <p class="login-logo">North Studio</p>
@@ -49,28 +48,24 @@
         <div class="content">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <p class="stat-label">Visite</p>
-                    <p class="stat-value">2,847</p>
-                    <p class="stat-sub">Questo mese</p>
-                    <div class="stat-trend up">↑ +12%</div>
+                    <p class="stat-label">Visite Totali</p>
+                    <p class="stat-value" id="stat-visits">—</p>
+                    <p class="stat-sub">Da sempre</p>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-label">Progetti</p>
-                    <p class="stat-value">24</p>
-                    <p class="stat-sub">Completati</p>
-                    <div class="stat-trend neutral">→ Stabile</div>
+                    <p class="stat-label">Visite (30gg)</p>
+                    <p class="stat-value" id="stat-visits-30">—</p>
+                    <p class="stat-sub">Ultimi 30 giorni</p>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-label">Messaggi</p>
-                    <p class="stat-value">12</p>
-                    <p class="stat-sub">Non letti</p>
-                    <div class="stat-trend up">↑ +3</div>
+                    <p class="stat-label">Lead</p>
+                    <p class="stat-value" id="stat-leads">—</p>
+                    <p class="stat-sub">Messaggi ricevuti</p>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-label">Clienti</p>
-                    <p class="stat-value">18</p>
-                    <p class="stat-sub">Attivi</p>
-                    <div class="stat-trend up">↑ +2</div>
+                    <p class="stat-label">Visitatori Unici</p>
+                    <p class="stat-value" id="stat-unique">—</p>
+                    <p class="stat-sub">IP distinti</p>
                 </div>
             </div>
             <div class="charts-row">
@@ -79,28 +74,14 @@
                         <span class="card-title">Visite per Giorno</span>
                         <span class="card-meta">Ultimi 7 giorni</span>
                     </div>
-                    <div class="bar-chart">
-                        <div class="bar-col">
-                            <div class="bar" style="height: 60%;"></div><span class="bar-label">Lun</span>
-                        </div>
-                        <div class="bar-col">
-                            <div class="bar" style="height: 75%;"></div><span class="bar-label">Mar</span>
-                        </div>
-                        <div class="bar-col">
-                            <div class="bar" style="height: 50%;"></div><span class="bar-label">Mer</span>
-                        </div>
-                        <div class="bar-col">
-                            <div class="bar" style="height: 85%;"></div><span class="bar-label">Gio</span>
-                        </div>
-                        <div class="bar-col">
-                            <div class="bar" style="height: 70%;"></div><span class="bar-label">Ven</span>
-                        </div>
-                        <div class="bar-col">
-                            <div class="bar" style="height: 40%;"></div><span class="bar-label">Sab</span>
-                        </div>
-                        <div class="bar-col">
-                            <div class="bar" style="height: 55%;"></div><span class="bar-label">Dom</span>
-                        </div>
+                    <div class="bar-chart" id="visits-chart">
+                        <div class="bar-col"><div class="bar" style="height: 0px;"></div><span class="bar-label">Lun</span></div>
+                        <div class="bar-col"><div class="bar" style="height: 0px;"></div><span class="bar-label">Mar</span></div>
+                        <div class="bar-col"><div class="bar" style="height: 0px;"></div><span class="bar-label">Mer</span></div>
+                        <div class="bar-col"><div class="bar" style="height: 0px;"></div><span class="bar-label">Gio</span></div>
+                        <div class="bar-col"><div class="bar" style="height: 0px;"></div><span class="bar-label">Ven</span></div>
+                        <div class="bar-col"><div class="bar" style="height: 0px;"></div><span class="bar-label">Sab</span></div>
+                        <div class="bar-col"><div class="bar" style="height: 0px;"></div><span class="bar-label">Dom</span></div>
                     </div>
                 </div>
                 <div class="card">
@@ -146,29 +127,7 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Marco Rossi</td>
-                            <td>marco@example.com</td>
-                            <td>Brand Identity</td>
-                            <td>05 Mag 2026</td>
-                            <td><span class="badge">Nuovo</span></td>
-                        </tr>
-                        <tr>
-                            <td>Giulia Bianchi</td>
-                            <td>giulia@example.com</td>
-                            <td>Web Development</td>
-                            <td>04 Mag 2026</td>
-                            <td><span class="badge">Risposto</span></td>
-                        </tr>
-                        <tr>
-                            <td>Andrea Verdi</td>
-                            <td>andrea@example.com</td>
-                            <td>Video Production</td>
-                            <td>03 Mag 2026</td>
-                            <td><span class="badge">In Progress</span></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="leads-table"></tbody>
                 </table>
             </div>
             <div class="leads-section">

@@ -12,6 +12,7 @@ const SUPABASE_KEY = 'sb_publishable_uFGr4FAlf0q71qAmgWOrAQ_-Y10snId';
 const supabase = (() => {
   const headers = {
     'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`,
     'Content-Type': 'application/json'
   };
 
@@ -80,41 +81,6 @@ const supabase = (() => {
       }
     },
 
-    // Get visits count
-    async getVisitsCount() {
-      try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/visite?select=count()`, {
-          method: 'GET',
-          headers
-        });
-        if (response.ok) {
-          const data = await response.json();
-          return data[0]?.count || 0;
-        }
-        return 0;
-      } catch (error) {
-        console.error('Error fetching visits count:', error);
-        return 0;
-      }
-    },
-
-    // Get leads count
-    async getLeadsCount() {
-      try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/leads?select=count()`, {
-          method: 'GET',
-          headers
-        });
-        if (response.ok) {
-          const data = await response.json();
-          return data[0]?.count || 0;
-        }
-        return 0;
-      } catch (error) {
-        console.error('Error fetching leads count:', error);
-        return 0;
-      }
-    }
   };
 })();
 
@@ -238,6 +204,7 @@ async function trackPageVisit() {
     const deviceInfo = deviceDetector.getDeviceInfo();
 
     const visitData = {
+      data: new Date().toISOString().split('T')[0],
       ip_address: ipAddress,
       device_brand: deviceInfo.brand,
       device_model: deviceInfo.model,
@@ -254,9 +221,11 @@ async function trackPageVisit() {
   }
 }
 
-// Initialize tracking when page loads
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', trackPageVisit);
-} else {
-  trackPageVisit();
+// Initialize tracking when page loads (skip admin page)
+if (!window.location.pathname.includes('admin')) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', trackPageVisit);
+  } else {
+    trackPageVisit();
+  }
 }

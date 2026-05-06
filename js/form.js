@@ -73,7 +73,7 @@ function initContactForm() {
       feedback.className = 'form-feedback';
     }, 5000);
   }
-
+}
 
 // Initialize form when DOM is ready
 if (document.readyState === 'loading') {

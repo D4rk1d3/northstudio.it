@@ -4,6 +4,8 @@
  * Handles login, session management, and Supabase data display
  */
 
+const ADMIN_PASSWORD = 'northstudio2026';
+
 function initAdminAuth() {
   const loginScreen = document.getElementById('login-screen');
   const dashboard = document.getElementById('dashboard');
@@ -55,31 +57,15 @@ function initAdminAuth() {
         return;
       }
 
-      try {
-        const response = await fetch('/.netlify/functions/verify-password', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ password })
-        });
-
-        const result = await response.json();
-
-        if (response.ok && result.token) {
-          // Store token and expiry (24 hours)
-          localStorage.setItem(TOKEN_KEY, result.token);
-          localStorage.setItem(TOKEN_EXPIRY_KEY, new Date().getTime() + 24 * 60 * 60 * 1000);
-          showDashboard();
-          loadDashboardData();
-          passwordInput.value = '';
-          clearError();
-        } else {
-          showError(result.message || 'Invalid password');
-        }
-      } catch (error) {
-        console.error('Auth error:', error);
-        showError('An error occurred. Please try again.');
+      if (password === ADMIN_PASSWORD) {
+        localStorage.setItem(TOKEN_KEY, 'admin-session');
+        localStorage.setItem(TOKEN_EXPIRY_KEY, new Date().getTime() + 24 * 60 * 60 * 1000);
+        showDashboard();
+        loadDashboardData();
+        passwordInput.value = '';
+        clearError();
+      } else {
+        showError('Password errata');
       }
     });
   }
@@ -111,23 +97,32 @@ function initAdminAuth() {
   // Load dashboard data from Supabase
   async function loadDashboardData() {
     try {
-      // Load visits count
-      const visitsCount = await supabase.getVisitsCount();
-      const visitsEl = document.querySelector('.stat-card:nth-child(1) .stat-value');
-      if (visitsEl) visitsEl.textContent = visitsCount.toLocaleString();
+      const [visits, leads] = await Promise.all([
+        supabase.getVisits(),
+        supabase.getLeads()
+      ]);
 
-      // Load leads count
-      const leadsCount = await supabase.getLeadsCount();
-      const leadsEl = document.querySelector('.stat-card:nth-child(3) .stat-value');
-      if (leadsEl) leadsEl.textContent = leadsCount;
+      const statVisits = document.getElementById('stat-visits');
+      if (statVisits) statVisits.textContent = visits.length.toLocaleString();
 
-      // Load recent leads
-      const leads = await supabase.getLeads();
-      loadLeadsTable(leads.slice(0, 3));
+      const statLeads = document.getElementById('stat-leads');
+      if (statLeads) statLeads.textContent = leads.length;
 
-      // Load visits for chart
-      const visits = await supabase.getVisits();
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      const visits30 = visits.filter(v => new Date(v.created_at) >= thirtyDaysAgo);
+      const statVisits30 = document.getElementById('stat-visits-30');
+      if (statVisits30) statVisits30.textContent = visits30.length.toLocaleString();
+
+      const uniqueIPs = new Set(visits.map(v => v.ip_address).filter(Boolean));
+      const statUnique = document.getElementById('stat-unique');
+      if (statUnique) statUnique.textContent = uniqueIPs.size;
+
+      loadLeadsTable(leads.slice(0, 10));
       loadVisitsChart(visits);
+
+      const leadsCount = document.querySelector('.leads-count');
+      if (leadsCount) leadsCount.textContent = leads.length;
     } catch (error) {
       console.error('Error loading dashboard data:', error);
     }
@@ -135,7 +130,7 @@ function initAdminAuth() {
 
   // Load leads into table
   function loadLeadsTable(leads) {
-    const tbody = document.querySelector('table tbody');
+    const tbody = document.getElementById('leads-table');
     if (!tbody) return;
 
     tbody.innerHTML = '';
@@ -182,8 +177,8 @@ function initAdminAuth() {
     const maxValue = Math.max(...values, 1);
 
     bars.forEach((bar, index) => {
-      const percentage = (values[index] / maxValue) * 100;
-      bar.style.height = percentage + '%';
+      const percentage = (values[index] / maxValue) * 90;
+      bar.style.height = Math.round(percentage) + 'px';
     });
   }
 
