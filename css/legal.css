@@ -1,193 +1,119 @@
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+/**
+ * LEGAL.CSS
+ * Styles specific to legal pages (cookie-policy.html, privacy-policy.html)
+ * Includes: Page layout, typography, tables, navigation
+ */
 
-    :root {
-      --bg: #161616;
-      --bg-raised: #1f1f1f;
-      --text: #e8e4dc;
-      --mid: #666460;
-      --mid-hi: #8a8680;
-      --border: rgba(232, 228, 220, 0.08);
-      --border-hi: rgba(232, 228, 220, 0.14);
-      --font: 'DM Sans', sans-serif;
-    }
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 140px 48px 100px;
+}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 15px;
-      line-height: 1.7;
-    }
+.page-label {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 20px;
+}
 
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      height: 72px;
-      background: rgba(22, 22, 22, 0.88);
-      backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--border-hi);
-    }
+h1 {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
 
-    .nav-logo {
-      font-size: 13px;
-      font-weight: 400;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--text);
-    }
+.last-updated {
+  font-size: 12px;
+  color: var(--mid);
+  margin-bottom: 64px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
 
-    .nav-back {
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--text);
-      opacity: 0.4;
-      transition: opacity .3s;
-    }
+h2 {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin: 52px 0 16px;
+}
 
-    .nav-back:hover {
-      opacity: 1;
-    }
+p {
+  color: var(--mid-hi);
+  margin-bottom: 16px;
+}
 
-    main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 140px 48px 100px;
-    }
+a {
+  color: var(--text);
+  text-underline-offset: 3px;
+}
 
-    .page-label {
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 20px;
-    }
+ul {
+  color: var(--mid-hi);
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
 
-    h1 {
-      font-size: clamp(32px, 5vw, 52px);
-      font-weight: 300;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      margin-bottom: 12px;
-    }
+li {
+  margin-bottom: 8px;
+}
 
-    .last-updated {
-      font-size: 12px;
-      color: var(--mid);
-      margin-bottom: 64px;
-      padding-bottom: 32px;
-      border-bottom: 1px solid var(--border);
-    }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 13px;
+}
 
-    h2 {
-      font-size: 13px;
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin: 52px 0 16px;
-    }
+th {
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 400;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-hi);
+}
 
-    p {
-      color: var(--mid-hi);
-      margin-bottom: 16px;
-    }
+td {
+  color: var(--mid-hi);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
 
-    a {
-      color: var(--text);
-      text-underline-offset: 3px;
-    }
+td:first-child {
+  color: var(--text);
+}
 
-    ul {
-      color: var(--mid-hi);
-      padding-left: 20px;
-      margin-bottom: 16px;
-    }
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--border-hi);
+  color: var(--mid-hi);
+}
 
-    li {
-      margin-bottom: 8px;
-    }
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  main {
+    padding: 120px 24px 80px;
+  }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 24px 0;
-      font-size: 13px;
-    }
+  table {
+    font-size: 12px;
+  }
 
-    th {
-      text-align: left;
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--mid);
-      font-weight: 400;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border-hi);
-    }
-
-    td {
-      color: var(--mid-hi);
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
-
-    td:first-child {
-      color: var(--text);
-    }
-
-    .tag {
-      display: inline-block;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border: 1px solid var(--border-hi);
-      color: var(--mid-hi);
-    }
-
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 32px 48px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: var(--mid);
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    @media (max-width: 768px) {
-      nav {
-        padding: 0 24px;
-      }
-
-      main {
-        padding: 120px 24px 80px;
-      }
-
-      table {
-        font-size: 12px;
-      }
-
-      th,
-      td {
-        padding: 10px 8px;
-      }
-    }
-  </style>
+  th,
+  td {
+    padding: 10px 8px;
+  }
+}

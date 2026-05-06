@@ -1,110 +1,116 @@
-# North Studio — Sito Web Professionale
+# North Studio — Portfolio & Admin Dashboard
 
-Sito creativo con autenticazione backend per la dashboard admin.
+Studio creativo freelance specializzato in brand identity, sviluppo web, fotografia e video editing.
 
-## 📋 Struttura del Progetto
+## 📁 Struttura Progetto
 
 ```
 northstudio/
+├── index.html                 # Pagina principale
+├── admin.html                 # Dashboard admin (protetta da password)
+├── cookie-policy.html         # Cookie policy
+├── privacy-policy.html        # Privacy policy
 ├── css/
-│   ├── base.css          # Variabili, reset, animazioni globali
-│   ├── main.css          # Stili pagina principale
-│   ├── admin.css         # Stili admin dashboard
-│   └── legal.css         # Stili pagine legali
+│   ├── shared.css            # Stili comuni (nav, cookie, cursore, animazioni)
+│   ├── index.css             # Stili pagina principale
+│   ├── admin.css             # Stili dashboard admin
+│   └── legal.css             # Stili pagine legali
 ├── js/
-│   ├── admin-auth.js     # Autenticazione admin
-│   ├── cursor.js         # Cursore personalizzato
-│   ├── nav.js            # Navigazione
-│   ├── reveal.js         # Scroll animations
-│   ├── cookies.js        # Banner cookie
-│   └── form.js           # Form contatti
-├── functions/
-│   └── verify-password.js # Netlify Function per login
-├── index.html            # Pagina principale
-├── admin.html            # Dashboard admin (protetta)
-├── cookie-policy.html    # Cookie policy
-├── privacy-policy.html   # Privacy policy
-└── netlify.toml          # Configurazione Netlify
+│   ├── cursor.js             # Cursore personalizzato
+│   ├── nav.js                # Navigazione
+│   ├── reveal.js             # Scroll reveal animations
+│   ├── cookies.js            # Banner cookie
+│   ├── form.js               # Form contatti
+│   └── admin-auth.js         # Autenticazione admin
+├── netlify/
+│   └── functions/
+│       └── verify-password.js # Netlify Function per login
+├── netlify.toml              # Configurazione Netlify
+└── README.md                 # Questo file
 ```
-
-## 🔐 Autenticazione Admin
-
-**Password**: `northstudio2026`
-
-### Come Funziona
-
-1. Accedi a `/admin.html`
-2. Inserisci la password
-3. La Netlify Function verifica e genera un token
-4. Il token viene salvato in localStorage (24 ore)
-5. La dashboard diventa accessibile
-
-### Logout
-
-Clicca il bottone "Logout" nella top bar per pulire la sessione.
 
 ## 🚀 Deployment su Netlify
 
-### Prerequisiti
-- Account Netlify
-- Repository GitHub con il codice
+### 1. Preparazione
+- Crea un repository GitHub con i file del progetto
+- Assicurati che `netlify.toml` sia nella root
 
-### Passi
+### 2. Deploy
+1. Vai su [netlify.com](https://netlify.com)
+2. Clicca **"New site from Git"**
+3. Seleziona il repository
+4. Netlify rileverà automaticamente `netlify.toml`
+5. Clicca **Deploy**
 
-1. **Connetti il repository**
-   - Vai su netlify.com
-   - Clicca "New site from Git"
-   - Seleziona il repository
+### 3. Configurazione Variabili
+Se vuoi cambiare la password:
+1. Vai su **Site settings** → **Build & deploy** → **Environment**
+2. Aggiungi: `ADMIN_PASSWORD = tuaPassword`
+3. Redeploy il sito
 
-2. **Netlify rileverà automaticamente**
-   - `netlify.toml` per la configurazione
-   - La cartella `functions/` per le Netlify Functions
-   - La password da `ADMIN_PASSWORD` in netlify.toml
+## 🔐 Accesso Admin
 
-3. **Deploy**
-   - Clicca "Deploy site"
-   - Netlify compilerà e deployerà automaticamente
+**URL**: `https://tuodominio.com/admin.html`
+**Password**: `northstudio2026`
 
-### Variabili d'Ambiente (Opzionale)
+Il token di sessione dura **24 ore**.
 
-Se vuoi cambiare la password senza modificare il codice:
+## 🎨 Personalizzazione
 
-1. Vai a Site Settings → Build & Deploy → Environment
-2. Aggiungi una variabile: `ADMIN_PASSWORD = "tuaPassword"`
+### Cambiare Colori
+Modifica `css/shared.css` - Sezione `:root`:
+```css
+:root {
+  --bg: #161616;              /* Sfondo */
+  --text: #e8e4dc;            /* Testo principale */
+  --mid: #666460;             /* Testo secondario */
+  --mid-hi: #8a8680;          /* Testo terziario */
+}
+```
 
-## 📱 Responsive Design
+### Cambiare Font
+Modifica il link Google Fonts in `index.html` e `admin.html`:
+```html
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=TUOFONT:wght@...">
+```
 
-Il sito è completamente responsive:
-- Desktop (1024px+)
-- Tablet (768px - 1023px)
-- Mobile (< 768px)
+### Aggiungere Pagine
+1. Crea nuovo file HTML
+2. Aggiungi i link CSS: `shared.css` e `nomepagina.css`
+3. Aggiungi script: `cursor.js` e altri JS necessari
 
-## ✨ Caratteristiche
+## 📊 Features
 
-- ✅ Cursore personalizzato
-- ✅ Animazioni scroll reveal
-- ✅ Banner cookie GDPR
-- ✅ Form contatti
-- ✅ Dashboard admin protetta
-- ✅ SEO ottimizzato
-- ✅ Performance ottimizzato (cache headers)
-- ✅ Accessibilità (WCAG)
+✅ **Dark Theme** — Tema scuro elegante
+✅ **Responsive** — Mobile, tablet, desktop
+✅ **Cursore Personalizzato** — Su tutte le pagine
+✅ **Animazioni Smooth** — Reveal effects, hover effects
+✅ **Cookie Banner** — GDPR compliant
+✅ **Admin Dashboard** — Protetta da password
+✅ **Netlify Functions** — Backend serverless
+✅ **SEO Optimized** — Meta tags, schema.org, sitemap
 
-## 🛠 Tecnologie
+## 🔒 Sicurezza
 
-- HTML5
-- CSS3 (variabili CSS, grid, flexbox)
-- JavaScript Vanilla (no framework)
-- Netlify Functions (backend)
-- localStorage (sessioni)
+- ✅ HTTPS automatico
+- ✅ Security headers configurati
+- ✅ CORS protetto
+- ✅ Password hashmata (in produzione)
+- ✅ Token con scadenza 24h
 
-## 📧 Contatti
+## 📝 Note
 
+- Il sito usa solo **cookie tecnici** (no tracking)
+- Nessuna dipendenza esterna (vanilla JS)
+- Performance ottimizzate (cache headers)
+- Compatibile con tutti i browser moderni
+
+## 👨‍💻 Supporto
+
+Per domande o modifiche:
 - Email: info@northstudio.it
 - Telefono: +39 351 7131975
-- Instagram: @northstudio.it
-- LinkedIn: Pietro Trevisan
 
 ---
 
-**© 2026 Pietro Trevisan — North Studio**
+**© 2026 North Studio. Tutti i diritti riservati.**

@@ -1,35 +1,25 @@
 # Netlify Configuration for North Studio
 
 [build]
-  # Directory to deploy
+  command = "echo 'Static site - no build needed'"
   publish = "."
-  # Directory with functions
-  functions = "functions"
-  # No build command needed (static site)
-  command = ""
 
-# Environment variables
-[build.environment]
-  # Password for admin access (can be overridden in Netlify UI)
-  ADMIN_PASSWORD = "northstudio2026"
-
-# Redirect rules
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# Headers for security and performance
+[functions]
+  directory = "netlify/functions"
+
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "SAMEORIGIN"
     X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
 
-# Cache headers for static assets
 [[headers]]
   for = "/css/*"
   [headers.values]
@@ -40,23 +30,5 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-[[headers]]
-  for = "/*.webp"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/*.jpg"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/*.png"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# HTML files - no cache
-[[headers]]
-  for = "/*.html"
-  [headers.values]
-    Cache-Control = "public, max-age=3600, must-revalidate"
+[context.production.environment]
+  ADMIN_PASSWORD = "northstudio2026"

@@ -1,63 +1,83 @@
 /**
- * Contact Form
- * Gestisce il form di contatto
+ * FORM.JS
+ * Contact form functionality
+ * Handles form submission and validation
+ * Saves leads to Supabase with device info
  */
 
-const contactForm = document.getElementById('contact-form');
-const formFeedback = document.getElementById('form-feedback');
+function initContactForm() {
+  const form = document.querySelector('.contact-form');
+  if (!form) return;
 
-if (contactForm) {
-  contactForm.addEventListener('submit', async (e) => {
+  const submitBtn = form.querySelector('.btn-submit');
+  const feedback = form.querySelector('.form-feedback');
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(contactForm);
-    const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      subject: formData.get('subject'),
-      message: formData.get('message')
-    };
+    // Get form data
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
 
-    // Validazione base
-    if (!data.name || !data.email || !data.subject || !data.message) {
-      showFeedback('Compila tutti i campi', 'error');
+    // Basic validation
+    if (!data.name || !data.email || !data.message) {
+      showFeedback('Please fill in all required fields', 'error');
       return;
     }
 
-    // Disabilita il bottone durante l'invio
-    const submitBtn = contactForm.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
+    // Disable submit button
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Invio in corso...';
+    submitBtn.textContent = 'Sending...';
 
     try {
-      // Invia i dati via email (usa un servizio come Formspree, EmailJS, o il tuo backend)
-      // Per ora, mostriamo un messaggio di successo
-      
-      // Simulazione di invio (in produzione, usa un vero servizio)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Get device info
+      const ipAddress = await getVisitorIP();
+      const deviceInfo = deviceDetector.getDeviceInfo();
 
-      showFeedback('Messaggio inviato con successo! Ti contatterò presto.', 'success');
-      contactForm.reset();
+      // Prepare lead data with device info
+      const leadData = {
+        nome: data.name,
+        email: data.email,
+        servizio: data.service || 'Non specificato',
+        messaggio: data.message,
+        ip_address: ipAddress,
+        device_brand: deviceInfo.brand,
+        device_model: deviceInfo.model,
+        browser: deviceDetector.getBrowser(),
+        os: deviceDetector.getOS()
+      };
+
+      // Save to Supabase
+      const success = await supabase.insertLead(leadData);
+
+      if (success) {
+        showFeedback('Message sent successfully!', 'success');
+        form.reset();
+      } else {
+        showFeedback('Failed to send message. Please try again.', 'error');
+      }
     } catch (error) {
-      showFeedback('Errore nell\'invio del messaggio. Riprova.', 'error');
       console.error('Form error:', error);
+      showFeedback('An error occurred. Please try again.', 'error');
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
+      submitBtn.textContent = 'Send';
     }
   });
 
   function showFeedback(message, type) {
-    if (formFeedback) {
-      formFeedback.textContent = message;
-      formFeedback.className = `form-feedback ${type}`;
-      formFeedback.style.display = 'block';
-
-      // Nascondi il messaggio dopo 5 secondi
-      setTimeout(() => {
-        formFeedback.style.display = 'none';
-      }, 5000);
-    }
+    if (!feedback) return;
+    feedback.textContent = message;
+    feedback.className = 'form-feedback ' + type;
+    setTimeout(() => {
+      feedback.className = 'form-feedback';
+    }, 5000);
   }
+
+
+// Initialize form when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initContactForm);
+} else {
+  initContactForm();
 }

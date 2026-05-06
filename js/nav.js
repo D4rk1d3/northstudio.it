@@ -1,34 +1,39 @@
 /**
- * Navigation
- * Gestisce la navigazione e gli effetti della navbar
+ * NAV.JS
+ * Navigation functionality
+ * Handles scroll effects and smooth navigation
  */
 
-const nav = document.querySelector('nav');
+function initNav() {
+  const nav = document.querySelector('nav');
+  if (!nav) return;
 
-if (nav) {
+  // Add scrolled class when page scrolls
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
+    if (window.scrollY > 10) {
       nav.classList.add('scrolled');
     } else {
       nav.classList.remove('scrolled');
     }
   });
 
-  // Smooth scroll per i link interni
-  const navLinks = document.querySelectorAll('.nav-links a');
-
+  // Smooth scroll for anchor links
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
   navLinks.forEach((link) => {
     link.addEventListener('click', (e) => {
-      const href = link.getAttribute('href');
-
-      if (href.startsWith('#')) {
-        e.preventDefault();
-        const target = document.querySelector(href);
-
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
+      e.preventDefault();
+      const targetId = link.getAttribute('href');
+      const target = document.querySelector(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
       }
     });
   });
+}
+
+// Initialize nav when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initNav);
+} else {
+  initNav();
 }

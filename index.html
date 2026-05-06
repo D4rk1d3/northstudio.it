@@ -57,10 +57,7 @@
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
-  <!-- EXTERNAL STYLESHEETS -->
-  <link rel="stylesheet" href="./css/base.css">
-  <link rel="stylesheet" href="./css/main.css">
-
+  <!-- Google Fonts -->
   <link rel="preload"
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap"
     as="style">
@@ -72,12 +69,14 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap">
   </noscript>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/shared.css">
+  <link rel="stylesheet" href="./css/index.css">
 </head>
 
 <body>
 
-  <div class="cursor" id="cursor"></div>
+  <div class="cursor"></div>
 
   <!-- COOKIE BANNER -->
   <div id="cookie-banner" role="dialog" aria-label="Preferenze cookie">
@@ -86,7 +85,7 @@
       <a href="/cookie-policy.html">Cookie Policy</a> · <a href="/privacy-policy.html">Privacy Policy</a>
     </p>
     <div class="cookie-actions">
-      <button class="cookie-btn accept" id="cookie-accept">Accetta</button>
+      <button class="cookie-btn accept">Accetta</button>
     </div>
   </div>
 
@@ -139,7 +138,7 @@
   <section id="services">
     <div class="section-header">
       <span class="section-label">Servizi</span>
-      <span class="section-num">01</span>
+      <span class="section-num">01-04</span>
     </div>
 
     <div class="services-grid">
@@ -181,48 +180,37 @@
   <section id="about">
     <div class="about-visual">
       <div class="founder-placeholder">
-        <img src="./pietro-original.webp" alt="Pietro Trevisan — Founder" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;">
-        <div style="position: relative; z-index: 1;">
-          <p class="founder-caption">Pietro Trevisan</p>
-        </div>
+        <span class="founder-caption">Pietro Trevisan</span>
       </div>
     </div>
 
     <div class="about-content">
       <p class="about-name">Chi sono</p>
-
-      <h2 class="about-manifesto">
-        Uno studio creativo che unisce <em>strategia, design e sviluppo</em> in un'unica visione.
-      </h2>
+      <h2 class="about-manifesto">Un professionista <em>completo</em> per il tuo brand.</h2>
 
       <p class="about-body">
-        Sono Pietro, un creativo freelance basato a Ceggia, Veneto. Lavoro con brand e aziende che vogliono comunicare
-        con autenticità e coerenza. Ogni progetto è costruito partendo da una strategia solida, poi trasformato in
-        design elegante e infine sviluppato con precisione tecnica.
+        Sono Pietro, freelancer nel Veneto. Lavoro su brand identity, sviluppo web, fotografia e video editing.
+        La mia filosofia: ogni aspetto del tuo brand deve raccontare la stessa storia.
       </p>
 
       <div class="about-tools">
         <div class="tool-group">
           <p class="tool-group-label">Design</p>
           <p>Figma, Adobe Creative Suite</p>
-          <p>Branding, UI/UX, Motion Design</p>
         </div>
         <div class="tool-group">
-          <p class="tool-group-label">Sviluppo</p>
+          <p class="tool-group-label">Development</p>
           <p>HTML, CSS, JavaScript, React</p>
-          <p>Web Performance, Accessibility</p>
         </div>
       </div>
 
-      <a href="#contact" class="cta-link">Iniziamo un progetto →</a>
+      <a href="#contact" class="cta-link">Iniziamo un progetto</a>
     </div>
   </section>
 
   <!-- CONTACT -->
   <section id="contact">
-    <h2 class="contact-heading">
-      Parliamo del tuo <em>prossimo progetto</em>.
-    </h2>
+    <h2 class="contact-heading">Parliamo del <em>tuo</em> progetto.</h2>
 
     <div class="contact-layout">
       <div class="contact-info">
@@ -230,18 +218,25 @@
           <p class="contact-col-label">Email</p>
           <a href="mailto:info@northstudio.it" class="contact-col">info@northstudio.it</a>
         </div>
+
         <div class="contact-info-block">
           <p class="contact-col-label">Telefono</p>
           <a href="tel:+393517131975" class="contact-col">+39 351 7131975</a>
         </div>
+
         <div class="contact-info-block">
           <p class="contact-col-label">Social</p>
-          <a href="https://www.instagram.com/northstudio.it/" target="_blank" rel="noopener" class="contact-col">Instagram</a>
-          <a href="https://www.linkedin.com/in/pietro-trevisan-55b125372/" target="_blank" rel="noopener" class="contact-col">LinkedIn</a>
+          <a href="https://www.instagram.com/northstudio.it/" class="contact-col" target="_blank">Instagram</a>
+          <a href="https://www.linkedin.com/in/pietro-trevisan-55b125372/" class="contact-col" target="_blank">LinkedIn</a>
+        </div>
+
+        <div class="contact-info-block">
+          <p class="contact-col-label">Ubicazione</p>
+          <p class="contact-col">Ceggia, Veneto — Italia</p>
         </div>
       </div>
 
-      <form class="contact-form" id="contact-form">
+      <form class="contact-form" name="contact">
         <div class="form-row">
           <div class="form-group">
             <label for="name">Nome</label>
@@ -253,16 +248,22 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="subject">Progetto</label>
-          <select id="subject" name="subject" required>
-            <option value="">Seleziona un tipo di progetto</option>
-            <option value="brand">Brand Identity</option>
-            <option value="web">Web Development</option>
-            <option value="photo">Photo Editing</option>
-            <option value="video">Video Production</option>
-            <option value="other">Altro</option>
-          </select>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="subject">Oggetto</label>
+            <input type="text" id="subject" name="subject">
+          </div>
+          <div class="form-group">
+            <label for="service">Servizio</label>
+            <select id="service" name="service">
+              <option>Seleziona un servizio</option>
+              <option>Brand Identity</option>
+              <option>Web Development</option>
+              <option>Photo Editing</option>
+              <option>Video Production</option>
+              <option>Altro</option>
+            </select>
+          </div>
         </div>
 
         <div class="form-group">
@@ -270,25 +271,26 @@
           <textarea id="message" name="message" required></textarea>
         </div>
 
+        <div class="form-feedback"></div>
+
         <div class="form-submit-row">
-          <p class="form-note">Risponderò entro 24 ore. Niente spam, promesso.</p>
+          <p class="form-note">Risponderò entro 48 ore.</p>
           <button type="submit" class="btn-submit">Invia</button>
         </div>
-
-        <div class="form-feedback" id="form-feedback"></div>
       </form>
     </div>
   </section>
 
   <footer>
-    <p>© 2026 Pietro Trevisan — North</p>
+    <p>&copy; 2026 North Studio. Tutti i diritti riservati.</p>
     <div class="footer-legal">
       <a href="/cookie-policy.html">Cookie Policy</a>
       <a href="/privacy-policy.html">Privacy Policy</a>
     </div>
   </footer>
 
-  <!-- SCRIPTS -->
+  <!-- JavaScript -->
+  <script src="./js/supabase.js"></script>
   <script src="./js/cursor.js"></script>
   <script src="./js/nav.js"></script>
   <script src="./js/reveal.js"></script>

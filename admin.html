@@ -4,253 +4,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>North Studio — Admin</title>
+    <title>Admin — North Studio</title>
     <link rel="icon" type="image/png" href="./defi.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400&display=swap">
-    
-    <!-- EXTERNAL STYLESHEETS -->
-    <link rel="stylesheet" href="./css/base.css">
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap"
+        as="style">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap"
+        media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="./css/shared.css">
     <link rel="stylesheet" href="./css/admin.css">
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 
 <body>
-
-    <!-- LOGIN SCREEN -->
+    <div class="cursor"></div>
     <div id="login-screen">
         <div class="login-box">
-            <div class="login-logo">North Studio</div>
-            <h1 class="login-title">Admin Dashboard</h1>
-            
-            <form id="login-form">
+            <p class="login-logo">North Studio</p>
+            <h1 class="login-title">Admin Access</h1>
+            <form class="login-form">
                 <div class="login-group">
                     <label for="password">Password</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        placeholder="Inserisci la password"
-                        required
-                        autocomplete="off"
-                    >
+                    <input type="password" id="password" name="password" placeholder="Inserisci la password" required>
                 </div>
-                
-                <div class="login-err" id="login-err"></div>
-                
-                <button type="submit" class="login-btn" id="login-btn">Accedi</button>
+                <div class="login-err"></div>
+                <button type="submit" class="login-btn">Accedi</button>
             </form>
         </div>
     </div>
-
-    <!-- DASHBOARD -->
     <div id="dashboard">
-        <!-- Top bar -->
         <div class="topbar">
             <div class="topbar-left">
-                <a href="/" class="topbar-logo">North</a>
+                <a href="#" class="topbar-logo">North Studio</a>
                 <div class="topbar-divider"></div>
-                <div class="topbar-title">Admin Dashboard</div>
+                <span class="topbar-title">Admin Dashboard</span>
             </div>
             <div class="topbar-right">
                 <span class="topbar-date" id="current-date"></span>
-                <button class="btn-logout" id="btn-logout">Logout</button>
+                <button class="btn-logout">Logout</button>
             </div>
         </div>
-
-        <!-- Content -->
         <div class="content">
-            <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-label">Visite</div>
-                    <span class="stat-value">2,847</span>
-                    <div class="stat-sub">Questo mese</div>
-                    <div class="stat-trend up">↑ +12% vs mese scorso</div>
+                    <p class="stat-label">Visite</p>
+                    <p class="stat-value">2,847</p>
+                    <p class="stat-sub">Questo mese</p>
+                    <div class="stat-trend up">↑ +12%</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Visitatori Unici</div>
-                    <span class="stat-value">1,923</span>
-                    <div class="stat-sub">Questo mese</div>
-                    <div class="stat-trend up">↑ +8% vs mese scorso</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Tempo Medio</div>
-                    <span class="stat-value">3m 24s</span>
-                    <div class="stat-sub">Per sessione</div>
+                    <p class="stat-label">Progetti</p>
+                    <p class="stat-value">24</p>
+                    <p class="stat-sub">Completati</p>
                     <div class="stat-trend neutral">→ Stabile</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Bounce Rate</div>
-                    <span class="stat-value">32%</span>
-                    <div class="stat-sub">Questa settimana</div>
-                    <div class="stat-trend up">↓ -4% vs settimana scorsa</div>
+                    <p class="stat-label">Messaggi</p>
+                    <p class="stat-value">12</p>
+                    <p class="stat-sub">Non letti</p>
+                    <div class="stat-trend up">↑ +3</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Clienti</p>
+                    <p class="stat-value">18</p>
+                    <p class="stat-sub">Attivi</p>
+                    <div class="stat-trend up">↑ +2</div>
                 </div>
             </div>
-
-            <!-- Charts -->
             <div class="charts-row">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">Visite per Giorno</div>
-                        <div class="card-meta">Ultimi 7 giorni</div>
+                        <span class="card-title">Visite per Giorno</span>
+                        <span class="card-meta">Ultimi 7 giorni</span>
                     </div>
                     <div class="bar-chart">
                         <div class="bar-col">
-                            <div class="bar" style="height: 45%;"></div>
-                            <div class="bar-label">Lun</div>
+                            <div class="bar" style="height: 60%;"></div><span class="bar-label">Lun</span>
                         </div>
                         <div class="bar-col">
-                            <div class="bar" style="height: 62%;"></div>
-                            <div class="bar-label">Mar</div>
+                            <div class="bar" style="height: 75%;"></div><span class="bar-label">Mar</span>
                         </div>
                         <div class="bar-col">
-                            <div class="bar" style="height: 58%;"></div>
-                            <div class="bar-label">Mer</div>
+                            <div class="bar" style="height: 50%;"></div><span class="bar-label">Mer</span>
                         </div>
                         <div class="bar-col">
-                            <div class="bar" style="height: 71%;"></div>
-                            <div class="bar-label">Gio</div>
+                            <div class="bar" style="height: 85%;"></div><span class="bar-label">Gio</span>
                         </div>
                         <div class="bar-col">
-                            <div class="bar" style="height: 68%;"></div>
-                            <div class="bar-label">Ven</div>
+                            <div class="bar" style="height: 70%;"></div><span class="bar-label">Ven</span>
                         </div>
                         <div class="bar-col">
-                            <div class="bar" style="height: 52%;"></div>
-                            <div class="bar-label">Sab</div>
+                            <div class="bar" style="height: 40%;"></div><span class="bar-label">Sab</span>
                         </div>
                         <div class="bar-col">
-                            <div class="bar" style="height: 38%;"></div>
-                            <div class="bar-label">Dom</div>
+                            <div class="bar" style="height: 55%;"></div><span class="bar-label">Dom</span>
                         </div>
                     </div>
                 </div>
-
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">Sorgenti Traffico</div>
-                        <div class="card-meta">Questo mese</div>
+                        <span class="card-title">Servizi</span>
+                        <span class="card-meta">Richieste</span>
                     </div>
                     <div class="donut-wrap">
                         <div class="donut-row">
-                            <div class="donut-key" style="background: var(--mid-hi);"></div>
-                            <div class="donut-label">Organico</div>
-                            <div class="donut-pct">58%</div>
+                            <div class="donut-key" style="background: var(--text);"></div><span
+                                class="donut-label">Brand Identity</span><span class="donut-pct">35%</span>
                             <div class="donut-bar-wrap">
-                                <div class="donut-bar-fill" style="width: 58%; background: var(--mid-hi);"></div>
+                                <div class="donut-bar-fill" style="width: 35%; background: var(--text);"></div>
                             </div>
                         </div>
                         <div class="donut-row">
-                            <div class="donut-key" style="background: var(--green);"></div>
-                            <div class="donut-label">Diretto</div>
-                            <div class="donut-pct">28%</div>
+                            <div class="donut-key" style="background: var(--mid-hi);"></div><span
+                                class="donut-label">Web Dev</span><span class="donut-pct">40%</span>
                             <div class="donut-bar-wrap">
-                                <div class="donut-bar-fill" style="width: 28%; background: var(--green);"></div>
+                                <div class="donut-bar-fill" style="width: 40%; background: var(--mid-hi);"></div>
                             </div>
                         </div>
                         <div class="donut-row">
-                            <div class="donut-key" style="background: var(--border-hi);"></div>
-                            <div class="donut-label">Referral</div>
-                            <div class="donut-pct">14%</div>
+                            <div class="donut-key" style="background: var(--mid);"></div><span
+                                class="donut-label">Video</span><span class="donut-pct">25%</span>
                             <div class="donut-bar-wrap">
-                                <div class="donut-bar-fill" style="width: 14%; background: var(--border-hi);"></div>
+                                <div class="donut-bar-fill" style="width: 25%; background: var(--mid);"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Leads -->
             <div class="leads-section">
-                <div class="leads-header">
-                    <div class="leads-title">Messaggi Recenti</div>
-                    <div class="leads-count">12</div>
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Email</th>
-                                <th>Progetto</th>
-                                <th>Data</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Marco Rossi</td>
-                                <td>marco@example.com</td>
-                                <td>Brand Identity</td>
-                                <td>2 giorni fa</td>
-                            </tr>
-                            <tr>
-                                <td>Giulia Bianchi</td>
-                                <td>giulia@example.com</td>
-                                <td>Web Development</td>
-                                <td>5 giorni fa</td>
-                            </tr>
-                            <tr>
-                                <td>Andrea Verdi</td>
-                                <td>andrea@example.com</td>
-                                <td>Photo Editing</td>
-                                <td>1 settimana fa</td>
-                            </tr>
-                            <tr>
-                                <td>Sofia Neri</td>
-                                <td>sofia@example.com</td>
-                                <td>Video Production</td>
-                                <td>2 settimane fa</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <div class="leads-header"><span class="leads-title">Ultimi Messaggi</span><span
+                        class="leads-count">12</span></div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Servizio</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Marco Rossi</td>
+                            <td>marco@example.com</td>
+                            <td>Brand Identity</td>
+                            <td>05 Mag 2026</td>
+                            <td><span class="badge">Nuovo</span></td>
+                        </tr>
+                        <tr>
+                            <td>Giulia Bianchi</td>
+                            <td>giulia@example.com</td>
+                            <td>Web Development</td>
+                            <td>04 Mag 2026</td>
+                            <td><span class="badge">Risposto</span></td>
+                        </tr>
+                        <tr>
+                            <td>Andrea Verdi</td>
+                            <td>andrea@example.com</td>
+                            <td>Video Production</td>
+                            <td>03 Mag 2026</td>
+                            <td><span class="badge">In Progress</span></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
-            <!-- Pages -->
             <div class="leads-section">
-                <div class="leads-header">
-                    <div class="leads-title">Pagine Più Visitate</div>
-                </div>
+                <div class="leads-header"><span class="leads-title">Pagine Più Visitate</span></div>
                 <div class="pages-grid">
-                    <div class="page-row">
-                        <div class="page-path">/</div>
-                        <div class="page-views">1,247 visite</div>
+                    <div class="page-row"><span class="page-path">/</span><span class="page-views">1,240 visite</span>
                     </div>
-                    <div class="page-row">
-                        <div class="page-path">/cookie-policy.html</div>
-                        <div class="page-views">342 visite</div>
-                    </div>
-                    <div class="page-row">
-                        <div class="page-path">/privacy-policy.html</div>
-                        <div class="page-views">218 visite</div>
-                    </div>
-                    <div class="page-row">
-                        <div class="page-path">/#contact</div>
-                        <div class="page-views">156 visite</div>
-                    </div>
+                    <div class="page-row"><span class="page-path">/services</span><span class="page-views">456
+                            visite</span></div>
+                    <div class="page-row"><span class="page-path">/about</span><span class="page-views">234
+                            visite</span></div>
+                    <div class="page-row"><span class="page-path">/contact</span><span class="page-views">189
+                            visite</span></div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- SCRIPTS -->
+    <div id="toast"></div>
+    <script src="./js/supabase.js"></script>
+    <script src="./js/cursor.js"></script>
     <script src="./js/admin-auth.js"></script>
     <script>
-        // Aggiorna la data corrente
-        document.addEventListener('DOMContentLoaded', () => {
-            const dateEl = document.getElementById('current-date');
-            if (dateEl) {
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                const today = new Date().toLocaleDateString('it-IT', options);
-                dateEl.textContent = today;
-            }
-        });
+        const dateEl = document.getElementById('current-date');
+        if (dateEl) {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateEl.textContent = new Date().toLocaleDateString('it-IT', options);
+        }
     </script>
-
 </body>
 
 </html>
