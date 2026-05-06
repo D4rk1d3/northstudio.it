@@ -700,10 +700,12 @@
     function showDashboard() {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
+      startInactivityWatch();
       loadDashboard();
     }
 
     function showLogin() {
+      stopInactivityWatch();
       document.getElementById('dashboard').style.display = 'none';
       document.getElementById('login-screen').style.display = 'flex';
     }
@@ -750,8 +752,69 @@
 
     document.getElementById('refresh-btn').addEventListener('click', loadDashboard);
 
+    // ── AUTO LOGOUT ────────────────────────────────
+    const TIMEOUT_MS = 5 * 60 * 1000; // 5 minuti
+    let inactivityTimer = null;
+
+    function resetTimer() {
+      clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(() => {
+        clearSession();
+        showLogin();
+        document.getElementById('login-error').textContent = 'Sessione scaduta per inattività.';
+      }, TIMEOUT_MS);
+    }
+
+    function startInactivityWatch() {
+      ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(evt => {
+        document.addEventListener(evt, resetTimer, { passive: true });
+      });
+      resetTimer();
+    }
+
+    function stopInactivityWatch() {
+      clearTimeout(inactivityTimer);
+      ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(evt => {
+        document.removeEventListener(evt, resetTimer);
+      });
+    }
+
+    // Logout quando la pagina torna visibile dopo 5 min di assenza
+    const HIDDEN_KEY = 'ns_admin_hidden_at';
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        sessionStorage.setItem(HIDDEN_KEY, Date.now());
+      } else {
+        const hiddenAt = parseInt(sessionStorage.getItem(HIDDEN_KEY) || '0');
+        if (hiddenAt && Date.now() - hiddenAt > TIMEOUT_MS) {
+          clearSession();
+          showLogin();
+          document.getElementById('login-error').textContent = 'Sessione scaduta per inattività.';
+        }
+        sessionStorage.removeItem(HIDDEN_KEY);
+      }
+    });
+
+    // Logout sul back button — pushState per intercettare la navigazione
+    history.pushState(null, '', location.href);
+    window.addEventListener('popstate', () => {
+      if (hasSession()) {
+        clearSession();
+        showLogin();
+      }
+      history.pushState(null, '', location.href);
+    });
+
     // Controlla se sessione già attiva
-    if (hasSession()) showDashboard();
+    if (hasSession()) {
+      showDashboard();
+      startInactivityWatch();
+    }
+
+    // Avvia il timer quando si fa login
+    const _origSetSession = setSession;
+    // patch: startInactivityWatch viene chiamato in showDashboard
+    const _origShowDashboard = showDashboard;
 
     // ── SUPABASE FETCH ─────────────────────────────
     async function supabaseFetch(table, params = '') {
