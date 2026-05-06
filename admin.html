@@ -634,6 +634,28 @@
         <div class="breakdown-list" id="source-breakdown"></div>
       </div>
 
+      <!-- VISITE RECENTI CON IP -->
+      <p class="section-title">Visite recenti — IP</p>
+      <div class="table-wrap" style="margin-bottom: 48px;">
+        <table>
+          <thead>
+            <tr>
+              <th>IP</th>
+              <th>Device</th>
+              <th>Browser</th>
+              <th>OS</th>
+              <th>Sorgente</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody id="visite-tbody">
+            <tr class="empty-row">
+              <td colspan="6">Caricamento…</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <!-- LEADS TABLE -->
       <p class="section-title">Lead ricevuti</p>
       <button class="refresh-btn" id="refresh-btn">↻ Aggiorna</button>
@@ -646,12 +668,13 @@
               <th>Servizio</th>
               <th>Messaggio</th>
               <th>Device</th>
+              <th>IP</th>
               <th>Data</th>
             </tr>
           </thead>
           <tbody id="leads-tbody">
             <tr class="empty-row">
-              <td colspan="6">Caricamento…</td>
+              <td colspan="7">Caricamento…</td>
             </tr>
           </tbody>
         </table>
@@ -852,6 +875,7 @@
         renderBarChart(visite);
         renderBreakdown('device-breakdown', visite, 'device');
         renderBreakdown('source-breakdown', visite, 'source');
+        renderVisite(visite);
         renderLeads(leads);
 
       } catch (err) {
@@ -935,12 +959,40 @@
       });
     }
 
+    function renderVisite(visite) {
+      const tbody = document.getElementById('visite-tbody');
+      tbody.innerHTML = '';
+
+      if (visite.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Nessuna visita ancora</td></tr>';
+        return;
+      }
+
+      // Mostra le ultime 50 visite
+      visite.slice(0, 50).forEach(v => {
+        const tr = document.createElement('tr');
+        const date = v.created_at
+          ? new Date(v.created_at).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit' })
+          : '—';
+
+        tr.innerHTML = `
+          <td style="font-size:12px;color:var(--text);font-family:monospace;white-space:nowrap">${esc(v.ip_address || '—')}</td>
+          <td style="font-size:12px;color:var(--mid-hi)">${esc(v.device || '')}${v.device_brand ? ' · ' + esc(v.device_brand) : ''}</td>
+          <td style="font-size:12px;color:var(--mid)">${esc(v.browser || '—')}</td>
+          <td style="font-size:12px;color:var(--mid)">${esc(v.os || '—')}</td>
+          <td style="font-size:12px;color:var(--mid)"><span class="badge">${esc(v.source || '—')}</span></td>
+          <td style="font-size:12px;color:var(--mid);white-space:nowrap">${date}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
     function renderLeads(leads) {
       const tbody = document.getElementById('leads-tbody');
       tbody.innerHTML = '';
 
       if (leads.length === 0) {
-        tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Nessun lead ancora</td></tr>';
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Nessun lead ancora</td></tr>';
         return;
       }
 
@@ -956,6 +1008,7 @@
           <td><span class="badge">${esc(l.servizio || '—')}</span></td>
           <td class="msg" title="${esc(l.messaggio || '')}">${esc(l.messaggio || '—')}</td>
           <td style="font-size:12px;color:var(--mid)">${esc(l.browser || '')} · ${esc(l.os || '')}${l.device_brand ? ' · ' + esc(l.device_brand) : ''}</td>
+          <td style="font-size:12px;color:var(--mid);font-family:monospace;white-space:nowrap">${esc(l.ip_address || '—')}</td>
           <td style="font-size:12px;color:var(--mid);white-space:nowrap">${date}</td>
         `;
         tbody.appendChild(tr);
