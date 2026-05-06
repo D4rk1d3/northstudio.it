@@ -832,15 +832,15 @@
         padding-right: 24px;
       }
 
+      .about-visual {
+        max-width: 420px;
+        margin: 0 auto;
+      }
+
       #about {
         grid-template-columns: 1fr;
         padding: 72px 24px;
         gap: 40px;
-      }
-
-      .about-visual {
-        max-width: 420px;
-        margin: 0 auto;
       }
 
       .services-grid {
@@ -1007,12 +1007,25 @@
 
 <body>
 
+  <div class="cursor" id="cursor"></div>
+
+  <!-- COOKIE BANNER -->
+  <div id="cookie-banner" role="dialog" aria-label="Preferenze cookie">
+    <p class="cookie-text">
+      Questo sito usa solo cookie tecnici necessari al funzionamento. Nessun tracciamento, nessun profilo.
+      <a href="/cookie-policy.html">Cookie Policy</a> · <a href="/privacy-policy.html">Privacy Policy</a>
+    </p>
+    <div class="cookie-actions">
+      <button class="cookie-btn accept" id="cookie-accept">Accetta</button>
+    </div>
+  </div>
+
   <nav>
     <a href="#home" class="nav-logo">North</a>
     <ul class="nav-links">
-      <li><a href="#services">Servizi</a></li>
-      <li><a href="#about">Chi sono</a></li>
-      <li><a href="#contact">Contatti</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
 
@@ -1020,17 +1033,37 @@
   <section id="home">
     <div class="hero-tag">Ceggia, Veneto — 2026</div>
 
-    <p class="hero-eyebrow reveal">Design & Development</p>
+    <p class="hero-eyebrow reveal">Creative & Development</p>
 
     <h1 class="hero-title reveal">
-      Una sola persona.<br><em>Ogni livello</em><br>del tuo brand.
+      Una persona.<br><em>Ogni livello</em><br>del tuo brand.
     </h1>
+    <span class="sr-only">Studio creativo freelance nel Veneto specializzato in brand identity, sviluppo siti web,
+      fotografia e video editing.</span>
 
     <p class="hero-sub reveal reveal-delay-2">
-      Identità visiva, sviluppo web, foto e video —
-      progettati da chi sa come tutto si tiene insieme.
+      Brand identity, sviluppo web, foto e video —
+      costruiti da chi capisce come ogni pezzo influenza gli altri.
     </p>
   </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <span class="hi">Brand Identity</span><span>—</span>
+      <span>Web Development</span><span>—</span>
+      <span class="hi">Photo Editing</span><span>—</span>
+      <span>Video Production</span><span>—</span>
+      <span class="hi">Social Design</span><span>—</span>
+      <span>Logo Design</span><span>—</span>
+      <span class="hi">Brand Identity</span><span>—</span>
+      <span>Web Development</span><span>—</span>
+      <span class="hi">Photo Editing</span><span>—</span>
+      <span>Video Production</span><span>—</span>
+      <span class="hi">Social Design</span><span>—</span>
+      <span>Logo Design</span><span>—</span>
+    </div>
+  </div>
 
   <!-- SERVICES -->
   <section id="services">
@@ -1044,10 +1077,8 @@
         <span class="service-num">01</span>
         <div>
           <h3 class="service-name">Brand &<br>Visual Identity</h3>
-          <p class="service-desc">
-            Logo, palette, tipografia, regole d’uso.
-            Non un segno estetico, ma un sistema coerente che funziona ovunque.
-          </p>
+          <p class="service-desc">Logo, palette, tipografia, regole d'uso. Un sistema che funziona su ogni formato — non
+            solo un'icona carina.</p>
         </div>
       </div>
 
@@ -1055,10 +1086,8 @@
         <span class="service-num">02</span>
         <div>
           <h3 class="service-name">Web<br>Development</h3>
-          <p class="service-desc">
-            Siti veloci, puliti, costruiti su misura.
-            Niente template, niente builder.
-          </p>
+          <p class="service-desc">Siti puliti, veloci, costruiti su misura. HTML, CSS, JS o React — niente template,
+            niente page builder.</p>
         </div>
       </div>
 
@@ -1066,10 +1095,8 @@
         <span class="service-num">03</span>
         <div>
           <h3 class="service-name">Photo<br>Editing</h3>
-          <p class="service-desc">
-            Ritocco, color grading, compositing.
-            Dal prodotto all’editoriale, con attenzione ai dettagli che fanno la differenza.
-          </p>
+          <p class="service-desc">Ritocco, color grading, compositing. Photoshop e Illustrator — da scatti di prodotto a
+            lavori editoriali.</p>
         </div>
       </div>
 
@@ -1077,10 +1104,8 @@
         <span class="service-num">04</span>
         <div>
           <h3 class="service-name">Video<br>Editing</h3>
-          <p class="service-desc">
-            Reels, contenuti brevi, eventi.
-            Montaggio, colore e ritmo pensati per trattenere l’attenzione.
-          </p>
+          <p class="service-desc">Reels, short-form, copertura eventi. DaVinci Resolve — color, tagli e ritmo che
+            tengono l'attenzione.</p>
         </div>
       </div>
 
@@ -1088,10 +1113,8 @@
         <span class="service-num">05</span>
         <div>
           <h3 class="service-name">Social<br>Design</h3>
-          <p class="service-desc">
-            Post, stories, template.
-            Un linguaggio visivo coerente, progettato per crescere nel tempo.
-          </p>
+          <p class="service-desc">Post, stories, template. Un linguaggio visivo coerente sui tuoi canali, costruito per
+            durare.</p>
         </div>
       </div>
     </div>
@@ -1102,7 +1125,9 @@
     <div class="about-visual reveal">
       <div class="founder-placeholder">
         <img src="./pietro-768.webp" srcset="./pietro-480.webp 480w, ./pietro-768.webp 768w, ./pietro-1280.webp 1280w"
-          sizes="(max-width: 600px) 100vw, 50vw" alt="Pietro Trevisan" width="600" height="800" loading="lazy"
+          sizes="(max-width: 600px) 100vw, 50vw"
+          alt="Pietro Trevisan, fondatore di North Studio — studio creativo freelance a Ceggia, Veneto" width="600"
+          height="800" loading="lazy"
           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
         <div class="founder-caption">
           <p>Pietro Trevisan — Founder</p>
@@ -1114,22 +1139,36 @@
       <p class="about-name reveal">Pietro Trevisan</p>
 
       <p class="about-manifesto reveal reveal-delay-1">
-        Molti creativi fanno bene una cosa.<br>
-        Io lavoro su <em>tutto</em> —<br>
-        e so come ogni parte influenza le altre.
+        La maggior parte dei creativi fa<br>
+        una cosa bene. Io le faccio <em>tutte</em> —<br>
+        e so come ognuna influenza le altre.
       </p>
 
       <p class="about-body reveal reveal-delay-2">
-        Sono uno studente con base in Veneto.
-        Progetto identità visive, sviluppo siti da zero, lavoro su foto e video e creo contenuti per il digitale.
+        Sono uno studente di Ceggia, Veneto. Progetto brand identity, costruisco siti da zero, edito foto e video, e
+        creo contenuti social. Ho imparato queste cose usandole davvero — non in classe.
         <br><br>
-        Non ho imparato queste cose in aula — le ho imparate facendole.
-        <br><br>
-        Meno passaggi, meno dispersione, più controllo su ogni dettaglio.
-        Lavori direttamente con chi realizza il progetto.
+        Essere all'inizio significa che sono selettivo sui progetti che accetto, e completamente concentrato su ognuno.
+        Non vieni affidato a nessun junior. Lavori direttamente con me.
       </p>
 
-      <a href="#contact" class="cta-link reveal reveal-delay-4">Iniziamo a parlarne</a>
+      <div class="about-tools reveal reveal-delay-3">
+        <div class="tool-group">
+          <p class="tool-group-label">Design & Visual</p>
+          <p>Photoshop</p>
+          <p>Illustrator</p>
+          <p>DaVinci Resolve</p>
+        </div>
+        <div class="tool-group">
+          <p class="tool-group-label">Development</p>
+          <p>HTML / CSS / JS</p>
+          <p>React + TypeScript</p>
+          <p>Python, C++, SQL</p>
+        </div>
+      </div>
+
+      <br><br>
+      <a href="#contact" class="cta-link reveal reveal-delay-4">Inizia una conversazione</a>
     </div>
   </section>
 
@@ -1139,23 +1178,72 @@
       Hai un progetto<br>in <em>mente?</em>
     </h2>
 
-    <div class="contact-grid reveal reveal-delay-1">
-      <div class="contact-col">
-        <p class="contact-col-label">Scrivimi</p>
-        <a href="mailto:info@northstudio.it">info@northstudio.it</a>
+    <div class="contact-layout reveal reveal-delay-1">
+      <!-- Info colonna sinistra -->
+      <div class="contact-info">
+        <div class="contact-col">
+          <p class="contact-col-label">Scrivimi</p>
+          <a href="mailto:info@northstudio.it">info@northstudio.it</a>
+        </div>
+        <div class="contact-col">
+          <p class="contact-col-label">Dove sono</p>
+          <p>Ceggia, Veneto</p>
+          <p>Italia</p>
+        </div>
+        <div class="contact-col">
+          <p class="contact-col-label">Seguimi</p>
+          <a href="https://www.instagram.com/northstudio.it/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/pietro-trevisan-55b125372/" target="_blank"
+            rel="noopener noreferrer">LinkedIn</a>
+          <a href="tel:+393517131975">+39 351 713 1975</a>
+        </div>
+        <div class="contact-col">
+          <p class="contact-col-label">Risposta</p>
+          <p>Di solito entro 24 ore,<br>spesso molto prima.</p>
+        </div>
       </div>
-      <div class="contact-col">
-        <p class="contact-col-label">Base</p>
-        <p>Veneto, Italia</p>
-      </div>
-      <div class="contact-col">
-        <p class="contact-col-label">Seguimi</p>
-        <a href="https://www.instagram.com/northstudio.it/">Instagram</a>
-        <a href="https://www.linkedin.com/">LinkedIn</a>
-        <a href="tel:+393517131975">+39 351 713 1975</a>
-      </div>
+
+      <!-- Form colonna destra -->
+      <form class="contact-form" id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nome">Nome *</label>
+            <input type="text" id="nome" name="nome" placeholder="Il tuo nome" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" placeholder="La tua email" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="servizio">Di cosa hai bisogno?</label>
+          <select id="servizio" name="servizio">
+            <option value="" disabled selected>Seleziona un servizio</option>
+            <option value="Brand Identity">Brand Identity</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Photo Editing">Photo Editing</option>
+            <option value="Video Editing">Video Editing</option>
+            <option value="Social Design">Social Design</option>
+            <option value="Altro">Altro / Non so ancora</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="messaggio">Messaggio *</label>
+          <textarea id="messaggio" name="messaggio" placeholder="Raccontami del tuo progetto..." required></textarea>
+        </div>
+
+        <div id="form-feedback" class="form-feedback"></div>
+
+        <div class="form-submit-row">
+          <p class="form-note">Rispondo personalmente a ogni messaggio. Nessun form automatico, nessun bot.</p>
+          <button type="submit" class="btn-submit" id="submit-btn">Invia →</button>
+        </div>
+      </form>
     </div>
   </section>
+
   <footer>
     <p>© 2026 Pietro Trevisan — North</p>
     <div class="footer-legal">
