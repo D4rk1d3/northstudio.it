@@ -559,7 +559,13 @@
 
       <div class="field">
         <label for="pwd-input">Password</label>
-        <input type="password" id="pwd-input" autocomplete="current-password" placeholder="••••••••">
+        <div style="position:relative">
+          <input type="password" id="pwd-input" autocomplete="current-password" placeholder="••••••••"
+            style="padding-right:44px">
+          <button type="button" id="toggle-pwd"
+            style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;color:var(--mid);font-size:13px;font-family:var(--font);letter-spacing:0.06em;transition:color .2s"
+            onmouseenter="this.style.color='var(--text)'" onmouseleave="this.style.color='var(--mid)'">Mostra</button>
+        </div>
       </div>
 
       <button class="login-btn" id="login-btn">Accedi</button>
@@ -706,6 +712,12 @@
     const loginBtn = document.getElementById('login-btn');
     const pwdInput = document.getElementById('pwd-input');
     const loginError = document.getElementById('login-error');
+
+    document.getElementById('toggle-pwd').addEventListener('click', function () {
+      const shown = pwdInput.type === 'text';
+      pwdInput.type = shown ? 'password' : 'text';
+      this.textContent = shown ? 'Mostra' : 'Nascondi';
+    });
 
     async function handleLogin() {
       const pwd = pwdInput.value.trim();
