@@ -394,22 +394,23 @@
     @media (hover: hover) {
       .cursor {
         position: fixed;
-        width: 20px;
-        height: 20px;
-        background: transparent;
-        border: 1.5px solid var(--text);
+        width: 9px;
+        height: 9px;
+        background: var(--text);
         border-radius: 50%;
         pointer-events: none;
         z-index: 9999;
         transform: translate(-50%, -50%);
-        transition: width .35s var(--easing), height .35s var(--easing), opacity .3s, border-color .2s, background .2s;
+        transition: width .2s var(--easing), height .2s var(--easing), background .2s, border .2s;
+        box-shadow: 0 0 0 1px rgba(22, 22, 22, 0.5);
       }
 
       .cursor.hover {
-        width: 44px;
-        height: 44px;
-        background: rgba(232, 228, 220, 0.08);
+        width: 32px;
+        height: 32px;
+        background: transparent;
         border: 1px solid var(--text);
+        box-shadow: none;
       }
     }
 
@@ -1334,8 +1335,8 @@
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
           });
           (function loop() {
-            cX += (mX - cX) * 0.12;
-            cY += (mY - cY) * 0.12;
+            cX += (mX - cX) * 0.4;
+            cY += (mY - cY) * 0.4;
             cursor.style.left = cX + 'px';
             cursor.style.top = cY + 'px';
             requestAnimationFrame(loop);
@@ -1495,7 +1496,6 @@
       'requestIdleCallback' in window ? requestIdleCallback(init) : setTimeout(init, 16);
     });
   </script>
-
 
 </body>
 

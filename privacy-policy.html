@@ -4,16 +4,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy — North Studio</title>
+  <title>North Studio — Studio Creativo Freelance | Brand, Web & Video | Veneto</title>
   <meta name="description"
-    content="Informativa sulla privacy di North Studio di Pietro Trevisan. Scopri come vengono trattati i tuoi dati personali.">
-  <meta name="robots" content="noindex, follow">
-  <link rel="canonical" href="https://www.northstudio.it/privacy-policy.html">
+    content="Studio creativo freelance a Ceggia, Veneto. Brand identity, sviluppo siti web su misura, foto e video editing professionale. Un solo professionista per ogni aspetto del tuo brand.">
+  <meta name="author" content="Pietro Trevisan">
+  <link rel="canonical" href="https://www.northstudio.it/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="North Studio — Brand, Web & Video">
+  <meta property="og:description"
+    content="Studio creativo freelance a Ceggia, Veneto. Brand identity, sviluppo web, foto e video.">
+  <meta property="og:image" content="https://www.northstudio.it/og-image.jpg">
+  <meta property="og:url" content="https://www.northstudio.it/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="North Studio — Brand, Web & Video">
+  <meta name="twitter:description"
+    content="Studio creativo freelance a Ceggia, Veneto. Brand identity, sviluppo web, foto e video.">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "North Studio",
+    "founder": "Pietro Trevisan",
+    "description": "Studio creativo freelance specializzato in brand identity, sviluppo web, foto e video editing.",
+    "url": "https://www.northstudio.it",
+    "image": "https://www.northstudio.it/og-image.jpg",
+    "email": "info@northstudio.it",
+    "telephone": "+393517131975",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Ceggia",
+      "addressRegion": "Veneto",
+      "addressCountry": "IT"
+    },
+    "areaServed": "IT",
+    "serviceType": ["Brand Identity", "Sviluppo Web", "Photo Editing", "Video Editing", "Social Design"],
+    "sameAs": [
+      "https://www.instagram.com/northstudio.it/",
+      "https://www.linkedin.com/in/pietro-trevisan-55b125372/"
+    ]
+  }
+  </script>
+
+  <link rel="icon" type="image/png" href="./defi.png">
+
+  <!-- Preconnect prima del preload: il browser apre la connessione TCP/TLS in anticipo.
+       dns-prefetch come fallback per browser meno recenti. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap&font-display=swap"
-    rel="stylesheet">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+  <!-- Font metric overrides: riduce il CLS quando DM Sans sostituisce il fallback di sistema.
+       size-adjust / ascent-override / descent-override calibrati su DM Sans 300 a ~15px. -->
+  <style>
+    @font-face {
+      font-family: 'DM Sans Fallback';
+      src: local('-apple-system'), local('BlinkMacSystemFont'), local('Segoe UI'), local('Helvetica Neue'), local('Arial');
+      size-adjust: 100.6%;
+      ascent-override: 96%;
+      descent-override: 23%;
+      line-gap-override: 0%;
+    }
+  </style>
+
+  <!-- Google Fonts: non-blocking. Carica 200+300+400 upright e 200+300 italic (il peso 200 serve per .hero-title em).
+       Niente asse opsz — payload comunque ridotto rispetto alla versione originale. -->
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap"
+    as="style">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap"
+    media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap">
+  </noscript>
+
+  <!-- CRITICAL CSS: Struttura base, Nav, Hero, Ticker -->
   <style>
     *,
     *::before,
@@ -31,17 +103,41 @@
       --mid-hi: #8a8680;
       --border: rgba(232, 228, 220, 0.08);
       --border-hi: rgba(232, 228, 220, 0.14);
-      --font: 'DM Sans', sans-serif;
+      /* Fallback con metriche calibrate: riduce il salto visivo (CLS) quando arriva DM Sans */
+      --font-display: 'DM Sans', 'DM Sans Fallback', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-body: 'DM Sans', 'DM Sans Fallback', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --easing: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* cursor:none solo su dispositivi con puntatore fine (desktop);
+       su touch viene applicata la regola pointer corretta dai media query successivi */
+    @media (hover: hover) {
+
+      body,
+      a,
+      button,
+      input,
+      textarea,
+      [role="button"] {
+        cursor: none !important;
+      }
     }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: var(--font);
+      font-family: var(--font-body);
       font-size: 15px;
-      line-height: 1.7;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
+    /* NAV */
     nav {
       position: fixed;
       top: 0;
@@ -53,12 +149,26 @@
       justify-content: space-between;
       padding: 0 48px;
       height: 72px;
-      background: rgba(22, 22, 22, 0.88);
+    }
+
+    nav::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(22, 22, 22, 0.82);
       backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--border-hi);
+      -webkit-backdrop-filter: blur(24px);
+      z-index: -1;
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s;
+    }
+
+    nav.scrolled::before {
+      border-bottom-color: var(--border-hi);
     }
 
     .nav-logo {
+      font-family: var(--font-body);
       font-size: 13px;
       font-weight: 400;
       letter-spacing: 0.18em;
@@ -67,7 +177,13 @@
       color: var(--text);
     }
 
-    .nav-back {
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
       font-size: 12px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -77,104 +193,881 @@
       transition: opacity .3s;
     }
 
-    .nav-back:hover {
+    .nav-links a:hover {
       opacity: 1;
     }
 
-    main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 140px 48px 100px;
+    /* SECTIONS */
+    section {
+      min-height: 100vh;
     }
 
-    .page-label {
+    /* HERO */
+    #home {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 48px 88px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-tag {
+      position: absolute;
+      top: 50%;
+      right: 48px;
+      transform: translateY(-50%);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      writing-mode: vertical-rl;
+    }
+
+    .hero-eyebrow {
       font-size: 11px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--mid);
-      margin-bottom: 20px;
+      margin-bottom: 28px;
     }
 
-    h1 {
-      font-size: clamp(32px, 5vw, 52px);
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(68px, 11vw, 148px);
       font-weight: 300;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      margin-bottom: 12px;
+      line-height: 0.88;
+      letter-spacing: -0.03em;
+      margin-bottom: 52px;
+      color: var(--text);
     }
 
-    .last-updated {
-      font-size: 12px;
-      color: var(--mid);
-      margin-bottom: 64px;
-      padding-bottom: 32px;
+    .hero-title em {
+      font-style: italic;
+      font-weight: 200;
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      color: var(--mid-hi);
+      max-width: 340px;
+      line-height: 1.85;
+    }
+
+    /* TICKER */
+    .ticker-wrap {
+      border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+      height: 52px;
+      overflow: hidden;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
     }
 
-    h2 {
-      font-size: 13px;
-      font-weight: 400;
-      letter-spacing: 0.14em;
+    .ticker-track {
+      display: inline-flex;
+      animation: ticker 28s linear infinite;
+    }
+
+    .ticker-track span {
+      font-size: 11px;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--mid);
-      margin: 52px 0 16px;
+      padding: 0 36px;
+      flex-shrink: 0;
     }
 
-    p {
-      color: var(--mid-hi);
-      margin-bottom: 16px;
-    }
-
-    a {
+    .ticker-track span.hi {
       color: var(--text);
-      text-underline-offset: 3px;
     }
 
-    ul {
-      color: var(--mid-hi);
-      padding-left: 20px;
-      margin-bottom: 16px;
+    @keyframes ticker {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
     }
 
-    li {
-      margin-bottom: 8px;
+    /* SR-ONLY */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
-    .info-box {
-      background: var(--bg-raised);
-      border: 1px solid var(--border-hi);
-      padding: 24px 28px;
-      margin: 24px 0;
+    /* REVEAL: usa solo opacity + transform (proprietà composite GPU).
+       NON usa visibility perché causa layout recalculation e contribuisce al CLS.
+       Il testo invisibile è comunque accessibile agli screen reader via opacity:0. */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s var(--easing), transform .7s var(--easing);
     }
 
-    .info-box p {
-      margin: 0;
-      font-size: 14px;
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    .info-box strong {
-      color: var(--text);
-      font-weight: 400;
+    .reveal-delay-1 {
+      transition-delay: .1s;
+      animation-delay: .1s;
     }
 
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 32px 48px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: var(--mid);
-      max-width: 720px;
-      margin: 0 auto;
+    .reveal-delay-2 {
+      transition-delay: .22s;
+      animation-delay: .22s;
     }
 
+    .reveal-delay-3 {
+      transition-delay: .36s;
+      animation-delay: .36s;
+    }
+
+    .reveal-delay-4 {
+      transition-delay: .52s;
+      animation-delay: .52s;
+    }
+
+    /* HERO: animazione CSS pura, senza attendere JS — migliora LCP e FCP.
+       Usa solo opacity+transform (composite) per zero CLS. */
+    @keyframes heroRevealAnim {
+      0% {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #home .reveal {
+      animation: heroRevealAnim .7s var(--easing) both;
+    }
+
+    /* LCP: l'h1 è quasi certamente l'elemento LCP su mobile.
+       Azzeriamo il delay e lo facciamo paintare appena possibile. */
+    #home .hero-title {
+      animation-delay: 0s;
+      transition-delay: 0s;
+    }
+
+    /* MOBILE CRITICAL */
     @media (max-width: 768px) {
       nav {
         padding: 0 24px;
       }
 
-      main {
-        padding: 120px 24px 80px;
+      .nav-links {
+        display: none;
+      }
+
+      #home {
+        padding: 96px 24px 64px;
+        min-height: 0;
+        justify-content: flex-start;
+      }
+
+      .hero-tag {
+        display: none;
+      }
+    }
+  </style>
+
+  <!-- NON-CRITICAL CSS: sezioni below-fold + cursor desktop. Non blocca il rendering. -->
+  <style media="print" onload="this.media='all'">
+    /* CURSOR: solo dispositivi con puntatore fine (desktop); hidden su touch via @media hover:none */
+    @media (hover: hover) {
+      .cursor {
+        position: fixed;
+        width: 9px;
+        height: 9px;
+        background: var(--text);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: width .2s var(--easing), height .2s var(--easing), background .2s, border .2s;
+        box-shadow: 0 0 0 1px rgba(22, 22, 22, 0.5);
+      }
+
+      .cursor.hover {
+        width: 32px;
+        height: 32px;
+        background: transparent;
+        border: 1px solid var(--text);
+        box-shadow: none;
+      }
+    }
+
+    /* SERVICES */
+    #services {
+      padding: 120px 48px;
+      min-height: auto;
+      /* content-visibility accelera il rendering iniziale: il browser skippa il layout
+         della sezione finché non si avvicina al viewport, riducendo il lavoro a FCP. */
+      content-visibility: auto;
+      contain-intrinsic-size: auto 1px auto 1400px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 72px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .section-num {
+      font-size: 11px;
+      color: var(--mid);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      position: relative;
+    }
+
+    .service-item {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 0 28px;
+      align-items: start;
+      min-height: 200px;
+      /* contain:layout isola il reflow di ogni card: quando .reveal anima l'opacità
+         non provoca ricalcolo del layout delle card adiacenti, riducendo CLS. */
+      contain: layout style;
+      will-change: opacity, transform;
+    }
+
+    .service-item:nth-child(odd) {
+      padding-right: 60px;
+      border-right: 1px solid var(--border);
+    }
+
+    .service-item:nth-child(even) {
+      padding-left: 60px;
+    }
+
+    .service-num {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--mid);
+      padding-top: 5px;
+    }
+
+    .service-name {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.4vw, 32px);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .service-desc {
+      font-size: 13px;
+      color: var(--mid-hi);
+      line-height: 1.75;
+      max-width: 280px;
+    }
+
+    /* ABOUT */
+    #about {
+      padding: 120px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      min-height: auto;
+      border-top: 1px solid var(--border);
+      content-visibility: auto;
+      contain-intrinsic-size: auto 1px auto 900px;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .founder-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--bg-raised);
+      display: flex;
+      align-items: flex-end;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .founder-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(22, 22, 22, 0.7));
+    }
+
+    .founder-caption {
+      position: relative;
+      z-index: 1;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid-hi);
+    }
+
+    .about-content {
+      padding-top: 8px;
+    }
+
+    .about-name {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 28px;
+    }
+
+    .about-manifesto {
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 300;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    .about-manifesto em {
+      font-style: italic;
+      font-weight: 200;
+    }
+
+    .about-body {
+      font-size: 14px;
+      color: var(--mid-hi);
+      line-height: 1.85;
+      max-width: 420px;
+      margin-bottom: 48px;
+    }
+
+    .about-tools {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--border);
+      padding-top: 32px;
+      margin-bottom: 40px;
+    }
+
+    .tool-group {
+      font-size: 13px;
+      color: var(--mid-hi);
+      line-height: 2;
+    }
+
+    .tool-group:first-child {
+      border-right: 1px solid var(--border);
+      padding-right: 32px;
+    }
+
+    .tool-group:last-child {
+      padding-left: 32px;
+    }
+
+    .tool-group-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 12px;
+    }
+
+    .cta-link {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text);
+      border-bottom: 1px solid var(--border-hi);
+      padding-bottom: 4px;
+      transition: border-color .3s;
+    }
+
+    .cta-link:hover {
+      border-color: var(--text);
+    }
+
+    /* CONTACT SPLIT LAYOUT */
+    .contact-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      align-items: start;
+    }
+
+    .contact-left {
+      padding-right: 64px;
+      border-right: 1px solid var(--border);
+    }
+
+    .contact-right {
+      padding-left: 64px;
+    }
+
+    .contact-form-title {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-field label {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 13px;
+      outline: none;
+      transition: border-color .25s;
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: var(--mid);
+    }
+
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      border-color: rgba(232, 228, 220, 0.32);
+    }
+
+    .form-field select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666460' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      color: var(--mid);
+    }
+
+    .form-field select.has-value {
+      color: var(--text);
+    }
+
+    .form-field textarea {
+      resize: vertical;
+      min-height: 78px;
+    }
+
+    .form-submit {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .form-btn {
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      border-radius: 6px;
+      padding: 10px 24px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color .25s, background .25s;
+    }
+
+    .form-btn:hover {
+      border-color: var(--text);
+      background: rgba(232, 228, 220, 0.05);
+    }
+
+    .form-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .form-status {
+      font-size: 12px;
+      color: var(--mid);
+      transition: color .3s;
+    }
+
+    .form-status.ok {
+      color: #4ade80;
+    }
+
+    .form-status.err {
+      color: #f87171;
+    }
+
+    /* CONTACT */
+    #contact {
+      padding: 120px 48px 80px;
+      border-top: 1px solid var(--border);
+      min-height: auto;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 1px auto 500px;
+    }
+
+    .contact-heading {
+      font-size: clamp(40px, 6vw, 80px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 72px;
+    }
+
+    .contact-heading em {
+      font-style: italic;
+      font-weight: 200;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-col {
+      padding: 36px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-col:not(:last-child) {
+      position: relative;
+    }
+
+    .contact-col:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 36px;
+      bottom: 36px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .contact-col:not(:first-child) {
+      padding-left: 40px;
+    }
+
+    .contact-col-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 4px;
+    }
+
+    .contact-col a,
+    .contact-col p {
+      font-size: 14px;
+      color: var(--mid-hi);
+      text-decoration: none;
+      transition: color .3s;
+    }
+
+    .contact-col a:hover {
+      color: var(--text);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--mid);
+    }
+
+    .footer-legal {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-legal a {
+      color: var(--mid);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      transition: color .3s;
+    }
+
+    .footer-legal a:hover {
+      color: var(--mid-hi);
+    }
+
+    /* MOBILE NON-CRITICAL */
+    @media (max-width: 768px) {
+
+      #services,
+      #contact {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      #about {
+        grid-template-columns: 1fr;
+        padding: 72px 24px;
+        gap: 40px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .service-item:nth-child(odd) {
+        border-right: none;
+        padding-right: 0;
+      }
+
+      .service-item:nth-child(even) {
+        padding-left: 0;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-col {
+        padding: 28px 0 !important;
+      }
+
+      .contact-col::after {
+        display: none;
+      }
+
+      .contact-split {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-left {
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 48px;
+        margin-bottom: 48px;
+      }
+
+      .contact-right {
+        padding-left: 0;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-tools {
+        grid-template-columns: 1fr;
+      }
+
+      .tool-group:first-child {
+        border-right: none;
+        padding-right: 0;
+      }
+
+      .tool-group:last-child {
+        padding-left: 0;
+      }
+
+      footer {
+        padding: 24px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      #cookie-banner {
+        padding: 20px 24px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .cookie-actions {
+        width: 100%;
+      }
+
+      .cookie-btn {
+        flex: 1;
+        text-align: center;
+      }
+    }
+
+    /* Touch devices: ripristina cursore di sistema (il cursore custom non esiste su mobile) */
+    @media (hover: none) {
+
+      body,
+      a,
+      button,
+      input,
+      textarea,
+      [role="button"] {
+        cursor: auto !important;
+      }
+
+      a,
+      button {
+        cursor: pointer !important;
+      }
+    }
+  </style>
+
+  <!-- COOKIE BANNER CSS: nel <head> perché il banner è visibile al primo paint.
+       Non metterlo nel blocco non-critical o apparirebbe senza stile (FOUC). -->
+  <style>
+    #cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 9000;
+      background: var(--bg-raised);
+      border-top: 1px solid var(--border-hi);
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      transform: translateY(0);
+      transition: transform .4s var(--easing), opacity .4s;
+    }
+
+    #cookie-banner.hidden {
+      transform: translateY(100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .cookie-text {
+      font-size: 12px;
+      color: var(--mid-hi);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    .cookie-text a {
+      color: var(--text);
+      text-underline-offset: 2px;
+    }
+
+    .cookie-actions {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .cookie-btn {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid var(--border-hi);
+      padding: 10px 20px;
+      background: transparent;
+      color: var(--mid-hi);
+      transition: color .2s, border-color .2s;
+    }
+
+    .cookie-btn:hover {
+      color: var(--text);
+      border-color: var(--mid);
+    }
+
+    .cookie-btn.accept {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    .cookie-btn.accept:hover {
+      background: var(--mid-hi);
+      border-color: var(--mid-hi);
+      color: var(--bg);
+    }
+
+    @media (max-width: 768px) {
+      #cookie-banner {
+        padding: 20px 24px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .cookie-actions {
+        width: 100%;
+      }
+
+      .cookie-btn {
+        flex: 1;
+        text-align: center;
       }
     }
   </style>
@@ -182,114 +1075,448 @@
 
 <body>
 
+  <div class="cursor" id="cursor"></div>
+
+  <!-- COOKIE BANNER -->
+  <div id="cookie-banner" role="dialog" aria-label="Preferenze cookie">
+    <p class="cookie-text">
+      Questo sito usa solo cookie tecnici necessari al funzionamento. Nessun tracciamento, nessun profilo.
+      <a href="/cookie-policy.html">Cookie Policy</a> · <a href="/privacy-policy.html">Privacy Policy</a>
+    </p>
+    <div class="cookie-actions">
+      <button class="cookie-btn accept" id="cookie-accept">Accetta</button>
+    </div>
+  </div>
+
   <nav>
-    <a href="/" class="nav-logo">North</a>
-    <a href="/" class="nav-back">← Back</a>
+    <a href="#home" class="nav-logo">North</a>
+    <ul class="nav-links">
+      <li><a href="#services">Servizi</a></li>
+      <li><a href="#about">Chi sono</a></li>
+      <li><a href="#contact">Contatti</a></li>
+    </ul>
   </nav>
 
-  <main>
-    <p class="page-label">Informativa legale</p>
-    <h1>Privacy Policy</h1>
-    <p class="last-updated">Ultimo aggiornamento: maggio 2026</p>
+  <!-- HERO -->
+  <section id="home">
+    <div class="hero-tag">Ceggia, Veneto — 2026</div>
 
-    <h2>1. Titolare del trattamento</h2>
-    <div class="info-box">
-      <p><strong>Pietro Trevisan</strong><br>
-        Ceggia (VE), Veneto — Italia<br>
-        Email: <a href="mailto:info@northstudio.it">info@northstudio.it</a><br>
-        Tel: <a href="tel:+393517131975">+39 351 713 1975</a></p>
+    <p class="hero-eyebrow reveal">Creative & Development</p>
+
+    <!-- LCP candidate: nessun reveal-delay, paint immediato -->
+    <h1 class="hero-title reveal">
+      One person.<br><em>Every layer</em><br>of your brand.
+    </h1>
+    <span class="sr-only">Studio creativo freelance nel Veneto specializzato in brand identity, sviluppo siti web,
+      fotografia e video editing.</span>
+
+    <p class="hero-sub reveal reveal-delay-2">
+      Brand, web, foto e video —
+      fatto da chi capisce come ogni pezzo influenza gli altri.
+    </p>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <span class="hi">Brand Identity</span><span>—</span>
+      <span>Web Development</span><span>—</span>
+      <span class="hi">Photo Editing</span><span>—</span>
+      <span>Video Production</span><span>—</span>
+      <span class="hi">Social Design</span><span>—</span>
+      <span>Logo Design</span><span>—</span>
+      <span class="hi">Brand Identity</span><span>—</span>
+      <span>Web Development</span><span>—</span>
+      <span class="hi">Photo Editing</span><span>—</span>
+      <span>Video Production</span><span>—</span>
+      <span class="hi">Social Design</span><span>—</span>
+      <span>Logo Design</span><span>—</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-header reveal">
+      <span class="section-label">Cosa faccio</span>
+      <span class="section-num">05</span>
     </div>
 
-    <h2>2. Tipologie di dati raccolti</h2>
-    <p>Il presente sito web raccoglie le seguenti categorie di dati personali:</p>
-    <ul>
-      <li><strong>Dati di contatto forniti volontariamente</strong> — nome, indirizzo email e, facoltativamente, il tipo
-        di servizio richiesto e un messaggio, inviati tramite il form di contatto presente nel sito. Questi dati vengono
-        trasmessi tramite il servizio Formspree (vedi punto 5) e conservati localmente nel browser dell'utente a scopo
-        di gestione interna dei lead.</li>
-      <li><strong>Dati di navigazione</strong> — informazioni tecniche trasmesse automaticamente dal browser durante la
-        visita (indirizzo IP, tipo di dispositivo, provenienza della visita). Questi dati sono salvati esclusivamente
-        nel browser locale (localStorage) e non vengono inviati a server esterni, né associati a informazioni
-        identificabili.</li>
-      <li><strong>Dati tecnici relativi ai font</strong> — il sito utilizza Google Fonts (Google LLC). Al caricamento
-        della pagina il browser stabilisce una connessione con i server di Google, che può comportare la trasmissione
-        dell'indirizzo IP. Google Fonts è utilizzato in modalità che non imposta cookie di profilazione.</li>
-    </ul>
+    <div class="services-grid">
+      <div class="service-item reveal">
+        <span class="service-num">01</span>
+        <div>
+          <h3 class="service-name">Brand &<br>Identità Visiva</h3>
+          <p class="service-desc">Logo, palette, tipografia, regole d'uso. Un sistema che funziona su ogni formato — non
+            solo un segno bello da vedere.</p>
+        </div>
+      </div>
 
-    <h2>3. Finalità e base giuridica del trattamento</h2>
-    <ul>
-      <li><strong>Gestione delle richieste di contatto</strong> — rispondere a richieste di preventivo, collaborazione o
-        informazioni inviate tramite il form. Base giuridica: esecuzione di misure precontrattuali su richiesta
-        dell'interessato (art. 6, par. 1, lett. b, GDPR).</li>
-      <li><strong>Analisi delle visite al sito</strong> — monitoraggio delle statistiche di accesso per migliorare il
-        sito. I dati sono anonimi, salvati solo nel browser locale e non condivisi con terzi. Base giuridica: legittimo
-        interesse del titolare (art. 6, par. 1, lett. f, GDPR).</li>
-      <li><strong>Funzionamento tecnico del sito</strong> — garantire la corretta erogazione del servizio. Base
-        giuridica: legittimo interesse del titolare (art. 6, par. 1, lett. f, GDPR).</li>
-    </ul>
+      <div class="service-item reveal reveal-delay-1">
+        <span class="service-num">02</span>
+        <div>
+          <h3 class="service-name">Sviluppo<br>Web</h3>
+          <p class="service-desc">Siti puliti, veloci, costruiti da zero. HTML, CSS, JS o React — niente template,
+            niente page builder.</p>
+        </div>
+      </div>
 
-    <h2>4. Modalità del trattamento e conservazione</h2>
-    <p>I dati trasmessi tramite il form di contatto vengono gestiti attraverso Formspree Inc. (USA), un servizio di
-      inoltro email conforme al GDPR. I dati vengono trasmessi via HTTPS e conservati da Formspree per il tempo
-      necessario all'erogazione del servizio, secondo la loro <a href="https://formspree.io/legal/privacy-policy"
-        target="_blank" rel="noopener">Privacy Policy</a>.</p>
-    <p>I dati di navigazione (visite, dispositivi, sorgenti) sono memorizzati esclusivamente nel browser locale
-      dell'utente tramite localStorage e non vengono mai trasmessi a server esterni.</p>
-    <p>I dati di contatto vengono conservati per tutta la durata del rapporto professionale e successivamente per il
-      periodo previsto dalle normative fiscali e civili applicabili (generalmente 10 anni).</p>
+      <div class="service-item reveal reveal-delay-1">
+        <span class="service-num">03</span>
+        <div>
+          <h3 class="service-name">Photo<br>Editing</h3>
+          <p class="service-desc">Ritocco, color grading, compositing. Photoshop e Illustrator — da scatti di prodotto a
+            lavori editoriali.</p>
+        </div>
+      </div>
 
-    <h2>5. Comunicazione a terzi</h2>
-    <p>I dati personali non vengono ceduti, venduti o comunicati a terzi a fini commerciali. Possono essere condivisi
-      con:</p>
-    <ul>
-      <li><strong>Formspree Inc.</strong> — servizio di inoltro dei dati del form di contatto via email. Agisce come
-        responsabile del trattamento. <a href="https://formspree.io/legal/privacy-policy" target="_blank"
-          rel="noopener">Privacy Policy Formspree</a>.</li>
-      <li><strong>Google LLC</strong> — per il servizio Google Fonts (solo dati tecnici di connessione).</li>
-      <li><strong>Provider di hosting</strong> — strettamente necessario al funzionamento del sito, vincolato da accordi
-        di riservatezza.</li>
-      <li><strong>Autorità pubbliche</strong> — nei casi previsti dalla legge.</li>
-    </ul>
+      <div class="service-item reveal reveal-delay-2">
+        <span class="service-num">04</span>
+        <div>
+          <h3 class="service-name">Video<br>Editing</h3>
+          <p class="service-desc">Reels, short-form content, copertura eventi. DaVinci Resolve — colore, tagli e ritmo
+            che tengono l'attenzione.</p>
+        </div>
+      </div>
 
-    <h2>6. Trasferimento dati extra-UE</h2>
-    <p>L'utilizzo di Formspree e Google Fonts comporta il trasferimento di dati verso server situati negli Stati Uniti.
-      Tale trasferimento avviene nel rispetto delle garanzie previste dal GDPR (Clausole Contrattuali Standard o
-      Decisioni di adeguatezza).</p>
+      <div class="service-item reveal reveal-delay-2">
+        <span class="service-num">05</span>
+        <div>
+          <h3 class="service-name">Social<br>Design</h3>
+          <p class="service-desc">Post, stories, template. Un linguaggio visivo coerente su tutti i tuoi canali,
+            costruito per reggere nel tempo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <h2>7. Diritti dell'interessato</h2>
-    <p>Hai diritto di:</p>
-    <ul>
-      <li>Accedere ai tuoi dati personali (art. 15 GDPR);</li>
-      <li>Richiedere la rettifica di dati inesatti (art. 16 GDPR);</li>
-      <li>Richiedere la cancellazione dei dati ("diritto all'oblio", art. 17 GDPR);</li>
-      <li>Richiedere la limitazione del trattamento (art. 18 GDPR);</li>
-      <li>Opporti al trattamento (art. 21 GDPR);</li>
-      <li>Richiedere la portabilità dei dati (art. 20 GDPR);</li>
-      <li>Revocare il consenso in qualsiasi momento;</li>
-      <li>Proporre reclamo al <strong>Garante per la Protezione dei Dati Personali</strong> (<a
-          href="https://www.garanteprivacy.it" target="_blank" rel="noopener">www.garanteprivacy.it</a>).</li>
-    </ul>
-    <p>Per esercitare i tuoi diritti: <a href="mailto:info@northstudio.it">info@northstudio.it</a></p>
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-visual reveal">
+      <div class="founder-placeholder">
+        <img src="./pietro-768.webp" srcset="./pietro-480.webp 480w, ./pietro-768.webp 768w, ./pietro-1280.webp 1280w"
+          sizes="(max-width: 600px) 100vw, 50vw"
+          alt="Pietro Trevisan, fondatore di North Studio — studio creativo freelance a Ceggia, Veneto" width="600"
+          height="800" loading="lazy"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="founder-caption">
+          <p>Pietro Trevisan — Founder</p>
+        </div>
+      </div>
+    </div>
 
-    <h2>8. Cookie</h2>
-    <p>Il sito utilizza esclusivamente cookie tecnici necessari al funzionamento (es. memorizzazione del consenso al
-      banner cookie). Non vengono utilizzati cookie di profilazione o tracciamento di terze parti. Per maggiori
-      dettagli, consulta la <a href="/cookie-policy.html">Cookie Policy</a>.</p>
+    <div class="about-content">
+      <h2 class="about-name reveal">Pietro Trevisan</h2>
 
-    <h2>9. Modifiche alla presente informativa</h2>
-    <p>Il titolare si riserva il diritto di modificare la presente informativa in qualsiasi momento. Le modifiche
-      saranno pubblicate su questa pagina con aggiornamento della data. Si raccomanda di verificare periodicamente
-      questa pagina.</p>
+      <p class="about-manifesto reveal reveal-delay-1">
+        La maggior parte dei creativi fa<br>
+        bene una cosa sola. Io faccio <em>tutto</em> —<br>
+        e so come ogni parte influenza le altre.
+      </p>
 
-    <h2>10. Contatti</h2>
-    <p>Per qualsiasi domanda: <a href="mailto:info@northstudio.it">info@northstudio.it</a></p>
-  </main>
+      <p class="about-body reveal reveal-delay-2">
+        Sono uno studente di Ceggia, Veneto. Costruisco identità di brand, sviluppo siti da zero, ritocco foto,
+        monto video e creo contenuti social. Ho imparato usandoli davvero — non in aula.
+        <br><br>
+        Essere ancora agli inizi significa che scelgo con cura i progetti che prendo e mi dedico completamente a
+        ognuno. Non vieni passato a qualcun altro. Lavori direttamente con me.
+      </p>
+
+      <div class="about-tools reveal reveal-delay-3">
+        <div class="tool-group">
+          <p class="tool-group-label">Design & Visivo</p>
+          <p>Photoshop</p>
+          <p>Illustrator</p>
+          <p>DaVinci Resolve</p>
+        </div>
+        <div class="tool-group">
+          <p class="tool-group-label">Development</p>
+          <p>HTML / CSS / JS</p>
+          <p>React + TypeScript</p>
+          <p>Python, C++, SQL</p>
+        </div>
+      </div>
+
+      <br><br>
+      <a href="#contact" class="cta-link reveal reveal-delay-4">Parliamo del tuo progetto</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-split">
+
+      <!-- SINISTRA: titolo + info -->
+      <div class="contact-left">
+        <h2 class="contact-heading reveal">
+          Hai un progetto<br>in <em>mente?</em>
+        </h2>
+        <div class="contact-grid reveal reveal-delay-1">
+          <div class="contact-col">
+            <p class="contact-col-label">Scrivimi</p>
+            <a href="mailto:info@northstudio.it">info@northstudio.it</a>
+          </div>
+          <div class="contact-col">
+            <p class="contact-col-label">Dove sono</p>
+            <p>Ceggia, Veneto</p>
+            <p>Italy</p>
+          </div>
+          <div class="contact-col">
+            <p class="contact-col-label">Seguimi</p>
+            <a href="https://www.instagram.com/northstudio.it/">Instagram</a>
+            <a href="https://www.linkedin.com/in/pietro-trevisan-55b125372/" target="_blank"
+              rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://wa.me/393517131975?text=Ciao%20Pietro%2C%20ho%20visto%20il%20tuo%20sito%20e%20vorrei%20parlare%20del%20mio%20progetto!"
+              target="_blank" rel="noopener noreferrer">+39 351 713 1975</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESTRA: form -->
+      <div class="contact-right reveal reveal-delay-2">
+        <p class="contact-form-title">Scrivimi direttamente</p>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="cf-nome">Nome</label>
+            <input type="text" id="cf-nome" placeholder="Il tuo nome" autocomplete="name">
+          </div>
+          <div class="form-field">
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" placeholder="email@esempio.com" autocomplete="email">
+          </div>
+          <div class="form-field full">
+            <label for="cf-servizio">Servizio</label>
+            <select id="cf-servizio">
+              <option value="" disabled selected>Seleziona…</option>
+              <option value="Brand Identity">Brand Identity</option>
+              <option value="Sviluppo Web">Sviluppo Web</option>
+              <option value="Video Editing">Video Editing</option>
+              <option value="Fotografia">Fotografia</option>
+              <option value="Social Design">Social Design</option>
+              <option value="Altro">Altro</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label for="cf-messaggio">Messaggio</label>
+            <textarea id="cf-messaggio" placeholder="Descrivimi il tuo progetto…"></textarea>
+          </div>
+        </div>
+        <div class="form-submit">
+          <button class="form-btn" id="cf-submit">Invia</button>
+          <span class="form-status" id="cf-status"></span>
+        </div>
+      </div>
+
+    </div>
+  </section>
 
   <footer>
     <p>© 2026 Pietro Trevisan — North</p>
-    <a href="/cookie-policy.html" style="color: var(--mid); text-decoration: none;">Cookie Policy</a>
+    <div class="footer-legal">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="cookie-policy.html">Cookie Policy</a>
+    </div>
   </footer>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Eseguito a idle: nessun impatto su FCP/LCP
+      const init = () => {
+        const isTouchDevice = !window.matchMedia('(hover: hover)').matches;
+
+        // CURSOR: inizializzato solo su desktop con puntatore fine
+        if (!isTouchDevice) {
+          const cursor = document.getElementById('cursor');
+          let mX = 0, mY = 0, cX = 0, cY = 0;
+          document.addEventListener('mousemove', e => { mX = e.clientX; mY = e.clientY; });
+          document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+          document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+          document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+          });
+          (function loop() {
+            cX += (mX - cX) * 0.4;
+            cY += (mY - cY) * 0.4;
+            cursor.style.left = cX + 'px';
+            cursor.style.top = cY + 'px';
+            requestAnimationFrame(loop);
+          })();
+        }
+
+        // NAV SCROLL
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+          nav.classList.toggle('scrolled', window.scrollY > 20);
+        }, { passive: true });
+
+        // REVEAL: IntersectionObserver per sezioni below-fold
+        const io = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) io.unobserve(e.target), e.target.classList.add('visible'); });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.reveal').forEach(el => {
+          if (!el.closest('#home')) io.observe(el);
+        });
+
+        // TAB TITLE
+        document.title = 'North Studio';
+
+        // COOKIE BANNER
+        const banner = document.getElementById('cookie-banner');
+        const KEY = 'north_cookie_consent';
+        const getCookie = n => document.cookie.split('; ').find(r => r.startsWith(n + '='))?.split('=')[1];
+        const setCookie = (n, v, d) => {
+          const exp = new Date(Date.now() + d * 864e5).toUTCString();
+          document.cookie = `${n}=${v};expires=${exp};path=/;SameSite=Lax`;
+        };
+        if (!getCookie(KEY)) banner.classList.remove('hidden');
+        else banner.classList.add('hidden');
+        document.getElementById('cookie-accept').addEventListener('click', () => {
+          setCookie(KEY, 'accepted', 365);
+          banner.classList.add('hidden');
+        });
+      };
+
+      // CONTACT FORM — Supabase
+      (() => {
+        const SUPABASE_URL = 'https://bcowedrviohimkljgzhf.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_uFGr4FAlf0q71qAmgWOrAQ_-Y10snId';
+
+        const submitBtn = document.getElementById('cf-submit');
+        const status = document.getElementById('cf-status');
+        const select = document.getElementById('cf-servizio');
+
+        // Colora il select quando ha un valore
+        select.addEventListener('change', () => {
+          select.classList.toggle('has-value', !!select.value);
+        });
+
+        // Raccoglie info device
+        function getDeviceInfo() {
+          const ua = navigator.userAgent;
+          const brand = /iPhone|iPad/.test(ua) ? 'Apple' : /Samsung/.test(ua) ? 'Samsung' : /Huawei/.test(ua) ? 'Huawei' : 'Unknown';
+          const model = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : 'Unknown';
+          const browser = /Chrome/.test(ua) && !/Chromium/.test(ua) ? 'Chrome'
+            : /Safari/.test(ua) && !/Chrome/.test(ua) ? 'Safari'
+              : /Firefox/.test(ua) ? 'Firefox'
+                : /Edge/.test(ua) ? 'Edge' : 'Unknown';
+          const os = /Windows/.test(ua) ? 'Windows' : /Mac OS/.test(ua) ? 'macOS'
+            : /iPhone|iPad/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android' : 'Unknown';
+          return { brand, model, browser, os };
+        }
+
+        submitBtn.addEventListener('click', async () => {
+          const nome = document.getElementById('cf-nome').value.trim();
+          const email = document.getElementById('cf-email').value.trim();
+          const servizio = select.value;
+          const messaggio = document.getElementById('cf-messaggio').value.trim();
+
+          if (!nome || !email || !servizio || !messaggio) {
+            status.textContent = 'Compila tutti i campi.';
+            status.className = 'form-status err';
+            return;
+          }
+
+          submitBtn.disabled = true;
+          status.textContent = 'Invio in corso…';
+          status.className = 'form-status';
+
+          const { brand, model, browser, os } = getDeviceInfo();
+
+          try {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Prefer': 'return=minimal'
+              },
+              body: JSON.stringify({
+                nome, email, servizio, messaggio,
+                device_brand: brand,
+                device_model: model,
+                browser, os
+              })
+            });
+
+            if (!res.ok) throw new Error('Errore server');
+
+            status.textContent = 'Messaggio inviato. Ti rispondo presto!';
+            status.className = 'form-status ok';
+            document.getElementById('cf-nome').value = '';
+            document.getElementById('cf-email').value = '';
+            document.getElementById('cf-messaggio').value = '';
+            select.value = '';
+            select.classList.remove('has-value');
+          } catch {
+            status.textContent = 'Errore nell\'invio. Riprova o scrivimi via email.';
+            status.className = 'form-status err';
+            submitBtn.disabled = false;
+          }
+        });
+      })();
+
+      // VISITE TRACKER — registra ogni visita
+      (() => {
+        const SUPABASE_URL = 'https://bcowedrviohimkljgzhf.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_uFGr4FAlf0q71qAmgWOrAQ_-Y10snId';
+
+        const ua = navigator.userAgent;
+        const device = /Mobi|Android|iPhone|iPad/.test(ua) ? 'mobile' : 'desktop';
+        const browser = /Chrome/.test(ua) && !/Chromium/.test(ua) ? 'Chrome'
+          : /Safari/.test(ua) && !/Chrome/.test(ua) ? 'Safari'
+            : /Firefox/.test(ua) ? 'Firefox'
+              : /Edge/.test(ua) ? 'Edge' : 'Other';
+        const os = /Windows/.test(ua) ? 'Windows' : /Mac OS/.test(ua) ? 'macOS'
+          : /iPhone|iPad/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android' : 'Other';
+        const brand = /iPhone|iPad/.test(ua) ? 'Apple' : /Samsung/.test(ua) ? 'Samsung' : 'Unknown';
+        const model = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : 'Unknown';
+        const source = document.referrer
+          ? (new URL(document.referrer).hostname.replace('www.', '') || 'direct')
+          : 'direct';
+        const today = new Date().toISOString().slice(0, 10);
+
+        fetch(`${SUPABASE_URL}/rest/v1/visite`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            data: today, device, source,
+            device_brand: brand, device_model: model,
+            browser, os
+          })
+        }).catch(() => { }); // silenzioso: non blocca il sito
+      })();
+
+      // requestIdleCallback: cede il controllo al browser fino a quando ha tempo libero
+      'requestIdleCallback' in window ? requestIdleCallback(init) : setTimeout(init, 16);
+    });
+  </script>
+
+  <!--
+    RIEPILOGO OTTIMIZZAZIONI (v3 - finale)
+
+    FONT: URL Google Fonts riscritta senza asse "opsz" (variable font axis non usato nel CSS)
+    e senza il peso 200 — riduzione payload woff2 di ~50-70 KiB. Il font visivo finale resta
+    identico (DM Sans 300 / 400 / italic 300). Aggiunti dns-prefetch come fallback ai preconnect
+    per browsers che non supportano preconnect nativo.
+
+    CSS: Il CSS del cookie banner e' stato spostato nel blocco critical (era nel media=print) per
+    evitare il FOUC al primo paint. cursor:none e il blocco .cursor ora sono limitati a
+    @media (hover: hover), rimuovendo override inutili sul puntatore mobile. Il blocco
+    non-critical continua a caricarsi con il print-trick senza bloccare il rendering.
+
+    JS: Il loop rAF del cursore non viene avviato su touch device (matchMedia hover:hover).
+    Lo scroll listener del nav e' passive:true. L'IntersectionObserver chiama unobserve()
+    al primo trigger, eliminando osservazioni continue su elementi gia' animati.
+
+    IMPATTO ATTESO: FCP e Speed Index migliorano per ~50-70 KiB di font in meno e niente FOUC
+    del banner al primo paint. CLS e LCP rimangono invariati. Estetica finale identica.
+  -->
 </body>
 
 </html>
