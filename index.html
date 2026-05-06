@@ -394,23 +394,22 @@
     @media (hover: hover) {
       .cursor {
         position: fixed;
-        width: 9px;
-        height: 9px;
-        background: var(--text);
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        border: 1.5px solid var(--text);
         border-radius: 50%;
         pointer-events: none;
         z-index: 9999;
         transform: translate(-50%, -50%);
-        transition: width .2s var(--easing), height .2s var(--easing), background .2s, border .2s;
-        box-shadow: 0 0 0 1px rgba(22, 22, 22, 0.5);
+        transition: width .35s var(--easing), height .35s var(--easing), opacity .3s, border-color .2s, background .2s;
       }
 
       .cursor.hover {
-        width: 32px;
-        height: 32px;
-        background: transparent;
+        width: 44px;
+        height: 44px;
+        background: rgba(232, 228, 220, 0.08);
         border: 1px solid var(--text);
-        box-shadow: none;
       }
     }
 
@@ -1265,7 +1264,8 @@
             <a href="https://www.instagram.com/northstudio.it/">Instagram</a>
             <a href="https://www.linkedin.com/in/pietro-trevisan-55b125372/" target="_blank"
               rel="noopener noreferrer">LinkedIn</a>
-            <a href="tel:+393517131975">+39 351 713 1975</a>
+            <a href="https://wa.me/393517131975?text=Ciao%20Pietro%2C%20ho%20visto%20il%20tuo%20sito%20e%20vorrei%20parlare%20del%20mio%20progetto!"
+              target="_blank" rel="noopener noreferrer">+39 351 713 1975</a>
           </div>
         </div>
       </div>
@@ -1334,8 +1334,8 @@
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
           });
           (function loop() {
-            cX += (mX - cX) * 0.4;
-            cY += (mY - cY) * 0.4;
+            cX += (mX - cX) * 0.12;
+            cY += (mY - cY) * 0.12;
             cursor.style.left = cX + 'px';
             cursor.style.top = cY + 'px';
             requestAnimationFrame(loop);
@@ -1495,6 +1495,7 @@
       'requestIdleCallback' in window ? requestIdleCallback(init) : setTimeout(init, 16);
     });
   </script>
+
 
 </body>
 
