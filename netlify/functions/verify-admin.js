@@ -1,8 +1,3 @@
-// netlify/functions/verify-admin.js
-// Usa crypto built-in di Node — zero dipendenze esterne
-// Su Netlify → Environment variables imposta:
-// ADMIN_PASSWORD_HASH = hash SHA-256 della tua password (vedi sotto come generarlo)
-
 const crypto = require("crypto");
 
 exports.handler = async (event) => {
