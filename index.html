@@ -1848,6 +1848,13 @@
 
           const { brand, model, browser, os } = getDeviceInfo();
 
+          // Rileva IP pubblico (silenzioso se fallisce)
+          let ip_address = null;
+          try {
+            const ipRes = await fetch('https://api.ipify.org?format=json');
+            ip_address = (await ipRes.json()).ip || null;
+          } catch { /* silenzioso */ }
+
           try {
             const res = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
               method: 'POST',
@@ -1861,7 +1868,7 @@
                 nome, email, servizio, messaggio,
                 device_brand: brand,
                 device_model: model,
-                browser, os
+                browser, os, ip_address
               })
             });
 
@@ -1902,20 +1909,26 @@
           : 'direct';
         const today = new Date().toISOString().slice(0, 10);
 
-        fetch(`${SUPABASE_URL}/rest/v1/visite`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_ANON_KEY,
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({
-            data: today, device, source,
-            device_brand: brand, device_model: model,
-            browser, os
-          })
-        }).catch(() => { }); // silenzioso: non blocca il sito
+        // Rileva IP pubblico poi registra visita
+        fetch('https://api.ipify.org?format=json')
+          .then(r => r.json())
+          .catch(() => ({ ip: null }))
+          .then(({ ip }) => {
+            fetch(`${SUPABASE_URL}/rest/v1/visite`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Prefer': 'return=minimal'
+              },
+              body: JSON.stringify({
+                data: today, device, source,
+                device_brand: brand, device_model: model,
+                browser, os, ip_address: ip
+              })
+            }).catch(() => { });
+          }); // silenzioso: non blocca il sito
       })();
 
       // requestIdleCallback: cede il controllo al browser fino a quando ha tempo libero
