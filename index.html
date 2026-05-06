@@ -622,6 +622,146 @@
       border-color: var(--text);
     }
 
+    /* CONTACT SPLIT LAYOUT */
+    .contact-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      align-items: start;
+    }
+
+    .contact-left {
+      padding-right: 64px;
+      border-right: 1px solid var(--border);
+    }
+
+    .contact-right {
+      padding-left: 64px;
+    }
+
+    .contact-form-title {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-field label {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 13px;
+      outline: none;
+      transition: border-color .25s;
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: var(--mid);
+    }
+
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      border-color: rgba(232, 228, 220, 0.32);
+    }
+
+    .form-field select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666460' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      color: var(--mid);
+    }
+
+    .form-field select.has-value {
+      color: var(--text);
+    }
+
+    .form-field textarea {
+      resize: vertical;
+      min-height: 78px;
+    }
+
+    .form-submit {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .form-btn {
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      border-radius: 6px;
+      padding: 10px 24px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color .25s, background .25s;
+    }
+
+    .form-btn:hover {
+      border-color: var(--text);
+      background: rgba(232, 228, 220, 0.05);
+    }
+
+    .form-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .form-status {
+      font-size: 12px;
+      color: var(--mid);
+      transition: color .3s;
+    }
+
+    .form-status.ok {
+      color: #4ade80;
+    }
+
+    .form-status.err {
+      color: #f87171;
+    }
+
     /* CONTACT */
     #contact {
       padding: 120px 48px 80px;
@@ -761,6 +901,26 @@
 
       .contact-col::after {
         display: none;
+      }
+
+      .contact-split {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-left {
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 48px;
+        margin-bottom: 48px;
+      }
+
+      .contact-right {
+        padding-left: 0;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
       }
 
       .about-tools {
@@ -1083,27 +1243,68 @@
 
   <!-- CONTACT -->
   <section id="contact">
-    <h2 class="contact-heading reveal">
-      Have a project<br>in <em>mind?</em>
-    </h2>
+    <div class="contact-split">
 
-    <div class="contact-grid reveal reveal-delay-1">
-      <div class="contact-col">
-        <p class="contact-col-label">Write me</p>
-        <a href="mailto:info@northstudio.it">info@northstudio.it</a>
+      <!-- SINISTRA: titolo + info -->
+      <div class="contact-left">
+        <h2 class="contact-heading reveal">
+          Have a project<br>in <em>mind?</em>
+        </h2>
+        <div class="contact-grid reveal reveal-delay-1">
+          <div class="contact-col">
+            <p class="contact-col-label">Write me</p>
+            <a href="mailto:info@northstudio.it">info@northstudio.it</a>
+          </div>
+          <div class="contact-col">
+            <p class="contact-col-label">Based in</p>
+            <p>Ceggia, Veneto</p>
+            <p>Italy</p>
+          </div>
+          <div class="contact-col">
+            <p class="contact-col-label">Follow</p>
+            <a href="https://www.instagram.com/northstudio.it/">Instagram</a>
+            <a href="https://www.linkedin.com/in/pietro-trevisan-55b125372/" target="_blank"
+              rel="noopener noreferrer">LinkedIn</a>
+            <a href="tel:+393517131975">+39 351 713 1975</a>
+          </div>
+        </div>
       </div>
-      <div class="contact-col">
-        <p class="contact-col-label">Based in</p>
-        <p>Ceggia, Veneto</p>
-        <p>Italy</p>
+
+      <!-- DESTRA: form -->
+      <div class="contact-right reveal reveal-delay-2">
+        <p class="contact-form-title">Scrivimi direttamente</p>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="cf-nome">Nome</label>
+            <input type="text" id="cf-nome" placeholder="Il tuo nome" autocomplete="name">
+          </div>
+          <div class="form-field">
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" placeholder="email@esempio.com" autocomplete="email">
+          </div>
+          <div class="form-field full">
+            <label for="cf-servizio">Servizio</label>
+            <select id="cf-servizio">
+              <option value="" disabled selected>Seleziona…</option>
+              <option value="Brand Identity">Brand Identity</option>
+              <option value="Sviluppo Web">Sviluppo Web</option>
+              <option value="Video Editing">Video Editing</option>
+              <option value="Fotografia">Fotografia</option>
+              <option value="Social Design">Social Design</option>
+              <option value="Altro">Altro</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label for="cf-messaggio">Messaggio</label>
+            <textarea id="cf-messaggio" placeholder="Descrivimi il tuo progetto…"></textarea>
+          </div>
+        </div>
+        <div class="form-submit">
+          <button class="form-btn" id="cf-submit">Invia</button>
+          <span class="form-status" id="cf-status"></span>
+        </div>
       </div>
-      <div class="contact-col">
-        <p class="contact-col-label">Follow</p>
-        <a href="https://www.instagram.com/northstudio.it/">Instagram</a>
-        <a href="https://www.linkedin.com/in/pietro-trevisan-55b125372/" target="_blank"
-          rel="noopener noreferrer">LinkedIn</a>
-        <a href="tel:+393517131975">+39 351 713 1975</a>
-      </div>
+
     </div>
   </section>
 
@@ -1173,6 +1374,122 @@
           banner.classList.add('hidden');
         });
       };
+
+      // CONTACT FORM — Supabase
+      (() => {
+        const SUPABASE_URL = 'https://bcowedrviohimkljgzhf.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_uFGr4FAlf0q71qAmgWOrAQ_-Y10snId';
+
+        const submitBtn = document.getElementById('cf-submit');
+        const status = document.getElementById('cf-status');
+        const select = document.getElementById('cf-servizio');
+
+        // Colora il select quando ha un valore
+        select.addEventListener('change', () => {
+          select.classList.toggle('has-value', !!select.value);
+        });
+
+        // Raccoglie info device
+        function getDeviceInfo() {
+          const ua = navigator.userAgent;
+          const brand = /iPhone|iPad/.test(ua) ? 'Apple' : /Samsung/.test(ua) ? 'Samsung' : /Huawei/.test(ua) ? 'Huawei' : 'Unknown';
+          const model = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : 'Unknown';
+          const browser = /Chrome/.test(ua) && !/Chromium/.test(ua) ? 'Chrome'
+            : /Safari/.test(ua) && !/Chrome/.test(ua) ? 'Safari'
+              : /Firefox/.test(ua) ? 'Firefox'
+                : /Edge/.test(ua) ? 'Edge' : 'Unknown';
+          const os = /Windows/.test(ua) ? 'Windows' : /Mac OS/.test(ua) ? 'macOS'
+            : /iPhone|iPad/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android' : 'Unknown';
+          return { brand, model, browser, os };
+        }
+
+        submitBtn.addEventListener('click', async () => {
+          const nome = document.getElementById('cf-nome').value.trim();
+          const email = document.getElementById('cf-email').value.trim();
+          const servizio = select.value;
+          const messaggio = document.getElementById('cf-messaggio').value.trim();
+
+          if (!nome || !email || !servizio || !messaggio) {
+            status.textContent = 'Compila tutti i campi.';
+            status.className = 'form-status err';
+            return;
+          }
+
+          submitBtn.disabled = true;
+          status.textContent = 'Invio in corso…';
+          status.className = 'form-status';
+
+          const { brand, model, browser, os } = getDeviceInfo();
+
+          try {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Prefer': 'return=minimal'
+              },
+              body: JSON.stringify({
+                nome, email, servizio, messaggio,
+                device_brand: brand,
+                device_model: model,
+                browser, os
+              })
+            });
+
+            if (!res.ok) throw new Error('Errore server');
+
+            status.textContent = 'Messaggio inviato. Ti rispondo presto!';
+            status.className = 'form-status ok';
+            document.getElementById('cf-nome').value = '';
+            document.getElementById('cf-email').value = '';
+            document.getElementById('cf-messaggio').value = '';
+            select.value = '';
+            select.classList.remove('has-value');
+          } catch {
+            status.textContent = 'Errore nell\'invio. Riprova o scrivimi via email.';
+            status.className = 'form-status err';
+            submitBtn.disabled = false;
+          }
+        });
+      })();
+
+      // VISITE TRACKER — registra ogni visita
+      (() => {
+        const SUPABASE_URL = 'https://bcowedrviohimkljgzhf.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_uFGr4FAlf0q71qAmgWOrAQ_-Y10snId';
+
+        const ua = navigator.userAgent;
+        const device = /Mobi|Android|iPhone|iPad/.test(ua) ? 'mobile' : 'desktop';
+        const browser = /Chrome/.test(ua) && !/Chromium/.test(ua) ? 'Chrome'
+          : /Safari/.test(ua) && !/Chrome/.test(ua) ? 'Safari'
+            : /Firefox/.test(ua) ? 'Firefox'
+              : /Edge/.test(ua) ? 'Edge' : 'Other';
+        const os = /Windows/.test(ua) ? 'Windows' : /Mac OS/.test(ua) ? 'macOS'
+          : /iPhone|iPad/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android' : 'Other';
+        const brand = /iPhone|iPad/.test(ua) ? 'Apple' : /Samsung/.test(ua) ? 'Samsung' : 'Unknown';
+        const model = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : 'Unknown';
+        const source = document.referrer
+          ? (new URL(document.referrer).hostname.replace('www.', '') || 'direct')
+          : 'direct';
+        const today = new Date().toISOString().slice(0, 10);
+
+        fetch(`${SUPABASE_URL}/rest/v1/visite`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            data: today, device, source,
+            device_brand: brand, device_model: model,
+            browser, os
+          })
+        }).catch(() => { }); // silenzioso: non blocca il sito
+      })();
 
       // requestIdleCallback: cede il controllo al browser fino a quando ha tempo libero
       'requestIdleCallback' in window ? requestIdleCallback(init) : setTimeout(init, 16);

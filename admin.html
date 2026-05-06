@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>North Studio — Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="./defi.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap"
+    media="print" onload="this.media='all'">
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #161616;
+      --bg-raised: #1f1f1f;
+      --bg-card: #222222;
+      --text: #e8e4dc;
+      --mid: #666460;
+      --mid-hi: #8a8680;
+      --border: rgba(232, 228, 220, 0.08);
+      --border-hi: rgba(232, 228, 220, 0.14);
+      --accent: #e8e4dc;
+      --green: #4ade80;
+      --red: #f87171;
+      --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --easing: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ─── LOGIN SCREEN ─── */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .login-logo {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 48px;
+    }
+
+    .login-title {
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .login-sub {
+      font-size: 13px;
+      color: var(--mid);
+      margin-bottom: 40px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .field label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .field input {
+      background: var(--bg-raised);
+      border: 1px solid var(--border-hi);
+      border-radius: 6px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15px;
+      outline: none;
+      transition: border-color .2s;
+      width: 100%;
+    }
+
+    .field input:focus {
+      border-color: rgba(232, 228, 220, 0.35);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity .2s;
+      margin-top: 8px;
+    }
+
+    .login-btn:hover {
+      opacity: 0.88;
+    }
+
+    .login-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .login-error {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--red);
+      text-align: center;
+      min-height: 18px;
+    }
+
+    /* ─── DASHBOARD ─── */
+    #dashboard {
+      display: none;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(22, 22, 22, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-logo {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid-hi);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .header-badge {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid);
+      background: var(--bg-raised);
+      border: 1px solid var(--border-hi);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .logout-btn {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color .2s;
+      font-family: var(--font);
+    }
+
+    .logout-btn:hover {
+      color: var(--text);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 56px 48px;
+    }
+
+    .page-title {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .page-title em {
+      font-style: italic;
+      font-weight: 200;
+    }
+
+    .page-sub {
+      font-size: 13px;
+      color: var(--mid);
+      margin-bottom: 56px;
+    }
+
+    /* ─── STAT CARDS ─── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      padding: 28px 24px;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 12px;
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: 200;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-sub {
+      font-size: 12px;
+      color: var(--mid);
+      margin-top: 6px;
+    }
+
+    /* ─── CHARTS ROW ─── */
+    .charts-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px;
+    }
+
+    .chart-title {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 24px;
+    }
+
+    /* Bar chart visite */
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 120px;
+    }
+
+    .bar-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .bar {
+      width: 100%;
+      background: rgba(232, 228, 220, 0.12);
+      border-radius: 3px 3px 0 0;
+      transition: background .2s;
+      position: relative;
+      min-height: 2px;
+    }
+
+    .bar:hover {
+      background: rgba(232, 228, 220, 0.28);
+    }
+
+    .bar-tooltip {
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-raised);
+      border: 1px solid var(--border-hi);
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 11px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .15s;
+    }
+
+    .bar-wrap:hover .bar-tooltip {
+      opacity: 1;
+    }
+
+    .bar-label {
+      font-size: 9px;
+      color: var(--mid);
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+
+    /* Donut / pie breakdown */
+    .breakdown-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .breakdown-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .breakdown-label {
+      font-size: 12px;
+      color: var(--mid-hi);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .breakdown-bar-wrap {
+      flex: 2;
+      height: 4px;
+      background: var(--border-hi);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .breakdown-bar-fill {
+      height: 100%;
+      background: var(--text);
+      border-radius: 2px;
+      opacity: 0.5;
+      transition: width .6s var(--easing);
+    }
+
+    .breakdown-count {
+      font-size: 12px;
+      color: var(--mid);
+      min-width: 28px;
+      text-align: right;
+    }
+
+    /* ─── LEADS TABLE ─── */
+    .section-title {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 20px;
+    }
+
+    .table-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      text-align: left;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 400;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: rgba(232, 228, 220, 0.03);
+    }
+
+    tbody td {
+      padding: 14px 20px;
+      font-size: 13px;
+      color: var(--mid-hi);
+      vertical-align: top;
+      max-width: 200px;
+    }
+
+    td.primary {
+      color: var(--text);
+    }
+
+    td.msg {
+      font-size: 12px;
+      color: var(--mid);
+      max-width: 260px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      background: var(--bg-raised);
+      border: 1px solid var(--border-hi);
+      color: var(--mid-hi);
+      white-space: nowrap;
+    }
+
+    .empty-row td {
+      text-align: center;
+      padding: 48px;
+      color: var(--mid);
+      font-size: 13px;
+    }
+
+    /* Loading skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, var(--bg-raised) 25%, rgba(232, 228, 220, 0.04) 50%, var(--bg-raised) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 4px;
+      height: 14px;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    .refresh-btn {
+      background: none;
+      border: 1px solid var(--border-hi);
+      border-radius: 6px;
+      color: var(--mid-hi);
+      font-family: var(--font);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all .2s;
+      margin-bottom: 20px;
+    }
+
+    .refresh-btn:hover {
+      border-color: var(--text);
+      color: var(--text);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 0 24px;
+      }
+
+      main {
+        padding: 40px 24px;
+      }
+
+      .charts-row {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      thead th:nth-child(n+4),
+      tbody td:nth-child(n+4) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══ LOGIN ═══ -->
+  <div id="login-screen">
+    <div class="login-box">
+      <p class="login-logo">North Studio</p>
+      <h1 class="login-title">Area <em>admin</em></h1>
+      <p class="login-sub">Accesso riservato. Inserisci la password.</p>
+
+      <div class="field">
+        <label for="pwd-input">Password</label>
+        <input type="password" id="pwd-input" autocomplete="current-password" placeholder="••••••••">
+      </div>
+
+      <button class="login-btn" id="login-btn">Accedi</button>
+      <p class="login-error" id="login-error"></p>
+    </div>
+  </div>
+
+  <!-- ═══ DASHBOARD ═══ -->
+  <div id="dashboard">
+    <header>
+      <span class="header-logo">North Studio</span>
+      <div class="header-right">
+        <span class="header-badge">Admin</span>
+        <button class="logout-btn" id="logout-btn">Logout</button>
+      </div>
+    </header>
+
+    <main>
+      <h1 class="page-title">Analytics <em>overview</em></h1>
+      <p class="page-sub" id="last-updated">Caricamento dati in corso…</p>
+
+      <!-- STAT CARDS -->
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card">
+          <p class="stat-label">Visite totali</p>
+          <p class="stat-value" id="stat-visite">—</p>
+          <p class="stat-sub">dal primo accesso</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">Visite oggi</p>
+          <p class="stat-value" id="stat-oggi">—</p>
+          <p class="stat-sub" id="stat-oggi-data">—</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">Visite (7 gg)</p>
+          <p class="stat-value" id="stat-7gg">—</p>
+          <p class="stat-sub">ultimi 7 giorni</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">Lead ricevuti</p>
+          <p class="stat-value" id="stat-leads">—</p>
+          <p class="stat-sub">form di contatto</p>
+        </div>
+      </div>
+
+      <!-- CHARTS -->
+      <div class="charts-row">
+        <!-- Bar chart ultime 2 settimane -->
+        <div class="chart-card">
+          <p class="chart-title">Visite — ultimi 14 giorni</p>
+          <div class="bar-chart" id="bar-chart">
+            <!-- populated by JS -->
+          </div>
+        </div>
+
+        <!-- Device breakdown -->
+        <div class="chart-card">
+          <p class="chart-title">Device</p>
+          <div class="breakdown-list" id="device-breakdown"></div>
+        </div>
+      </div>
+
+      <!-- Source breakdown -->
+      <div class="chart-card" style="margin-bottom: 48px;">
+        <p class="chart-title">Sorgenti traffico</p>
+        <div class="breakdown-list" id="source-breakdown"></div>
+      </div>
+
+      <!-- LEADS TABLE -->
+      <p class="section-title">Lead ricevuti</p>
+      <button class="refresh-btn" id="refresh-btn">↻ Aggiorna</button>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Servizio</th>
+              <th>Messaggio</th>
+              <th>Device</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody id="leads-tbody">
+            <tr class="empty-row">
+              <td colspan="6">Caricamento…</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ══════════════════════════════════════════════
+    // CONFIG — sostituisci con i tuoi valori Supabase
+    // (questi sono pubblici: anon key è safe lato client)
+    // ══════════════════════════════════════════════
+    const SUPABASE_URL = 'https://bcowedrviohimkljgzhf.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_uFGr4FAlf0q71qAmgWOrAQ_-Y10snId';
+
+    // ── AUTH ──────────────────────────────────────
+    const SESSION_KEY = 'ns_admin_auth';
+
+    async function verifyPassword(pwd) {
+      try {
+        const res = await fetch('/.netlify/functions/verify-admin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pwd })
+        });
+        const data = await res.json();
+        return data.ok === true;
+      } catch {
+        return false;
+      }
+    }
+
+    function setSession() {
+      // Token di sessione locale (non contiene la password)
+      sessionStorage.setItem(SESSION_KEY, '1');
+    }
+
+    function hasSession() {
+      return sessionStorage.getItem(SESSION_KEY) === '1';
+    }
+
+    function clearSession() {
+      sessionStorage.removeItem(SESSION_KEY);
+    }
+
+    function showDashboard() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      loadDashboard();
+    }
+
+    function showLogin() {
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('login-screen').style.display = 'flex';
+    }
+
+    // Login form
+    const loginBtn = document.getElementById('login-btn');
+    const pwdInput = document.getElementById('pwd-input');
+    const loginError = document.getElementById('login-error');
+
+    async function handleLogin() {
+      const pwd = pwdInput.value.trim();
+      if (!pwd) return;
+
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Verifica…';
+      loginError.textContent = '';
+
+      const ok = await verifyPassword(pwd);
+
+      if (ok) {
+        setSession();
+        showDashboard();
+      } else {
+        loginError.textContent = 'Password errata.';
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Accedi';
+        pwdInput.focus();
+      }
+    }
+
+    loginBtn.addEventListener('click', handleLogin);
+    pwdInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      clearSession();
+      showLogin();
+    });
+
+    document.getElementById('refresh-btn').addEventListener('click', loadDashboard);
+
+    // Controlla se sessione già attiva
+    if (hasSession()) showDashboard();
+
+    // ── SUPABASE FETCH ─────────────────────────────
+    async function supabaseFetch(table, params = '') {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        }
+      });
+      if (!res.ok) throw new Error(`Supabase error: ${res.status}`);
+      return res.json();
+    }
+
+    // ── DASHBOARD ──────────────────────────────────
+    async function loadDashboard() {
+      try {
+        const [visite, leads] = await Promise.all([
+          supabaseFetch('visite', 'select=*&order=created_at.desc'),
+          supabaseFetch('leads', 'select=*&order=created_at.desc')
+        ]);
+
+        const today = new Date().toISOString().slice(0, 10);
+        const sevenDaysAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+
+        const visitaOggi = visite.filter(v => v.data === today).length;
+        const visite7gg = visite.filter(v => v.data >= sevenDaysAgo).length;
+
+        document.getElementById('stat-visite').textContent = visite.length;
+        document.getElementById('stat-oggi').textContent = visitaOggi;
+        document.getElementById('stat-oggi-data').textContent = new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
+        document.getElementById('stat-7gg').textContent = visite7gg;
+        document.getElementById('stat-leads').textContent = leads.length;
+        document.getElementById('last-updated').textContent = 'Aggiornato: ' + new Date().toLocaleTimeString('it-IT');
+
+        renderBarChart(visite);
+        renderBreakdown('device-breakdown', visite, 'device');
+        renderBreakdown('source-breakdown', visite, 'source');
+        renderLeads(leads);
+
+      } catch (err) {
+        document.getElementById('last-updated').textContent = 'Errore nel caricamento dati.';
+        console.error(err);
+      }
+    }
+
+    function renderBarChart(visite) {
+      const container = document.getElementById('bar-chart');
+      container.innerHTML = '';
+
+      // Ultimi 14 giorni
+      const days = [];
+      for (let i = 13; i >= 0; i--) {
+        const d = new Date(Date.now() - i * 86400000);
+        days.push(d.toISOString().slice(0, 10));
+      }
+
+      const counts = days.map(d => visite.filter(v => v.data === d).length);
+      const max = Math.max(...counts, 1);
+
+      days.forEach((day, i) => {
+        const count = counts[i];
+        const pct = Math.round((count / max) * 100);
+        const label = new Date(day + 'T00:00:00').toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
+
+        const wrap = document.createElement('div');
+        wrap.className = 'bar-wrap';
+
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.height = Math.max(pct, 2) + '%';
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'bar-tooltip';
+        tooltip.textContent = `${count} visite`;
+        bar.appendChild(tooltip);
+
+        const lbl = document.createElement('div');
+        lbl.className = 'bar-label';
+        lbl.textContent = label.split(' ')[0]; // solo il numero
+
+        wrap.appendChild(bar);
+        wrap.appendChild(lbl);
+        container.appendChild(wrap);
+      });
+    }
+
+    function renderBreakdown(containerId, data, field) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      const counts = {};
+      data.forEach(v => {
+        const key = v[field] || 'Sconosciuto';
+        counts[key] = (counts[key] || 0) + 1;
+      });
+
+      const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      const total = data.length || 1;
+      const top = sorted.slice(0, 6);
+
+      if (top.length === 0) {
+        container.innerHTML = '<p style="font-size:12px;color:var(--mid)">Nessun dato</p>';
+        return;
+      }
+
+      top.forEach(([label, count]) => {
+        const pct = Math.round((count / total) * 100);
+        const item = document.createElement('div');
+        item.className = 'breakdown-item';
+        item.innerHTML = `
+          <span class="breakdown-label">${label}</span>
+          <div class="breakdown-bar-wrap">
+            <div class="breakdown-bar-fill" style="width: ${pct}%"></div>
+          </div>
+          <span class="breakdown-count">${count}</span>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderLeads(leads) {
+      const tbody = document.getElementById('leads-tbody');
+      tbody.innerHTML = '';
+
+      if (leads.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Nessun lead ancora</td></tr>';
+        return;
+      }
+
+      leads.forEach(l => {
+        const tr = document.createElement('tr');
+        const date = l.created_at
+          ? new Date(l.created_at).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit' })
+          : '—';
+
+        tr.innerHTML = `
+          <td class="primary">${esc(l.nome || '—')}</td>
+          <td><a href="mailto:${esc(l.email || '')}" style="color:var(--mid-hi);text-decoration:none">${esc(l.email || '—')}</a></td>
+          <td><span class="badge">${esc(l.servizio || '—')}</span></td>
+          <td class="msg" title="${esc(l.messaggio || '')}">${esc(l.messaggio || '—')}</td>
+          <td style="font-size:12px;color:var(--mid)">${esc(l.browser || '')} · ${esc(l.os || '')}${l.device_brand ? ' · ' + esc(l.device_brand) : ''}</td>
+          <td style="font-size:12px;color:var(--mid);white-space:nowrap">${date}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function esc(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+  </script>
+
+</body>
+
+</html>
