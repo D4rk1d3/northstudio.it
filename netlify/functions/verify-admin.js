@@ -1,9 +1,9 @@
 // netlify/functions/verify-admin.js
-// La password vera è in Netlify → Site configuration → Environment variables
-// come ADMIN_PASSWORD_HASH (bcrypt hash della tua password)
-// Genera l'hash con: node -e "require('bcryptjs').hash('TUAPASSWORD', 10).then(console.log)"
+// Usa crypto built-in di Node — zero dipendenze esterne
+// Su Netlify → Environment variables imposta:
+// ADMIN_PASSWORD_HASH = hash SHA-256 della tua password (vedi sotto come generarlo)
 
-const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
@@ -15,7 +15,7 @@ exports.handler = async (event) => {
   if (!password) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ ok: false, error: "Missing password" }),
+      body: JSON.stringify({ ok: false }),
     };
   }
 
@@ -28,7 +28,8 @@ exports.handler = async (event) => {
     };
   }
 
-  const match = await bcrypt.compare(password, hash);
+  const inputHash = crypto.createHash("sha256").update(password).digest("hex");
+  const match = inputHash === hash;
 
   return {
     statusCode: 200,
