@@ -513,10 +513,13 @@
 
     .about-visual {
       position: relative;
+      display: flex;
+      justify-content: center;
     }
 
     .founder-placeholder {
       width: 100%;
+      max-width: 520px;
       aspect-ratio: 3/4;
       background: var(--bg-raised);
       display: flex;
@@ -760,6 +763,339 @@
 
     .form-status.err {
       color: #f87171;
+    }
+
+    /* PORTFOLIO */
+    #portfolio {
+      padding: 120px 48px;
+      border-top: 1px solid var(--border);
+      min-height: auto;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 1px auto 1200px;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .portfolio-item {
+      border-bottom: 1px solid var(--border);
+      padding: 56px 0;
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 0 28px;
+      align-items: start;
+      contain: layout style;
+      will-change: opacity, transform;
+      position: relative;
+    }
+
+    .portfolio-item:nth-child(odd) {
+      padding-right: 60px;
+      border-right: 1px solid var(--border);
+    }
+
+    .portfolio-item:nth-child(even) {
+      padding-left: 60px;
+    }
+
+    .portfolio-num {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--mid);
+      padding-top: 5px;
+    }
+
+    .portfolio-item-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .portfolio-tag {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 14px;
+    }
+
+    .portfolio-title {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.4vw, 32px);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .portfolio-desc {
+      font-size: 13px;
+      color: var(--mid-hi);
+      line-height: 1.75;
+      max-width: 300px;
+      margin-bottom: 28px;
+    }
+
+    .portfolio-img-wrap {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-top: 4px;
+      position: relative;
+    }
+
+    .portfolio-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      transition: transform .6s var(--easing);
+      padding: 24px;
+    }
+
+    .portfolio-item:hover .portfolio-img-wrap img {
+      transform: scale(1.03);
+    }
+
+    .portfolio-img-wrap.dark-bg {
+      background: #111;
+    }
+
+    .portfolio-img-wrap.cover img {
+      object-fit: cover;
+      padding: 0;
+    }
+
+    .portfolio-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .portfolio-chip {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid);
+      border: 1px solid var(--border-hi);
+      border-radius: 100px;
+      padding: 4px 12px;
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+    }
+
+    .portfolio-year {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--mid);
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+    }
+
+    /* PORTFOLIO WIP card (full-width) */
+    .portfolio-item.wip {
+      grid-column: 1 / -1;
+      grid-template-columns: 48px 1fr 1fr;
+      gap: 0 60px;
+      border-right: none;
+      padding-right: 0;
+    }
+
+    .portfolio-item.wip .portfolio-desc {
+      max-width: none;
+    }
+
+    .portfolio-wip-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 14px;
+    }
+
+    .portfolio-wip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #portfolio {
+        padding: 80px 24px;
+      }
+
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .portfolio-item:nth-child(odd),
+      .portfolio-item:nth-child(even) {
+        padding-left: 0;
+        padding-right: 0;
+        border-right: none;
+      }
+
+      .portfolio-item.wip {
+        grid-template-columns: 48px 1fr;
+        gap: 0 20px;
+      }
+
+      .portfolio-item.wip>.portfolio-item-inner:last-child {
+        display: none;
+      }
+    }
+
+    /* PORTFOLIO PREVIEW BUTTON */
+    .portfolio-preview-btn {
+      margin-top: 32px;
+      display: inline-flex;
+      align-self: flex-start;
+      align-items: center;
+      gap: 8px;
+      background: rgba(232, 228, 220, 0.03);
+      border: 1px solid var(--border-hi);
+      border-radius: 100px;
+      padding: 8px 18px;
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.4s var(--easing);
+      position: relative;
+      overflow: hidden;
+      width: fit-content;
+    }
+
+    .portfolio-preview-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--text);
+      opacity: 0;
+      transition: opacity 0.4s var(--easing);
+      z-index: 0;
+    }
+
+    .portfolio-preview-btn:hover {
+      border-color: var(--text);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      background: rgba(232, 228, 220, 0.08);
+    }
+
+    .portfolio-preview-btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .portfolio-preview-btn svg {
+      width: 14px;
+      height: 14px;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.4s var(--easing);
+    }
+
+    .portfolio-preview-btn:hover svg {
+      transform: translateX(4px);
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(10, 10, 10, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .35s var(--easing);
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-box {
+      background: #fff;
+      padding: 48px;
+      max-width: 480px;
+      width: 90%;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform .35s var(--easing);
+    }
+
+    .modal-overlay.open .modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .modal-caption {
+      margin-top: 20px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #999;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #aaa;
+      transition: color .2s;
+    }
+
+    .modal-close:hover {
+      color: #111;
     }
 
     /* CONTACT */
@@ -1092,6 +1428,7 @@
     <a href="#home" class="nav-logo">North</a>
     <ul class="nav-links">
       <li><a href="#services">Servizi</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
       <li><a href="#about">Chi sono</a></li>
       <li><a href="#contact">Contatti</a></li>
     </ul>
@@ -1186,6 +1523,81 @@
             costruito per reggere nel tempo.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <div class="section-header reveal">
+      <span class="section-label">Lavori</span>
+      <span class="section-num">03</span>
+    </div>
+
+    <div class="portfolio-grid">
+
+      <!-- 01 — FAI Veneto Logo -->
+      <div class="portfolio-item reveal">
+        <span class="portfolio-num">01</span>
+        <div class="portfolio-item-inner">
+          <span class="portfolio-tag">Brand Identity · Logo Design</span>
+          <h3 class="portfolio-title">FAI Veneto<br>50° Anniversario</h3>
+          <p class="portfolio-desc">Logo celebrativo per il cinquantesimo anniversario del Fondo per l'Ambiente Italiano
+            — sezione Veneto. Illustrazione isometrica con icone dei monumenti delle sette province venete, integrata in
+            una torta celebrativa.</p>
+          <div class="portfolio-meta">
+            <span class="portfolio-chip">Illustrator</span>
+            <span class="portfolio-chip">Logo Design</span>
+            <span class="portfolio-chip">Illustrazione</span>
+            <span class="portfolio-year">2025</span>
+          </div>
+          <button class="portfolio-preview-btn" onclick="openModal()" aria-label="Vedi il logo FAI Veneto">
+            <span>Vedi il logo</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 02 — Checker accessibilità colori (WEB TOOL) -->
+      <div class="portfolio-item reveal reveal-delay-1">
+        <span class="portfolio-num">02</span>
+        <div class="portfolio-item-inner">
+          <span class="portfolio-tag">Web Tool · UI/UX</span>
+          <h3 class="portfolio-title">Colour<br>Contrast Checker</h3>
+          <p class="portfolio-desc">Tool web per verificare l'accessibilità WCAG AA/AAA di una palette colori. Inserisci
+            i tuoi hex code e ottieni una griglia completa pass/fail di tutte le combinazioni testo/sfondo — zero login,
+            zero ads.</p>
+          <div class="portfolio-meta">
+            <span class="portfolio-chip">HTML/CSS/JS</span>
+            <span class="portfolio-chip">WCAG</span>
+            <span class="portfolio-chip">Design Tool</span>
+            <span class="portfolio-year">2025</span>
+          </div>
+          <div class="portfolio-img-wrap" style="margin-top:28px; background: #0d0d0d;">
+            <img src="./contrast-checker-preview.png"
+              alt="Screenshot del Colour Contrast Checker — griglia WCAG pass/fail" loading="lazy" width="800"
+              height="600" onerror="this.parentElement.style.display='none'">
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 — Slot libero / coming soon -->
+      <div class="portfolio-item reveal">
+        <span class="portfolio-num">03</span>
+        <div class="portfolio-item-inner">
+          <span class="portfolio-wip-badge"><span class="portfolio-wip-dot"></span>In corso</span>
+          <h3 class="portfolio-title">Prossimo<br>progetto</h3>
+          <p class="portfolio-desc">Nuovi lavori in arrivo. Se hai un progetto da realizzare — logo, sito, contenuti
+            visual — parliamone.</p>
+          <div class="portfolio-meta">
+            <a href="#contact" class="cta-link" style="font-size:11px;">Contattami</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -1308,6 +1720,20 @@
 
     </div>
   </section>
+
+  <!-- MODAL — FAI Veneto Logo -->
+  <div class="modal-overlay" id="fai-modal" role="dialog" aria-modal="true"
+    aria-label="Logo FAI Veneto 50° Anniversario">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()" aria-label="Chiudi">Chiudi ✕</button>
+      <picture>
+        <source srcset="./fai-veneto.webp" type="image/webp">
+        <img src="./fai-veneto.png" alt="Logo FAI Veneto 50° Anniversario — torta isometrica con monumenti veneti"
+          width="464" height="600">
+      </picture>
+      <p class="modal-caption">FAI Veneto · 50° Anniversario · 1975–2025</p>
+    </div>
+  </div>
 
   <footer>
     <p>© 2026 Pietro Trevisan — North</p>
@@ -1495,6 +1921,21 @@
       // requestIdleCallback: cede il controllo al browser fino a quando ha tempo libero
       'requestIdleCallback' in window ? requestIdleCallback(init) : setTimeout(init, 16);
     });
+  </script>
+
+  <script>
+    // MODAL — FAI Veneto
+    const modal = document.getElementById('fai-modal');
+    function openModal() {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
   </script>
 
 </body>
