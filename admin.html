@@ -307,7 +307,7 @@
             display: flex;
             align-items: flex-end;
             gap: 6px;
-            height: 120px;
+            height: 100px;
         }
 
         .bar-col {
@@ -316,6 +316,8 @@
             flex-direction: column;
             align-items: center;
             gap: 6px;
+            height: 100%;
+            justify-content: flex-end;
         }
 
         .bar {
@@ -808,8 +810,9 @@
 
                 const col = document.createElement('div');
                 col.className = 'bar-col';
+                const px = Math.max(Math.round((val / maxVal) * 100), 2);
                 col.innerHTML = `
-          <div class="bar" style="height:${Math.max(pct, 2)}%" title="${val} visite il ${dayLabel}"></div>
+          <div class="bar" style="height:${px}px" title="${val} visite il ${dayLabel}"></div>
           <span class="bar-label">${dayLabel.split('/')[0]}</span>
         `;
                 barChart.appendChild(col);
@@ -920,7 +923,7 @@
         }
 
         // Registra la visita solo se NON siamo nella dashboard
-        if (!window.location.pathname.includes('marketing')) {
+        if (!window.location.pathname.includes('admin')) {
             recordVisit();
         }
     </script>
