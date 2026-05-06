@@ -1003,6 +1003,7 @@
       color: var(--bg);
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 
 <body>
@@ -1305,6 +1306,40 @@
           banner.classList.add('hidden');
         });
 
+        // ─────────────────────────────────────────
+        // SUPABASE — Tracking & Leads
+        // ─────────────────────────────────────────
+        const SUPABASE_URL = 'https://bcowedrviohimkljgzhf.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_uFGr4FAlf0q71qAmgWOrAQ_-Y10snId';
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const trackVisit = async () => {
+          const dateKey = new Date().toISOString().split('T')[0];
+          const sessKey = 'north_sess_' + dateKey;
+          
+          if (sessionStorage.getItem(sessKey)) return;
+          sessionStorage.setItem(sessKey, '1');
+
+          const ua = navigator.userAgent;
+          const device = /Mobi|Android/i.test(ua) ? 'Mobile' : /Tablet|iPad/i.test(ua) ? 'Tablet' : 'Desktop';
+          const ref = document.referrer;
+          const source = !ref ? 'Diretto' :
+              ref.includes('google') ? 'Google' :
+              ref.includes('instagram') ? 'Instagram' :
+              ref.includes('linkedin') ? 'LinkedIn' :
+              ref.includes('facebook') ? 'Facebook' : 'Altro';
+
+          try {
+            await sb.from('visite').insert([{
+              data: dateKey,
+              device: device,
+              source: source
+            }]);
+          } catch (e) { console.error('Error tracking:', e); }
+        };
+        trackVisit();
+
+
         // CONTACT FORM — Formspree
         // IMPORTANTE: sostituisci YOUR_FORM_ID con il tuo ID Formspree
         // Registrati gratis su formspree.io e crea un form, poi copia l'ID (es. xpznkwvq)
@@ -1330,17 +1365,17 @@
             _subject: `Nuovo contatto da North Studio — ${form.nome.value}`,
           };
 
-          // Salva anche in localStorage per la pagina marketing
-          const leads = JSON.parse(localStorage.getItem('north_leads') || '[]');
-          leads.unshift({
-            nome: data.nome,
-            email: data.email,
-            telefono: '',
-            servizio: data.servizio,
-            messaggio: data.messaggio,
-            data: new Date().toISOString()
-          });
-          localStorage.setItem('north_leads', JSON.stringify(leads.slice(0, 100)));
+          // Salva su Supabase (sostituisce localStorage)
+          try {
+            await sb.from('leads').insert([{
+              nome: data.nome,
+              email: data.email,
+              servizio: data.servizio,
+              messaggio: data.messaggio
+            }]);
+          } catch(e) {
+            console.error('Errore salvataggio lead:', e);
+          }
 
           try {
             const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
