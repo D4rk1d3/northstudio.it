@@ -838,6 +838,11 @@
         gap: 40px;
       }
 
+      .about-visual {
+        max-width: 420px;
+        margin: 0 auto;
+      }
+
       .services-grid {
         grid-template-columns: 1fr;
       }
@@ -1096,7 +1101,9 @@
   <section id="about">
     <div class="about-visual reveal">
       <div class="founder-placeholder">
-        <img src="./pietro-768.webp" alt="Pietro Trevisan">
+        <img src="./pietro-768.webp" srcset="./pietro-480.webp 480w, ./pietro-768.webp 768w, ./pietro-1280.webp 1280w"
+          sizes="(max-width: 600px) 100vw, 50vw" alt="Pietro Trevisan" width="600" height="800" loading="lazy"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
         <div class="founder-caption">
           <p>Pietro Trevisan — Founder</p>
         </div>
