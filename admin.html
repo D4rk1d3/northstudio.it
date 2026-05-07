@@ -644,6 +644,26 @@
       cursor: pointer;
     }
 
+    /* ─── SCROLLABLE TABLES ─── */
+    .table-wrap.scrollable {
+      max-height: 420px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .table-wrap.scrollable::-webkit-scrollbar { width: 4px; }
+    .table-wrap.scrollable::-webkit-scrollbar-track { background: transparent; }
+    .table-wrap.scrollable::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 2px; }
+
+    .table-wrap.scrollable thead th {
+      position: sticky;
+      top: 0;
+      background: var(--bg-card);
+      z-index: 1;
+      box-shadow: 0 1px 0 var(--border);
+      border-bottom: none;
+    }
+
     /* ─── LINE CHART ─── */
     .line-chart-card {
       background: var(--bg-card);
@@ -690,7 +710,7 @@
       <div class="field">
         <label for="pwd-input">Password</label>
         <div style="position:relative">
-          <input type="password" id="pwd-input" autocomplete="current-password" placeholder="••••••••"
+          <input type="password" id="pwd-input" autocomplete="current-password" placeholder="password"
             style="padding-right:44px">
           <button type="button" id="toggle-pwd"
             style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;color:var(--mid);font-size:13px;font-family:var(--font);letter-spacing:0.06em;transition:color .2s"
@@ -772,7 +792,7 @@
 
       <!-- VISITE RECENTI CON IP -->
       <p class="section-title">Visite recenti — IP</p>
-      <div class="table-wrap" style="margin-bottom: 48px;">
+      <div class="table-wrap scrollable" style="margin-bottom: 48px;">
         <table>
           <thead>
             <tr>
@@ -795,7 +815,7 @@
       <!-- LEADS TABLE -->
       <p class="section-title">Lead ricevuti</p>
       <button class="refresh-btn" id="refresh-btn">↻ Aggiorna</button>
-      <div class="table-wrap">
+      <div class="table-wrap scrollable">
         <table>
           <thead>
             <tr>
@@ -1135,8 +1155,7 @@
         return;
       }
 
-      // Mostra le ultime 50 visite
-      visite.slice(0, 50).forEach(v => {
+      visite.slice(0, 15).forEach(v => {
         const tr = document.createElement('tr');
         const date = v.created_at
           ? new Date(v.created_at).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome' })
@@ -1163,7 +1182,7 @@
         return;
       }
 
-      leads.forEach(l => {
+      leads.slice(0, 15).forEach(l => {
         const tr = document.createElement('tr');
         tr.className = 'lead-row';
         const date = l.created_at
@@ -1220,7 +1239,7 @@
     leadModal.addEventListener('click', e => { if (e.target === leadModal) closeLeadModal(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLeadModal(); });
 
-    // ── LINE CHART SORGENTI ─────────────────────────
+    // ── LINE CHART SORGENTI (interattivo) ──────────
     function renderLineChart(visite) {
       const container = document.getElementById('line-chart');
       if (!container) return;
@@ -1253,11 +1272,6 @@
       }));
 
       const maxVal = Math.max(...seriesData.flatMap(s => s.counts), 1);
-
-      const W = 600, H = 160;
-      const padL = 24, padR = 12, padT = 12, padB = 24;
-      const chartW = W - padL - padR;
-      const chartH = H - padT - padB;
       const colors = [
         'rgba(232,228,220,0.9)',
         'rgba(74,222,128,0.8)',
@@ -1265,29 +1279,40 @@
         'rgba(196,181,253,0.7)'
       ];
 
+      const W = 600, H = 140;
+      const padL = 4, padR = 4, padT = 12, padB = 8;
+      const chartW = W - padL - padR;
+      const chartH = H - padT - padB;
       const ns = 'http://www.w3.org/2000/svg';
+
+      // Wrapper relativo per tooltip
+      const wrapper = document.createElement('div');
+      wrapper.style.cssText = 'position:relative;user-select:none;-webkit-user-select:none';
+
+      // SVG
       const svg = document.createElementNS(ns, 'svg');
       svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
       svg.setAttribute('preserveAspectRatio', 'none');
-      svg.style.cssText = 'width:100%;height:160px;overflow:visible;display:block';
+      svg.style.cssText = 'width:100%;height:140px;display:block;cursor:crosshair';
 
+      // Linee griglia
       for (let i = 0; i <= 4; i++) {
         const y = padT + (chartH * i / 4);
-        const line = document.createElementNS(ns, 'line');
-        line.setAttribute('x1', padL); line.setAttribute('x2', padL + chartW);
-        line.setAttribute('y1', y); line.setAttribute('y2', y);
-        line.setAttribute('stroke', 'rgba(232,228,220,0.05)');
-        line.setAttribute('stroke-width', '1');
-        svg.appendChild(line);
+        const gl = document.createElementNS(ns, 'line');
+        gl.setAttribute('x1', padL); gl.setAttribute('x2', padL + chartW);
+        gl.setAttribute('y1', y); gl.setAttribute('y2', y);
+        gl.setAttribute('stroke', 'rgba(232,228,220,0.05)');
+        gl.setAttribute('stroke-width', '1');
+        svg.appendChild(gl);
       }
 
+      // Polilinee per ogni serie
       seriesData.forEach((series, si) => {
         const pts = series.counts.map((count, i) => {
           const x = padL + (i / (days.length - 1)) * chartW;
           const y = padT + chartH - (count / maxVal) * chartH;
           return `${x},${y}`;
         }).join(' ');
-
         const poly = document.createElementNS(ns, 'polyline');
         poly.setAttribute('points', pts);
         poly.setAttribute('fill', 'none');
@@ -1298,30 +1323,110 @@
         svg.appendChild(poly);
       });
 
-      days.forEach((day, i) => {
-        if (i % 2 !== 0 && i !== days.length - 1) return;
-        const x = padL + (i / (days.length - 1)) * chartW;
-        const label = new Date(day + 'T00:00:00').toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
-        const text = document.createElementNS(ns, 'text');
-        text.setAttribute('x', x);
-        text.setAttribute('y', H - 4);
-        text.setAttribute('text-anchor', i === 0 ? 'start' : i === days.length - 1 ? 'end' : 'middle');
-        text.setAttribute('fill', 'rgba(102,100,96,0.8)');
-        text.setAttribute('font-size', '8');
-        text.setAttribute('font-family', 'DM Sans, sans-serif');
-        text.textContent = label;
-        svg.appendChild(text);
+      // Crosshair verticale
+      const crosshair = document.createElementNS(ns, 'line');
+      crosshair.setAttribute('y1', padT); crosshair.setAttribute('y2', padT + chartH);
+      crosshair.setAttribute('stroke', 'rgba(232,228,220,0.22)');
+      crosshair.setAttribute('stroke-width', '1');
+      crosshair.setAttribute('stroke-dasharray', '3,2');
+      crosshair.style.display = 'none';
+      svg.appendChild(crosshair);
+
+      // Dot marker per ogni serie
+      const dots = seriesData.map((_, si) => {
+        const c = document.createElementNS(ns, 'circle');
+        c.setAttribute('r', '3');
+        c.setAttribute('fill', colors[si]);
+        c.setAttribute('stroke', 'var(--bg-card)');
+        c.setAttribute('stroke-width', '1.5');
+        c.style.display = 'none';
+        svg.appendChild(c);
+        return c;
       });
 
-      container.appendChild(svg);
+      wrapper.appendChild(svg);
 
+      // Tooltip HTML
+      const tooltip = document.createElement('div');
+      tooltip.style.cssText = 'position:absolute;pointer-events:none;background:var(--bg-raised);border:1px solid var(--border-hi);border-radius:8px;padding:10px 14px;font-size:11px;white-space:nowrap;display:none;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.3)';
+      wrapper.appendChild(tooltip);
+
+      // Asse X — etichette HTML (non SVG, niente stretch)
+      const xAxis = document.createElement('div');
+      xAxis.style.cssText = 'display:flex;justify-content:space-between;margin-top:8px';
+      [0, 3, 6, 9, 13].forEach(idx => {
+        const lbl = document.createElement('span');
+        lbl.style.cssText = 'font-size:9px;color:var(--mid);letter-spacing:0.04em';
+        lbl.textContent = new Date(days[idx] + 'T00:00:00').toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
+        xAxis.appendChild(lbl);
+      });
+      wrapper.appendChild(xAxis);
+
+      // Mappa posizione mouse → indice giorno
+      function mouseXToIdx(clientX) {
+        const rect = svg.getBoundingClientRect();
+        const svgX = ((clientX - rect.left) / rect.width) * W;
+        return Math.max(0, Math.min(days.length - 1, Math.round((svgX - padL) / chartW * (days.length - 1))));
+      }
+
+      function showTooltip(idx, clientX, clientY) {
+        const xVB = padL + (idx / (days.length - 1)) * chartW;
+        crosshair.setAttribute('x1', xVB); crosshair.setAttribute('x2', xVB);
+        crosshair.style.display = '';
+
+        dots.forEach((dot, si) => {
+          const y = padT + chartH - (seriesData[si].counts[idx] / maxVal) * chartH;
+          dot.setAttribute('cx', xVB); dot.setAttribute('cy', y);
+          dot.style.display = '';
+        });
+
+        const dayLabel = new Date(days[idx] + 'T00:00:00').toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
+        let html = `<div style="font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:8px">${dayLabel}</div>`;
+        seriesData.forEach((s, si) => {
+          html += `<div style="display:flex;align-items:center;gap:8px;line-height:1.9">
+            <span style="width:16px;height:2px;background:${colors[si]};border-radius:1px;flex-shrink:0;display:inline-block"></span>
+            <span style="color:var(--mid-hi);flex:1">${esc(s.name)}</span>
+            <span style="color:var(--text);min-width:18px;text-align:right">${s.counts[idx]}</span>
+          </div>`;
+        });
+        tooltip.innerHTML = html;
+        tooltip.style.display = 'block';
+
+        const wrapRect = wrapper.getBoundingClientRect();
+        const svgRect = svg.getBoundingClientRect();
+        const relX = clientX - wrapRect.left;
+        const relY = clientY - wrapRect.top;
+        const ttW = tooltip.offsetWidth || 150;
+        let left = relX + 14;
+        if (left + ttW > wrapRect.width - 8) left = relX - ttW - 8;
+        tooltip.style.left = Math.max(0, left) + 'px';
+        tooltip.style.top = Math.max(0, relY - 56) + 'px';
+      }
+
+      function hideTooltip() {
+        crosshair.style.display = 'none';
+        dots.forEach(d => d.style.display = 'none');
+        tooltip.style.display = 'none';
+      }
+
+      svg.addEventListener('mousemove', e => showTooltip(mouseXToIdx(e.clientX), e.clientX, e.clientY));
+      svg.addEventListener('mouseleave', hideTooltip);
+      svg.addEventListener('touchstart', e => {
+        e.preventDefault();
+        const t = e.touches[0];
+        showTooltip(mouseXToIdx(t.clientX), t.clientX, t.clientY);
+      }, { passive: false });
+      svg.addEventListener('touchend', () => setTimeout(hideTooltip, 1800));
+
+      container.appendChild(wrapper);
+
+      // Legenda
       const legend = document.createElement('div');
       legend.style.cssText = 'display:flex;flex-wrap:wrap;gap:16px;margin-top:14px';
       topSources.forEach((name, i) => {
         const item = document.createElement('div');
         item.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mid-hi)';
-        const dot = `<span style="width:20px;height:2px;background:${colors[i]};border-radius:1px;display:inline-block;flex-shrink:0"></span>`;
-        item.innerHTML = `${dot}${esc(name)}`;
+        item.innerHTML = `<span style="width:20px;height:2px;background:${colors[i]};border-radius:1px;display:inline-block;flex-shrink:0"></span>${esc(name)}`;
         legend.appendChild(item);
       });
       container.appendChild(legend);
