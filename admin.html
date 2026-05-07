@@ -523,6 +523,136 @@
       color: var(--text);
     }
 
+    /* ─── LEAD MODAL ─── */
+    .lead-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s var(--easing);
+    }
+
+    .lead-modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lead-modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-hi);
+      border-radius: 14px;
+      padding: 40px;
+      max-width: 560px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      transform: translateY(20px) scale(0.97);
+      transition: transform .35s var(--easing);
+    }
+
+    .lead-modal-overlay.open .lead-modal-box {
+      transform: none;
+    }
+
+    .lead-modal-close {
+      float: right;
+      background: none;
+      border: none;
+      color: var(--mid);
+      font-family: var(--font);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 0;
+      transition: color .2s;
+    }
+
+    .lead-modal-close:hover {
+      color: var(--text);
+    }
+
+    .lead-modal-name {
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+      clear: both;
+    }
+
+    .lead-modal-email {
+      font-size: 13px;
+      color: var(--mid-hi);
+      margin-bottom: 28px;
+    }
+
+    .lead-modal-email a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .lead-modal-email a:hover {
+      color: var(--text);
+    }
+
+    .lead-modal-msg {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+    }
+
+    .lead-modal-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .lead-modal-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .lead-modal-field-label {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .lead-modal-field-value {
+      font-size: 13px;
+      color: var(--mid-hi);
+    }
+
+    tbody tr.lead-row {
+      cursor: pointer;
+    }
+
+    /* ─── LINE CHART ─── */
+    .line-chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px;
+      margin-bottom: 48px;
+    }
+
     @media (max-width: 768px) {
       header {
         padding: 0 24px;
@@ -628,6 +758,12 @@
         </div>
       </div>
 
+      <!-- Line chart sorgenti -->
+      <div class="line-chart-card">
+        <p class="chart-title">Provenienza visite — ultimi 14 giorni</p>
+        <div id="line-chart"></div>
+      </div>
+
       <!-- Source breakdown -->
       <div class="chart-card" style="margin-bottom: 48px;">
         <p class="chart-title">Sorgenti traffico</p>
@@ -680,6 +816,34 @@
         </table>
       </div>
     </main>
+  </div>
+
+  <!-- ═══ LEAD MODAL ═══ -->
+  <div class="lead-modal-overlay" id="lead-modal" role="dialog" aria-modal="true" aria-labelledby="lead-modal-name">
+    <div class="lead-modal-box">
+      <button class="lead-modal-close" id="lead-modal-close">Chiudi ✕</button>
+      <p class="lead-modal-name" id="lead-modal-name"></p>
+      <p class="lead-modal-email"><a id="lead-modal-email-link" href="#"></a></p>
+      <div class="lead-modal-msg" id="lead-modal-msg"></div>
+      <div class="lead-modal-meta">
+        <div class="lead-modal-field">
+          <span class="lead-modal-field-label">Servizio</span>
+          <span class="lead-modal-field-value" id="lead-modal-servizio"></span>
+        </div>
+        <div class="lead-modal-field">
+          <span class="lead-modal-field-label">Data</span>
+          <span class="lead-modal-field-value" id="lead-modal-data"></span>
+        </div>
+        <div class="lead-modal-field">
+          <span class="lead-modal-field-label">Device</span>
+          <span class="lead-modal-field-value" id="lead-modal-device"></span>
+        </div>
+        <div class="lead-modal-field">
+          <span class="lead-modal-field-label">IP</span>
+          <span class="lead-modal-field-value" id="lead-modal-ip" style="font-family:monospace;font-size:12px"></span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -755,9 +919,11 @@
       const ok = await verifyPassword(pwd);
 
       if (ok) {
+        pwdInput.value = '';
         setSession();
         showDashboard();
       } else {
+        pwdInput.value = '';
         loginError.textContent = 'Password errata.';
         loginBtn.disabled = false;
         loginBtn.textContent = 'Accedi';
@@ -873,6 +1039,7 @@
         document.getElementById('last-updated').textContent = 'Aggiornato: ' + new Date().toLocaleTimeString('it-IT');
 
         renderBarChart(visite);
+        renderLineChart(visite);
         renderBreakdown('device-breakdown', visite, 'device');
         renderBreakdown('source-breakdown', visite, 'source');
         renderVisite(visite);
@@ -998,25 +1165,166 @@
 
       leads.forEach(l => {
         const tr = document.createElement('tr');
+        tr.className = 'lead-row';
         const date = l.created_at
           ? new Date(l.created_at).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome' })
           : '—';
 
         tr.innerHTML = `
           <td class="primary">${esc(l.nome || '—')}</td>
-          <td><a href="mailto:${esc(l.email || '')}" style="color:var(--mid-hi);text-decoration:none">${esc(l.email || '—')}</a></td>
+          <td><a href="mailto:${esc(l.email || '')}" style="color:var(--mid-hi);text-decoration:none" onclick="event.stopPropagation()">${esc(l.email || '—')}</a></td>
           <td><span class="badge">${esc(l.servizio || '—')}</span></td>
-          <td class="msg" title="${esc(l.messaggio || '')}">${esc(l.messaggio || '—')}</td>
+          <td class="msg">${esc(l.messaggio || '—')}</td>
           <td style="font-size:12px;color:var(--mid)">${esc(l.browser || '')} · ${esc(l.os || '')}${l.device_brand ? ' · ' + esc(l.device_brand) : ''}</td>
           <td style="font-size:12px;color:var(--mid);font-family:monospace;white-space:nowrap">${esc(l.ip_address || '—')}</td>
           <td style="font-size:12px;color:var(--mid);white-space:nowrap">${date}</td>
         `;
+        tr.addEventListener('click', () => openLeadModal(l));
         tbody.appendChild(tr);
       });
     }
 
     function esc(str) {
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // ── LEAD MODAL ─────────────────────────────────
+    const leadModal = document.getElementById('lead-modal');
+
+    function openLeadModal(l) {
+      const date = l.created_at
+        ? new Date(l.created_at).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome' })
+        : '—';
+      const device = [l.browser, l.os, l.device_brand].filter(Boolean).join(' · ') || '—';
+
+      document.getElementById('lead-modal-name').textContent = l.nome || '—';
+      const emailLink = document.getElementById('lead-modal-email-link');
+      emailLink.textContent = l.email || '—';
+      emailLink.href = l.email ? `mailto:${l.email}` : '#';
+      document.getElementById('lead-modal-msg').textContent = l.messaggio || '—';
+      document.getElementById('lead-modal-servizio').textContent = l.servizio || '—';
+      document.getElementById('lead-modal-data').textContent = date;
+      document.getElementById('lead-modal-device').textContent = device;
+      document.getElementById('lead-modal-ip').textContent = l.ip_address || '—';
+
+      leadModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLeadModal() {
+      leadModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('lead-modal-close').addEventListener('click', closeLeadModal);
+    leadModal.addEventListener('click', e => { if (e.target === leadModal) closeLeadModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLeadModal(); });
+
+    // ── LINE CHART SORGENTI ─────────────────────────
+    function renderLineChart(visite) {
+      const container = document.getElementById('line-chart');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const days = [];
+      for (let i = 13; i >= 0; i--) {
+        const d = new Date(Date.now() - i * 86400000);
+        days.push(d.toISOString().slice(0, 10));
+      }
+
+      const sourceCounts = {};
+      visite.forEach(v => {
+        const s = v.source || 'Diretto';
+        sourceCounts[s] = (sourceCounts[s] || 0) + 1;
+      });
+      const topSources = Object.entries(sourceCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 4)
+        .map(([s]) => s);
+
+      if (topSources.length === 0) {
+        container.innerHTML = '<p style="font-size:12px;color:var(--mid)">Nessun dato</p>';
+        return;
+      }
+
+      const seriesData = topSources.map(source => ({
+        name: source,
+        counts: days.map(d => visite.filter(v => v.data === d && (v.source || 'Diretto') === source).length)
+      }));
+
+      const maxVal = Math.max(...seriesData.flatMap(s => s.counts), 1);
+
+      const W = 600, H = 160;
+      const padL = 24, padR = 12, padT = 12, padB = 24;
+      const chartW = W - padL - padR;
+      const chartH = H - padT - padB;
+      const colors = [
+        'rgba(232,228,220,0.9)',
+        'rgba(74,222,128,0.8)',
+        'rgba(147,197,253,0.8)',
+        'rgba(196,181,253,0.7)'
+      ];
+
+      const ns = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      svg.setAttribute('preserveAspectRatio', 'none');
+      svg.style.cssText = 'width:100%;height:160px;overflow:visible;display:block';
+
+      for (let i = 0; i <= 4; i++) {
+        const y = padT + (chartH * i / 4);
+        const line = document.createElementNS(ns, 'line');
+        line.setAttribute('x1', padL); line.setAttribute('x2', padL + chartW);
+        line.setAttribute('y1', y); line.setAttribute('y2', y);
+        line.setAttribute('stroke', 'rgba(232,228,220,0.05)');
+        line.setAttribute('stroke-width', '1');
+        svg.appendChild(line);
+      }
+
+      seriesData.forEach((series, si) => {
+        const pts = series.counts.map((count, i) => {
+          const x = padL + (i / (days.length - 1)) * chartW;
+          const y = padT + chartH - (count / maxVal) * chartH;
+          return `${x},${y}`;
+        }).join(' ');
+
+        const poly = document.createElementNS(ns, 'polyline');
+        poly.setAttribute('points', pts);
+        poly.setAttribute('fill', 'none');
+        poly.setAttribute('stroke', colors[si]);
+        poly.setAttribute('stroke-width', '1.5');
+        poly.setAttribute('stroke-linejoin', 'round');
+        poly.setAttribute('stroke-linecap', 'round');
+        svg.appendChild(poly);
+      });
+
+      days.forEach((day, i) => {
+        if (i % 2 !== 0 && i !== days.length - 1) return;
+        const x = padL + (i / (days.length - 1)) * chartW;
+        const label = new Date(day + 'T00:00:00').toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
+        const text = document.createElementNS(ns, 'text');
+        text.setAttribute('x', x);
+        text.setAttribute('y', H - 4);
+        text.setAttribute('text-anchor', i === 0 ? 'start' : i === days.length - 1 ? 'end' : 'middle');
+        text.setAttribute('fill', 'rgba(102,100,96,0.8)');
+        text.setAttribute('font-size', '8');
+        text.setAttribute('font-family', 'DM Sans, sans-serif');
+        text.textContent = label;
+        svg.appendChild(text);
+      });
+
+      container.appendChild(svg);
+
+      const legend = document.createElement('div');
+      legend.style.cssText = 'display:flex;flex-wrap:wrap;gap:16px;margin-top:14px';
+      topSources.forEach((name, i) => {
+        const item = document.createElement('div');
+        item.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mid-hi)';
+        const dot = `<span style="width:20px;height:2px;background:${colors[i]};border-radius:1px;display:inline-block;flex-shrink:0"></span>`;
+        item.innerHTML = `${dot}${esc(name)}`;
+        legend.appendChild(item);
+      });
+      container.appendChild(legend);
     }
   </script>
 
