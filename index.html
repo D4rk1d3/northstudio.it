@@ -1861,6 +1861,16 @@
             ip_address = (await ipRes.json()).ip || null;
           } catch { /* silenzioso */ }
 
+          // Geolocalizzazione IP
+          let geo = { city: null, region: null, country: null, country_code: null };
+          if (ip_address) {
+            try {
+              const geoRes = await fetch(`/.netlify/functions/get-location?ip=${ip_address}`);
+              const geoData = await geoRes.json();
+              if (geoData.ok) geo = geoData;
+            } catch { /* silenzioso */ }
+          }
+
           try {
             const res = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
               method: 'POST',
@@ -1874,7 +1884,11 @@
                 nome, email, servizio, messaggio,
                 device_brand: brand,
                 device_model: model,
-                browser, os, ip_address
+                browser, os, ip_address,
+                city: geo.city,
+                region: geo.region,
+                country: geo.country,
+                country_code: geo.country_code
               })
             });
 
@@ -1920,20 +1934,33 @@
           .then(r => r.json())
           .catch(() => ({ ip: null }))
           .then(({ ip }) => {
-            fetch(`${SUPABASE_URL}/rest/v1/visite`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'apikey': SUPABASE_ANON_KEY,
-                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                'Prefer': 'return=minimal'
-              },
-              body: JSON.stringify({
-                data: today, device, source,
-                device_brand: brand, device_model: model,
-                browser, os, ip_address: ip
-              })
-            }).catch(() => { });
+            // Geolocalizzazione IP
+            const geoPromise = ip
+              ? fetch(`/.netlify/functions/get-location?ip=${ip}`)
+                  .then(r => r.json())
+                  .catch(() => ({}))
+              : Promise.resolve({});
+
+            geoPromise.then(geo => {
+              fetch(`${SUPABASE_URL}/rest/v1/visite`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'apikey': SUPABASE_ANON_KEY,
+                  'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                  'Prefer': 'return=minimal'
+                },
+                body: JSON.stringify({
+                  data: today, device, source,
+                  device_brand: brand, device_model: model,
+                  browser, os, ip_address: ip,
+                  city: geo.city || null,
+                  region: geo.region || null,
+                  country: geo.country || null,
+                  country_code: geo.country_code || null
+                })
+              }).catch(() => { });
+            });
           }); // silenzioso: non blocca il sito
       })();
 

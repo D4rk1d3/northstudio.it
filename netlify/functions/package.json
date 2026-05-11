@@ -1,7 +1,0 @@
-{
-  "name": "north-studio-functions",
-  "version": "1.0.0",
-  "dependencies": {
-    "bcryptjs": "^2.4.3"
-  }
-}
