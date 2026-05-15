@@ -1671,7 +1671,7 @@
         <div class="contact-grid reveal reveal-delay-1">
           <div class="contact-col">
             <p class="contact-col-label">Scrivimi</p>
-            <a href="mailto:info@northstudio.it">info@northstudio.it</a>
+            <a href="#" id="contact-email" style="pointer-events:auto"></a>
           </div>
           <div class="contact-col">
             <p class="contact-col-label">Dove sono</p>
@@ -1937,8 +1937,8 @@
             // Geolocalizzazione IP
             const geoPromise = ip
               ? fetch(`/.netlify/functions/get-location?ip=${ip}`)
-                  .then(r => r.json())
-                  .catch(() => ({}))
+                .then(r => r.json())
+                .catch(() => ({}))
               : Promise.resolve({});
 
             geoPromise.then(geo => {
@@ -1982,6 +1982,20 @@
     }
     modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
+
+  <script>
+    /* Email obfuscation — nessuna stringa leggibile nel sorgente statico.
+       Il link viene costruito a runtime: i bot che non eseguono JS
+       non vedono né l'indirizzo né il mailto. */
+    (function () {
+      const el = document.getElementById('contact-email');
+      if (!el) return;
+      const parts = ['\x69\x6e\x66\x6f', '\x40', '\x6e\x6f\x72\x74\x68\x73\x74\x75\x64\x69\x6f', '\x2e', '\x69\x74'];
+      const addr = parts.join('');
+      el.href = 'mailto:' + addr;
+      el.textContent = addr;
+    })();
   </script>
 
 </body>
