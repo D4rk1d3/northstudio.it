@@ -4,6 +4,12 @@ const attempts = new Map();
 const MAX_ATTEMPTS = 5;
 const WINDOW_MS = 15 * 60 * 1000;
 
+function generateToken() {
+  const secret = process.env.SESSION_SECRET || process.env.ADMIN_PASSWORD_HASH;
+  const bucket = Math.floor(Date.now() / (2 * 3600 * 1000));
+  return crypto.createHmac('sha256', secret).update(String(bucket)).digest('hex');
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
@@ -40,13 +46,17 @@ exports.handler = async (event) => {
   if (!ok) {
     record.count += 1;
     attempts.set(ip, record);
-  } else {
-    attempts.delete(ip);
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ok: false }),
+    };
   }
 
+  attempts.delete(ip);
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ok }),
+    body: JSON.stringify({ ok: true, token: generateToken() }),
   };
 };

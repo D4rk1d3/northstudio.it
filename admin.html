@@ -873,15 +873,9 @@
   </div>
 
   <script>
-    // ══════════════════════════════════════════════
-    // CONFIG — sostituisci con i tuoi valori Supabase
-    // (questi sono pubblici: anon key è safe lato client)
-    // ══════════════════════════════════════════════
-    const SUPABASE_URL = 'https://bcowedrviohimkljgzhf.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_uFGr4FAlf0q71qAmgWOrAQ_-Y10snId';
-
     // ── AUTH ──────────────────────────────────────
     const SESSION_KEY = 'ns_admin_auth';
+    const TOKEN_KEY = 'ns_admin_token';
 
     async function verifyPassword(pwd) {
       try {
@@ -891,6 +885,7 @@
           body: JSON.stringify({ password: pwd })
         });
         const data = await res.json();
+        if (data.ok && data.token) sessionStorage.setItem(TOKEN_KEY, data.token);
         return data.ok === true;
       } catch {
         return false;
@@ -898,7 +893,6 @@
     }
 
     function setSession() {
-      // Token di sessione locale (non contiene la password)
       sessionStorage.setItem(SESSION_KEY, '1');
     }
 
@@ -908,6 +902,7 @@
 
     function clearSession() {
       sessionStorage.removeItem(SESSION_KEY);
+      sessionStorage.removeItem(TOKEN_KEY);
     }
 
     function showDashboard() {
@@ -1031,25 +1026,25 @@
     // patch: startInactivityWatch viene chiamato in showDashboard
     const _origShowDashboard = showDashboard;
 
-    // ── SUPABASE FETCH ─────────────────────────────
-    async function supabaseFetch(table, params = '') {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
-        headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        }
+    // ── ADMIN DATA ─────────────────────────────────
+    async function fetchAdminData() {
+      const token = sessionStorage.getItem(TOKEN_KEY);
+      const res = await fetch('/.netlify/functions/admin-data', {
+        headers: { 'Authorization': `Bearer ${token}` },
       });
-      if (!res.ok) throw new Error(`Supabase error: ${res.status}`);
+      if (res.status === 401) {
+        clearSession();
+        showLogin();
+        throw new Error('Sessione scaduta');
+      }
+      if (!res.ok) throw new Error(`Errore server: ${res.status}`);
       return res.json();
     }
 
     // ── DASHBOARD ──────────────────────────────────
     async function loadDashboard() {
       try {
-        const [visite, leads] = await Promise.all([
-          supabaseFetch('visite', 'select=*&order=created_at.desc'),
-          supabaseFetch('leads', 'select=*&order=created_at.desc')
-        ]);
+        const { visite, leads } = await fetchAdminData();
 
         const today = new Date().toISOString().slice(0, 10);
         const sevenDaysAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
