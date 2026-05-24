@@ -77,6 +77,11 @@
   }
   </script>
 
+  <link rel="preload" as="image"
+    href="./pietro2-768.webp"
+    imagesrcset="./pietro2-480.webp 480w, ./pietro2-768.webp 768w, ./pietro2-1280.webp 1280w"
+    imagesizes="(max-width: 600px) 100vw, 50vw">
+
   <link rel="icon" type="image/png" href="./defi.png">
 
   <!-- Preconnect prima del preload: il browser apre la connessione TCP/TLS in anticipo.
@@ -1641,7 +1646,7 @@
           srcset="./pietro2-480.webp 480w, ./pietro2-768.webp 768w, ./pietro2-1280.webp 1280w"
           sizes="(max-width: 600px) 100vw, 50vw"
           alt="Pietro Trevisan, fondatore di North Studio — studio creativo freelance a Ceggia, Veneto" width="600"
-          height="800" loading="lazy"
+          height="800"
           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
         <div class="founder-caption">
           <p>Pietro Trevisan — Founder</p>
@@ -1746,6 +1751,7 @@
           </div>
         </div>
         <div class="form-submit">
+          <input type="text" id="cf-honeypot" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
           <button class="form-btn" id="cf-submit">Invia</button>
           <span class="form-status" id="cf-status"></span>
         </div>
@@ -1869,6 +1875,8 @@
           const email = document.getElementById('cf-email').value.trim();
           const servizio = select.value;
           const messaggio = document.getElementById('cf-messaggio').value.trim();
+
+          if (document.getElementById('cf-honeypot').value) return;
 
           if (!nome || !email || !servizio || !messaggio) {
             status.textContent = 'Compila tutti i campi.';
