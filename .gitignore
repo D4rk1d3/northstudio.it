@@ -4,3 +4,4 @@ graphify-out/
 .netlify/
 .env
 .env.*
+context-northstudio.md
