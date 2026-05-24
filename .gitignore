@@ -1,1 +1,6 @@
 .DS_Store
+graphify-out/
+.claude/
+.netlify/
+.env
+.env.*
