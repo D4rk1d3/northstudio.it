@@ -52,6 +52,30 @@
     ]
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Pietro Trevisan",
+    "url": "https://www.northstudio.it",
+    "image": "https://www.northstudio.it/pietro2-1280.webp",
+    "jobTitle": "Creative Freelancer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "North Studio"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Ceggia",
+      "addressRegion": "Veneto",
+      "addressCountry": "IT"
+    },
+    "sameAs": [
+      "https://www.instagram.com/northstudio.it/",
+      "https://www.linkedin.com/in/pietro-trevisan-55b125372/"
+    ]
+  }
+  </script>
 
   <link rel="icon" type="image/png" href="./defi.png">
 
@@ -1811,6 +1835,21 @@
         });
       };
 
+      // Raccoglie info device — condiviso tra contact form e visit tracker
+      function getDeviceInfo() {
+        const ua = navigator.userAgent;
+        const device = /Mobi|Android|iPhone|iPad/.test(ua) ? 'mobile' : 'desktop';
+        const brand = /iPhone|iPad/.test(ua) ? 'Apple' : /Samsung/.test(ua) ? 'Samsung' : /Huawei/.test(ua) ? 'Huawei' : 'Unknown';
+        const model = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : 'Unknown';
+        const browser = /Chrome/.test(ua) && !/Chromium/.test(ua) ? 'Chrome'
+          : /Safari/.test(ua) && !/Chrome/.test(ua) ? 'Safari'
+            : /Firefox/.test(ua) ? 'Firefox'
+              : /Edge/.test(ua) ? 'Edge' : 'Other';
+        const os = /Windows/.test(ua) ? 'Windows' : /Mac OS/.test(ua) ? 'macOS'
+          : /iPhone|iPad/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android' : 'Other';
+        return { device, brand, model, browser, os };
+      }
+
       // CONTACT FORM — Supabase
       (() => {
         const SUPABASE_URL = 'https://bcowedrviohimkljgzhf.supabase.co';
@@ -1824,20 +1863,6 @@
         select.addEventListener('change', () => {
           select.classList.toggle('has-value', !!select.value);
         });
-
-        // Raccoglie info device
-        function getDeviceInfo() {
-          const ua = navigator.userAgent;
-          const brand = /iPhone|iPad/.test(ua) ? 'Apple' : /Samsung/.test(ua) ? 'Samsung' : /Huawei/.test(ua) ? 'Huawei' : 'Unknown';
-          const model = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : 'Unknown';
-          const browser = /Chrome/.test(ua) && !/Chromium/.test(ua) ? 'Chrome'
-            : /Safari/.test(ua) && !/Chrome/.test(ua) ? 'Safari'
-              : /Firefox/.test(ua) ? 'Firefox'
-                : /Edge/.test(ua) ? 'Edge' : 'Unknown';
-          const os = /Windows/.test(ua) ? 'Windows' : /Mac OS/.test(ua) ? 'macOS'
-            : /iPhone|iPad/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android' : 'Unknown';
-          return { brand, model, browser, os };
-        }
 
         submitBtn.addEventListener('click', async () => {
           const nome = document.getElementById('cf-nome').value.trim();
@@ -1917,16 +1942,7 @@
         const SUPABASE_URL = 'https://bcowedrviohimkljgzhf.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_uFGr4FAlf0q71qAmgWOrAQ_-Y10snId';
 
-        const ua = navigator.userAgent;
-        const device = /Mobi|Android|iPhone|iPad/.test(ua) ? 'mobile' : 'desktop';
-        const browser = /Chrome/.test(ua) && !/Chromium/.test(ua) ? 'Chrome'
-          : /Safari/.test(ua) && !/Chrome/.test(ua) ? 'Safari'
-            : /Firefox/.test(ua) ? 'Firefox'
-              : /Edge/.test(ua) ? 'Edge' : 'Other';
-        const os = /Windows/.test(ua) ? 'Windows' : /Mac OS/.test(ua) ? 'macOS'
-          : /iPhone|iPad/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android' : 'Other';
-        const brand = /iPhone|iPad/.test(ua) ? 'Apple' : /Samsung/.test(ua) ? 'Samsung' : 'Unknown';
-        const model = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : 'Unknown';
+        const { device, brand, model, browser, os } = getDeviceInfo();
         const source = document.referrer
           ? (new URL(document.referrer).hostname.replace('www.', '') || 'direct')
           : 'direct';
