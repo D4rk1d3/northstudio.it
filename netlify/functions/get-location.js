@@ -1,8 +1,10 @@
+const http = require('http');
 const https = require('https');
 
 function fetchJson(url) {
+  const client = url.startsWith('https') ? https : http;
   return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
+    client.get(url, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
